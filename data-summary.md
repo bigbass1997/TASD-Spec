@@ -1,10 +1,10 @@
 ## Unique Data
-- Magic Number (if binary format used)
+- Magic Number
 - Spec Version Number
 - Key Size or Delimiter
 
 ## Packet Format:
-`[Key] [Payload Length] [Payload Data]`
+`[Key] [Length of Length] [Payload Length] [Payload Data]`
 
 ## Common Packets:
 | Type | Size | Description |
@@ -17,14 +17,14 @@
 | Category | 0-65535 bytes | Category of TAS (e.g. any%) |
 | EmulatorName | 0-255 bytes | Name of emulator (e.g. BizHawk, FCEUX,...)
 | EmulatorVersion | 0-255 bytes | Probably a string? Might contain decimals |
-| TASLastModified | ? | Format Ideas: Unix Epoch (seconds), ISO 8601, YYYY-MM-DD |
-| DumpLastModified | ? | Format Ideas: Unix Epoch (seconds), ISO 8601 |
+| TASLastModified | 8 bytes | Unix Epoch (seconds) |
+| DumpLastModified | 8 bytes | Unix Epoch (seconds) |
 | NumberOfFrames | 4 bytes | 32bit unsigned number |
 | RAMInitType | 1 byte | Does RAM need to be initialized? If yes, in what pattern? |
 | SaveInitType | 1 byte | Does Save Memory need to be initialized? If yes, in what pattern? |
 | RerecordCount | 4 bytes | 32bit unsigned number of rerecords |
-| SourceLink | 3 bytes | Link to TAS Publication or Video |
-| BlankFrames | 0-65535 bytes | 16bit signed number to add blank frames, or subtract from movie |
+| SourceLink | ? | Link to TAS Publication or Video |
+| BlankFrames | 2 bytes | 16bit signed number to add blank frames, or subtract from movie |
 | Verified | 1 byte | boolean whether this TAS has been verified before |
 
 ## NES Specific Packets:
@@ -55,7 +55,7 @@ More research required...
 More research required...
 
 ## GB/C/A Specific Packets:
-More research required... (variable length frames?)
+More research required...
 
 ## Genesis Specific Packets:
 | Type | Size | Description |
@@ -70,6 +70,6 @@ More research required... (variable length frames?)
 ## Input Related Packets:
 | Type | Size | Description |
 | --- | --- | --- |
-| Input | 2 + ? bytes | Need some way to specify what kind of input this is. That will determine how wide this is. |
+| Input | 1 + n bytes | Specify port number; then 1 or more input frames for this port |
 | LagFrame | 4 + 4 bytes | 4 bytes specifying frame number, 4 bytes specifying number of lag frames including first. |
 | TransitionFrame | 4 + 2 bytes | 4 bytes specifying frame number, 2 bytes specifying transition type. Types include: "Soft" Reset, Power Reset, possibly others... |
