@@ -17,7 +17,8 @@
 | Category | 0-65535 bytes | Category of TAS (e.g. any%) |
 | EmulatorName | 0-255 bytes | Name of emulator (e.g. BizHawk, FCEUX,...)
 | EmulatorVersion | 0-255 bytes | Probably a string? Might contain decimals |
-| TASLastModified | ? | Formats Ideas: Unix Epoch, ISO 8601, YYYY-MM-DD |
+| TASLastModified | ? | Format Ideas: Unix Epoch (seconds), ISO 8601, YYYY-MM-DD |
+| DumpLastModified | ? | Format Ideas: Unix Epoch (seconds), ISO 8601 |
 | NumberOfFrames | 4 bytes | 32bit unsigned number |
 | RAMInitType | 1 byte | Does RAM need to be initialized? If yes, in what pattern? |
 | SaveInitType | 1 byte | Does Save Memory need to be initialized? If yes, in what pattern? |
