@@ -74,19 +74,13 @@ Key  | Payload Size | Description
 000B | 4 bytes      | TAS rerecord count
 000C | variable     | URL link to publication, video upload of this TAS, or any other relevant websites
 
-000D | 1 byte       | RAM Initialization Pattern (if any)
-    -> 01 = No intialization required
-    -> 02 = Custom (refer to key XXXX)
-    -> 03 = All 0x00
-    -> 04 = All 0xFF
-    -> 05 = 00 00 00 00 FF FF FF FF (repeating)
-
-000E | 1 byte       | Save Memory Initialization (if any)
-    -> 01 = No intialization required
-    -> 02 = Custom (refer to key XXXX)
-    -> 03 = All 0x00
-    -> 04 = All 0xFF
-    -> 05 = 00 00 00 00 FF FF FF FF (repeating)
+000E | 1 + v + k + n + p bytes  | Initialization of named memory space (1 byte type, v = 1 byte length specifier for k, k = length of n, n = name string, p = memory payload)
+    -> 01 = No intialization required (v+k+n+p = 0)
+    -> 02 = Custom: The 'p' section of payload is used to initialize the 'n' named memory space (e.g. "EEPROM", "WRAM", "Save", etc.)
+    -> 03 = All 0x00 (p = 0)
+    -> 04 = All 0xFF (p = 0)
+    -> 05 = 00 00 00 00 FF FF FF FF (repeating) (p = 0)
+    -> 06 = Random (implementation-dependent) (p = 0)
 
 000F | 2 bytes      | Signed 16-bit number of blank frames to prepend to the TAS inputs (positive number), or frames to ignore from the start of the TAS (negative number)
 0010 | 1 byte       | Whether or not this TAS has been verified by someone (boolean, either 00 or 01)
@@ -96,12 +90,29 @@ Key  | Payload Size | Description
 ```
 Key  | Payload Size | Description
 
+0101 | 1 byte 		| Latch Filter time span (value multiplied by 0.1ms; inclusive range of 0.0ms to 25.5ms)
+0102 | 1 byte		| Clock Filter time span (value multiplied by 0.25us; inclusive range of 0.0us to 63.75us)
+0103 | 1 byte		| Overread value (0 or 1) to use upon overreads
+0104 | 1 byte		| DPCM is encountered in this game? (0 = false, 1 = true)
+0105 | 6 or 8 bytes | Game Genie Code (string)
+
+01F0 | 2 bytes		| 1 byte Controller Port Number (1-indexed), and 1 byte Controller Type identifier
+	-> 01 = Standard
+	-> 02 = Multitap (Four Score)
+	-> 03 = Zapper
+
 TODO
 ```
 
 #### SNES Keys:
 ```
 Key  | Payload Size | Description
+
+02F0 | 2 bytes		| 1 byte Controller Port Number (1-indexed), and 1 byte Controller Type identifier
+	-> 01 = Standard
+	-> 02 = Multitap
+	-> 03 = Mouse
+	-> 04 = Superscope
 
 TODO
 ```
@@ -138,12 +149,17 @@ TODO
 ```
 Key  | Payload Size    | Description
 
-FE01 | 1 + n bytes     | Port number (1-indexed) + a variable number of input chunks for that port. Each chunk can vary in size depending on the controller type in use on the respective frame.
+FE01 | 1 + n bytes     | Port number (1-indexed) + a variable number of input chunks for that port.
+    Each chunk can vary in size depending on the controller type in use on the respective frame.
+    Refer to transitions to know if any controller types change mid-playback.
+    These packets, and the input chunks therein, are in sequential order!
+    Therefore, any following input packets are appended to the inputs contained in this one.
 
-FE02 | 4 + 4 bytes     | Specifies a chunk of lag frames based on the original TAS movie. First 4 bytes is the frame number this chunk starts on. Second 4 bytes is the number of sequential lag frames in this chunk.
-
-FE03 | 4 + 1 + n bytes | Specifies a transition frame. First 4 bytes is the frame number. Then 1 byte specifying the transition type. Followed by a variable number of bytes depending on the transition used.
-    -> 01 = "Soft" Reset
-    -> 02 = Power Reset
+FE02 | 4 + 1 + n bytes | Defines a transition at a specific point in the TAS. First 4 bytes is the frame/index number based on all inputs contained in all FE01 packets. Then 1 byte specifying the transition type. Followed by a variable number of bytes if applicable.
+    -> 01 = "Soft" Reset (n = 0)
+    -> 02 = Power Reset (n = 0)
     -> 03 = Controller Swap ( 1 byte port number + 1 byte new controller type )
+
+FE03 | 4 + 4 bytes     | Specifies a chunk of lag frames based on the original TAS movie. First 4 bytes is the frame number this chunk starts on. Second 4 bytes is the number of sequential lag frames in this chunk.
+
 ```
