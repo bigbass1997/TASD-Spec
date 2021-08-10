@@ -191,3 +191,32 @@ FE02 | 4 + 1 + n bytes | Transition     | Defines a transition at a specific poi
 FE03 | 4 + 4 bytes  | LagFrameChunk     | Specifies a chunk of lag frames based on the original TAS movie. First 4 bytes is the frame number this chunk starts on. Second 4 bytes is the number of sequential lag frames in this chunk.
 
 ```
+
+## Format Goals/Reasoning
+The primary goal of this format is to provided a single comprehensive, replay-device-agnostic, TAS dump format, usable for any console. Additional goals include: no intermediate formats, forward-compatibility, high extensibility, and the ability to easily generate using lua scripting available in emulators. Consideration was also given to how usable the format would be to the software that interacts with replay devices (e.g. methods of ingestion/parsing, and the ease of doing so given various languages).
+
+### Problems With Existing Formats
+Most existing formats are either inadequite for verification needs, or simply don't exist at all for some consoles. The commonly used NES and SNES formats (r08 and r16m respectively), only encode two standard controllers worth of sequential input. There's no built in way to store reset information, nor to indicate any additional settings. There's no way to support non-standard controllers like the Multitap. No existing format has a specified way of including any kind of attributions either (except to bundle a text file with the dump in an archive).
+
+The GC, Genesis, A2600, and N64 do not have any commonly used format. Individuals would need to write their own dump scripts and format the inputs however they felt. This is completely acceptable, but isn't ideal for redistribution so that other people (likely with different replay devices) can also verify the same TAS.
+
+### Binary vs Text vs Containers
+This has been a matter of contention. Each kind of format has it's own advantages and disadvantages. For example, a binary file can easily store any form of data, whereas storing binary inputs into a text file is significantly more complex. However, it's not nearly as easy to manually edit text-based information stored in a binary file.
+
+One possible workaround is to use a container format (e.g. .ZIP files), so that text and binary files can be bundled together. But then container formats can be much harder to generate, especially given that these dumps must be generated sequentially, often in Lua, and sometimes with limited memory resources. Additionally, programming languages will have wildly varying support for reading/writing container formats, at least compared to raw binary or text files.
+
+Concern was raised over the editablity of the format after dumping. While text files are indeed easier to open and modify by a human, humans are also very error prone. In order for receiving software to be able to parse the file, a very specific and consistent format would have to be used regardless of whether it's text or binary. Sure a human can edit a text file easier than binary, but a human can also type the wrong data or format it incorrectly/inconsistently.
+
+### Intermediate Files
+Historically, dump files have only contained a partial amount of information needed to describe a TAS verification. This is primarily due to emulators not exposing enough information to their scripting APIs, or otherwise there is simply no way to provide missing data at dump-time, such as attribution, or verification settings that are discovered afterwards. One possible way to handle this is to use the raw input dumps as a sort of intermediate file which gets bundled with a completely different format at a later time.
+
+While this can work, it would only work to a certain extent given the formats we already have. Existing formats, don't include any way to specify transitions (such as resets), or the ability to handle uncommon controller configurations, or any other edge case that may come up in the future.
+
+### Conclusion
+Before serious thought was put into the format itself, a broad summary was first created, containing the different kinds of data that this format would potentially need to hold. Many people put forth their concerns and ideas, including people who have direct experience working with verification and TAS dumping.
+
+Given all the goals in mind, and after reviewing the collected information, a binary format seemed like the best option. Container formats are not nearly as well supported at any stage of the verification process. The vast majority of this data is already in a binary format. Encoding/decoding such data purely as text would be significantly more difficult than doing so in a binary formatted file. Generating and parsing binary files, given the packet format as defined, can be done so using practically all programming languages and potentially on replay devices themselves. Ultimately fulfilling all of the format goals.
+
+For the moment, GB/C/A verifications are locked into using a specific GBI format that's unlikely to change. However this new format can still store the GBI data, or any other data that may be needed in the future if verifications expand to actual GB/A devices instead of just the Game Boy Player.
+
+It's understood that not everyone will agree, and that's fine. But this is the format to be used going forward. In order to provide support for this format as soon as possible, and to provide an implementation example, a commandline-based editing tool was created alongside the specification development process. NES dump scripts for BizHawk and FCEUX have also been created for the same reason.
