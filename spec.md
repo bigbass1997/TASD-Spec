@@ -15,9 +15,9 @@ A very short binary header is used for special/unique data, in the following ord
 The magic number is the ASCII equivalent of `TASD`. The key width defines the how large each key is (in number of bytes). It's unlikely it'll ever be larger than 2 bytes, but it's specified for the sake of forward-compatibility.
 
 ## Packet Format
-Packets are made up of four parts: `[key] [length specifier] [payload length] [payload]`
+Packets are made up of four parts: `[key] [length exponent] [payload length] [payload]`
 
-Because a payload could be as small as a few bytes, or much larger than a 16-bit number could convey, a _**length specifier**_ is used to define how many bytes make up the _**payload length**_. Whereas the _**payload length**_ defines how many bytes are in the _**payload**_ itself.
+Because a payload could be as small as a few bytes, or much larger than a 16-bit number could convey, a _**length exponent**_ is used to define how many bytes make up the _**payload length**_. Whereas the _**payload length**_ defines how many bytes are in the _**payload**_ itself.
 
 ### Examples
 Below is the hexadecimal representation of a package, with some 2-byte key, and a payload that is 5 bytes wide:
@@ -42,39 +42,42 @@ _Reminder that every key is optional, and can appear across multiple packets as 
 
 #### Console-agnostic Keys:
 ```
-Key  | Payload Size | Description
+Key  | Payload Size | Name              | Description
 
-0001 | 1 byte       | Console Type
+0001 | 1 byte       | ConsoleType       | The console this TAS is made for.
     -> 01 = NES
     -> 02 = SNES
     -> 03 = N64
-    -> 04 = Gamecube
+    -> 04 = GC (GameCube)
     -> 05 = GB
     -> 06 = GBC
     -> 07 = GBA
     -> 08 = Genesis
-    -> 09 = A2600
+    -> 09 = A2600 (Atari 2600)
 
-0002 | 1 byte       | Console Region
+0002 | 1 byte       | ConsoleRegion     | Console region required to play this TAS.
     -> 01 = NTSC
     -> 02 = PAL
 
-0003 | variable     | Game Title (string)
-00xx | ? bytes      | Some kind of hash
-00xx | ? bytes      | Some kind of hash
-00xx | ? bytes      | Some kind of hash
-0004 | variable     | Author (string; e.g. "Bender B. Rodriguez")
-0005 | variable     | Category (string; e.g. "any%")
-0006 | variable     | Emulator Name (string)
-0007 | variable     | Emulator Version (string)
+0003 | variable     | GameTitle         | (string) Title of the game.
+00xx | ? bytes      |                   | Some kind of hash
+00xx | ? bytes      |                   | Some kind of hash
+00xx | ? bytes      |                   | Some kind of hash
+0004 | variable     | Author            | (string) Name of one author of the TAS. (e.g. "Bender B. Rodriguez")
+0005 | variable     | Category          | (string) Category of the TAS. (e.g. "any%")
+0006 | variable     | EmulatorName      | (string) Name of the emulator used to dump this file.
+0007 | variable     | EmulatorVersion   | (string) Version of the emulator.
 
-0008 | 8 bytes      | Last time the TAS movie was edited (Unix Epoch in seconds; usually TASVideos.org publication date)
-0009 | 8 bytes      | Last time this file was edited (Unix Epoch in seconds)
-000A | 4 bytes      | Total number of frames from original movie, including lag frames (useful for calculating movie length)
-000B | 4 bytes      | TAS rerecord count
-000C | variable     | URL link to publication, video upload of this TAS, or any other relevant websites
+0008 | 8 bytes      | TASLastModified   | (Unix epoch in seconds) Last time the TAS movie was edited. Usually TASVideos.org publication date.
+0009 | 8 bytes      | DumpLastModified  | (Unix Epoch in seconds) Last time this file was edited.
+000A | 4 bytes      | NumberOfFrames    | Total number of frames from original movie, including lag frames. (useful for calculating movie length)
+000B | 4 bytes      | Rerecords         | TAS rerecord count.
+000C | variable     | SourceLink        | (string) URL link to publication, video upload of this TAS, or any other relevant websites.
 
-000E | 1 + v + k + n + p bytes  | Initialization of named memory space (1 byte type, v = 1 byte length specifier for k, k = length of n, n = name string, p = memory payload)
+000E | 2 bytes      | BlankFrames       | Signed 16-bit number of blank frames to prepend to the TAS inputs (positive number), or frames to ignore from the start of the TAS (negative number).
+000F | 1 byte       | Verified          | Whether or not this TAS has been verified by someone. (boolean, either 00 or 01)
+
+0010 | 1 + v + k + n + p bytes  | MemoryInit | Initialization of named memory space. (1 byte type, v = 1 byte exponent for k, k = length of n, n = name string, p = memory payload)
     -> 01 = No intialization required (p = 0)
     -> 02 = Custom: The 'p' section of payload is used to initialize the 'n' named memory space (e.g. "EEPROM", "WRAM", "Save", etc.)
     -> 03 = All 0x00 (p = 0)
@@ -82,19 +85,44 @@ Key  | Payload Size | Description
     -> 05 = 00 00 00 00 FF FF FF FF (repeating) (p = 0)
     -> 06 = Random (implementation-dependent) (p = 0)
 
-000F | 2 bytes      | Signed 16-bit number of blank frames to prepend to the TAS inputs (positive number), or frames to ignore from the start of the TAS (negative number)
-0010 | 1 byte       | Whether or not this TAS has been verified by someone (boolean, either 00 or 01)
+00xx | 1 + 1 + 1 bytes | PortController | (PROPOSED) Specify which controller is plugged into a specific port number (1-indexed). (1 byte Port Number, 1 byte Console Type, 1 byte Controller Type)
+    -> xx 01 01 = NES Standard
+    -> xx 01 02 = NES Multitap (Four Score)
+    -> xx 01 03 = NES Zapper
+    
+    -> xx 02 01 = SNES Standard
+    -> xx 02 02 = SNES Multitap
+    -> xx 02 03 = SNES Mouse
+    -> xx 02 04 = SNES Superscope
+    
+    -> xx 03 01 = N64 Standard
+    -> xx 03 02 = N64 Standard with Controller Pak
+    -> xx 03 03 = N64 Standard with Transfer Pak
+    -> xx 03 04 = N64 Mouse
+    -> xx 03 05 = N64 Voice Recognition Unit (VRU)
+    -> xx 03 06 = N64 RandNet Keyboard
+    -> xx 03 07 = N64 Densha de Go (used for only 1 game)
+    
+    -> xx 04 01 = GC Standard
+    -> xx 04 02 = GC Keyboard
+    
+    -> xx 08 01 = Genesis 3-Button
+    -> xx 08 02 = Genesis 6-Button
+    
+    -> xx 09 01 = A2600 Joystick
+    -> xx 09 02 = A2600 Paddle
+    -> xx 09 03 = A2600 Keypad
 ```
 
 #### NES Keys:
 ```
-Key  | Payload Size | Description
+Key  | Payload Size | Name              | Description
 
-0101 | 1 byte 		| Latch Filter time span (value multiplied by 0.1ms; inclusive range of 0.0ms to 25.5ms)
-0102 | 1 byte		| Clock Filter time span (value multiplied by 0.25us; inclusive range of 0.0us to 63.75us)
-0103 | 1 byte		| Overread value (0 or 1) to use upon overreads
-0104 | 1 byte		| DPCM is encountered in this game? (0 = false, 1 = true)
-0105 | 6 or 8 bytes | Game Genie Code (string)
+0101 | 1 byte 		| LatchFilter       | Latch Filter time span (value multiplied by 0.1ms; inclusive range of 0.0ms to 25.5ms)
+0102 | 1 byte		| ClockFilter       | Clock Filter time span (value multiplied by 0.25us; inclusive range of 0.0us to 63.75us)
+0103 | 1 byte		| Overread          | The data value to use when overread clock pulses occur (active-low: 0 = HIGH, 1 = LOW)
+0104 | 1 byte		| DPCM              | Whether or not DPCM is encountered in this game. (0 = false, 1 = true)
+0105 | 6 or 8 bytes | GameGenieCode     | (string) 6 or 8 character game genie code
 
 01F0 | 2 bytes		| 1 byte Controller Port Number (1-indexed), and 1 byte Controller Type identifier
 	-> 01 = Standard
@@ -147,19 +175,19 @@ TODO
 
 #### Input Frame/Timing Keys:
 ```
-Key  | Payload Size    | Description
+Key  | Payload Size | Name              | Description
 
-FE01 | 1 + n bytes     | Port number (1-indexed) + a variable number of input chunks for that port.
+FE01 | 1 + n bytes  | InputChunks       | Port number (1-indexed) + a variable number of input chunks for that port.
     Each chunk can vary in size depending on the controller type in use on the respective frame.
     Refer to transitions to know if any controller types change mid-playback.
     These packets, and the input chunks therein, are in sequential order!
     Therefore, any following input packets are appended to the inputs contained in this one.
 
-FE02 | 4 + 1 + n bytes | Defines a transition at a specific point in the TAS. First 4 bytes is the frame/index number based on all inputs contained in all FE01 packets. Then 1 byte specifying the transition type. Followed by a variable number of bytes if applicable.
+FE02 | 4 + 1 + n bytes | Transition     | Defines a transition at a specific point in the TAS. First 4 bytes is the frame/index number based on all inputs contained in all FE01 packets. Then 1 byte specifying the transition type. Followed by a variable number of bytes if applicable.
     -> 01 = "Soft" Reset (n = 0)
     -> 02 = Power Reset (n = 0)
     -> 03 = Controller Swap (n = ( 1 byte port number + 1 byte new controller type ))
 
-FE03 | 4 + 4 bytes     | Specifies a chunk of lag frames based on the original TAS movie. First 4 bytes is the frame number this chunk starts on. Second 4 bytes is the number of sequential lag frames in this chunk.
+FE03 | 4 + 4 bytes  | LagFrameChunk     | Specifies a chunk of lag frames based on the original TAS movie. First 4 bytes is the frame number this chunk starts on. Second 4 bytes is the number of sequential lag frames in this chunk.
 
 ```

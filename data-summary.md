@@ -4,7 +4,7 @@
 - Key Size or Delimiter
 
 ## Packet Format:
-`[Key] [Length of Length] [Payload Length] [Payload Data]`
+`[Key] [Length Exponent] [Payload Length] [Payload Data]`
 
 ## Common Packets:
 | Type | Size | Description |
@@ -22,7 +22,7 @@
 | NumberOfFrames | 4 bytes | 32bit unsigned number |
 | RAMInitType | 1 byte | Does RAM need to be initialized? If yes, in what pattern? |
 | SaveInitType | 1 byte | Does Save Memory need to be initialized? If yes, in what pattern? |
-| RerecordCount | 4 bytes | 32bit unsigned number of rerecords |
+| Rerecords | 4 bytes | 32bit unsigned number of rerecords |
 | SourceLink | ? | Link to TAS Publication or Video |
 | BlankFrames | 2 bytes | 16bit signed number to add blank frames, or subtract from movie |
 | Verified | 1 byte | boolean whether this TAS has been verified before |
