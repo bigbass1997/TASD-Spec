@@ -44,7 +44,7 @@ _Reminder that every key is optional, and can appear across multiple packets as 
 ```
 Key  | Payload Size | Name              | Description
 
-0001 | 1 byte       | ConsoleType       | The console this TAS is made for.
+0001 | 1 + p byte   | ConsoleType       | The console this TAS is made for.
     -> 01 = NES
     -> 02 = SNES
     -> 03 = N64
@@ -54,38 +54,36 @@ Key  | Payload Size | Name              | Description
     -> 07 = GBA
     -> 08 = Genesis
     -> 09 = A2600 (Atari 2600)
+    -> FF = Custom (p = custom name string)
 
 0002 | 1 byte       | ConsoleRegion     | Console region required to play this TAS.
     -> 01 = NTSC
     -> 02 = PAL
 
 0003 | variable     | GameTitle         | (string) Title of the game.
-00xx | ? bytes      |                   | Some kind of hash
-00xx | ? bytes      |                   | Some kind of hash
-00xx | ? bytes      |                   | Some kind of hash
 0004 | variable     | Author            | (string) Name of one author of the TAS. (e.g. "Bender B. Rodriguez")
 0005 | variable     | Category          | (string) Category of the TAS. (e.g. "any%")
 0006 | variable     | EmulatorName      | (string) Name of the emulator used to dump this file.
 0007 | variable     | EmulatorVersion   | (string) Version of the emulator.
 
 0008 | 8 bytes      | TASLastModified   | (Unix epoch in seconds) Last time the TAS movie was edited. Usually TASVideos.org publication date.
-0009 | 8 bytes      | DumpLastModified  | (Unix Epoch in seconds) Last time this file was edited.
-000A | 4 bytes      | NumberOfFrames    | Total number of frames from original movie, including lag frames. (useful for calculating movie length)
+0009 | 8 bytes      | DumpLastModified  | (Unix epoch in seconds) Last time this file was edited.
+000A | 4 bytes      | TotalFrames       | Total number of frames from original movie, including lag frames. (useful for calculating movie length)
 000B | 4 bytes      | Rerecords         | TAS rerecord count.
 000C | variable     | SourceLink        | (string) URL link to publication, video upload of this TAS, or any other relevant websites.
 
 000D | 2 bytes      | BlankFrames       | Signed 16-bit number of blank frames to prepend to the TAS inputs (positive number), or frames to ignore from the start of the TAS (negative number).
 000E | 1 byte       | Verified          | Whether or not this TAS has been verified by someone. (boolean, value of either 00 or 01)
 
-000F | 1 + v + k + n + p bytes  | MemoryInit | Initialization of named memory space. (1 byte type, v = 1 byte exponent for k, k = length of n, n = name string, p = memory payload)
+000F | 1 + v + k + n + p bytes | MemoryInit | Initialization of named memory space. (1 byte type, v = 1 byte exponent for k, k = length of n, n = name string, p = memory payload)
     -> 01 = No intialization required (p = 0)
-    -> 02 = Custom: The 'p' section of payload is used to initialize the 'n' named memory space (e.g. "EEPROM", "WRAM", "Save", etc.)
-    -> 03 = All 0x00 (p = 0)
-    -> 04 = All 0xFF (p = 0)
-    -> 05 = 00 00 00 00 FF FF FF FF (repeating) (p = 0)
-    -> 06 = Random (implementation-dependent) (p = 0)
+    -> 02 = All 0x00 (p = 0)
+    -> 03 = All 0xFF (p = 0)
+    -> 04 = 00 00 00 00 FF FF FF FF (repeating) (p = 0)
+    -> 05 = Random (implementation-dependent) (p = 0)
+    -> FF = Custom: The 'p' section of payload is used to initialize the 'n' named memory space (e.g. "EEPROM", "WRAM", "Save", etc.)
 
-00xx | 1 + 1 + 1 bytes | PortController | (PROPOSED) Specify which controller is plugged into a specific port number (1-indexed). (1 byte Port Number, 1 byte Console Type, 1 byte Controller Type)
+00F0 | 1 + 1 + 1 bytes | PortController | Specify which controller is plugged into a specific port number (1-indexed). (1 byte Port Number, 2 byte Controller Type)
     -> xx 01 01 = NES Standard
     -> xx 01 02 = NES Multitap (Four Score)
     -> xx 01 03 = NES Zapper
@@ -112,37 +110,23 @@ Key  | Payload Size | Name              | Description
     -> xx 09 01 = A2600 Joystick
     -> xx 09 02 = A2600 Paddle
     -> xx 09 03 = A2600 Keypad
+
+00xx | k + n + p bytes | Hash           | Some kind of hash
 ```
 
 #### NES Keys:
 ```
 Key  | Payload Size | Name              | Description
 
-0101 | 1 byte 		| LatchFilter       | Latch Filter time span (value multiplied by 0.1ms; inclusive range of 0.0ms to 25.5ms)
-0102 | 1 byte		| ClockFilter       | Clock Filter time span (value multiplied by 0.25us; inclusive range of 0.0us to 63.75us)
-0103 | 1 byte		| Overread          | The data value to use when overread clock pulses occur (active-low: 0 = HIGH, 1 = LOW)
-0104 | 1 byte		| DPCM              | Whether or not DPCM is encountered in this game. (0 = false, 1 = true)
-0105 | 6 or 8 bytes | GameGenieCode     | (string) 6 or 8 character game genie code
-
-01F0 | 2 bytes		| 1 byte Controller Port Number (1-indexed), and 1 byte Controller Type identifier
-	-> 01 = Standard
-	-> 02 = Multitap (Four Score)
-	-> 03 = Zapper
-
-TODO
+0101 | 1 byte       | LatchFilter       | Latch Filter time span. (value multiplied by 0.1ms; inclusive range of 0.0ms to 25.5ms)
+0102 | 1 byte       | ClockFilter       | Clock Filter time span. (value multiplied by 0.25us; inclusive range of 0.0us to 63.75us)
+0103 | 1 byte       | Overread          | The data value to use when overread clock pulses occur. (active-low: 0 = HIGH, 1 = LOW)
+0105 | 6 or 8 bytes | GameGenieCode     | (string) 6 or 8 character game genie code.
 ```
 
 #### SNES Keys:
 ```
 Key  | Payload Size | Description
-
-02F0 | 2 bytes		| 1 byte Controller Port Number (1-indexed), and 1 byte Controller Type identifier
-	-> 01 = Standard
-	-> 02 = Multitap
-	-> 03 = Mouse
-	-> 04 = Superscope
-
-TODO
 ```
 
 #### N64 Keys:
@@ -183,14 +167,21 @@ FE01 | 1 + n bytes  | InputChunks       | Port number (1-indexed) + a variable n
     These packets, and the input chunks therein, are in sequential order!
     Therefore, any following input packets are appended to the inputs contained in this one.
 
-FE02 | 4 + 1 + n bytes | Transition     | Defines a transition at a specific point in the TAS. First 4 bytes is the frame/index number based on all inputs contained in all FE01 packets. Then 1 byte specifying the transition type. Followed by a variable number of bytes if applicable.
+FE02 | 4 + 1 + n bytes | Transition     | Defines a transition at a specific point in the TAS. First 4 bytes is the frame/index number (0-indexed) based on all inputs contained in all FE01 packets. Then 1 byte specifying the transition type. Followed by a variable number of bytes if applicable.
     -> 01 = "Soft" Reset (n = 0)
     -> 02 = Power Reset (n = 0)
-    -> 03 = Controller Swap (n = ( 1 byte port number + 1 byte new controller type ))
+    -> FF = Packet-derived (Place a spec-defined packet here which will indicate a change at this transition. All FExx keys should NOT be used here.)
 
-FE03 | 4 + 4 bytes  | LagFrameChunk     | Specifies a chunk of lag frames based on the original TAS movie. First 4 bytes is the frame number this chunk starts on. Second 4 bytes is the number of sequential lag frames in this chunk.
+FE03 | 4 + 4 bytes  | LagFrameChunk     | Specifies a chunk of lag frames based on the original TAS movie. First 4 bytes is the frame number (0-indexed) this chunk starts on. Second 4 bytes is the number of sequential lag frames in this chunk.
 
+FE04 | 4 + 1 + n bytes | MovieTransition | Defines a transition based on the original TAS movie frames (including lag frames). Using this packet requires FE03 packets. First 4 bytes is the movie frame number (0-indexed). Then 1 byte specifying the transition type. Followed by a variable number of bytes if applicable.
+    -> 01 = "Soft" Reset (n = 0)
+    -> 02 = Power Reset (n = 0)
+    -> FF = Packet-derived (Place a spec-defined packet here which will inidicate a change at this transition. All FExx keys should NOT be used here.)
 ```
+
+## Controller Input Maps
+Each controller from each console has defined data needed for each frame (or frame equivalent), which is stored in a specific number of bytes. This data is what is stored in InputChunks packets. These maps are designed to match the real hardware as much as possible, to make decoding easier. If you need to write an emulator/movie dump script, be aware that emulators may format these inputs in a different order. Refer to the `inputmaps.txt` file for specific details.
 
 ## Format Goals/Reasoning
 The primary goal of this format is to provided a single comprehensive, replay-device-agnostic, TAS dump format, usable for any console. Additional goals include: no intermediate formats, forward-compatibility, high extensibility, and the ability to easily generate using lua scripting available in emulators. Consideration was also given to how usable the format would be to the software that interacts with replay devices (e.g. methods of ingestion/parsing, and the ease of doing so given various languages).
