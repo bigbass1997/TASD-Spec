@@ -1,8 +1,13 @@
-When inputs are stored in a TASD file, their values are formatted in a specific order. Data is stored as close to the console-native format as possible.
+When inputs are stored in a TASD file, their values are formatted in a specific order.
+Data is stored as close tothe console-native format as possible.
 
-Most consoles use "active-low" signals for button presses. That means that if a button is pressed, it sends a logical LOW signal, represented as binary '0'. For example, a NES controller pressing 'A' and 'Left' can be represented as binary '01111101' or hex 0x7D. However, some consoles may include "active-high" signals, or have a more complex protocol.
+Most consoles use "active-low" signals for button presses. That means that if a button is pressed, it sends a logical LOW signal,
+represented as binary '0'. For example, a NES controller pressing 'A' and 'Left' can be represented as binary '01111101' or hex 0x7D.
+However, some consoles may include "active-high" signals, or have a more complex protocol.
 
-Each controller map will include their spec-defined controller type that's used in PortController packets. All inputs that are active-low, will have a forward slash '/' infront of them. For example, all of the buttons on the NES standard controller are active-low, as seen below. Unless otherwise specified, button inputs without a '/' will be active-high, or have a custom protocol.
+Each controller map will include their spec-defined controller type that's used in PortController packets. All inputs that are active-low,
+will have a forward slash '/' infront of them. For example, all of the buttons on the NES standard controller are active-low, as seen
+below. Unless otherwise specified, button inputs without a '/' will be active-high, or have a custom protocol.
 
 
 === NES Standard ===

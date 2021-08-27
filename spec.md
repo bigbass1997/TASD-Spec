@@ -53,17 +53,21 @@ Key  | Payload Size | Name              | Description
 0005 | variable     | Category          | (string) Category of the TAS. (e.g. "any%")
 0006 | variable     | EmulatorName      | (string) Name of the emulator used to dump this file.
 0007 | variable     | EmulatorVersion   | (string) Version of the emulator.
+0008 | variable     | EmulatorCore      | (string) Name of emulation core being used. (may not be applicable to all emulators)
 
-0008 | 8 bytes      | TASLastModified   | (Unix epoch in seconds) Last time the TAS movie was edited. Usually TASVideos.org publication date.
-0009 | 8 bytes      | DumpLastModified  | (Unix epoch in seconds) Last time this file was edited.
-000A | 4 bytes      | TotalFrames       | Total number of frames from original movie, including lag frames. (useful for calculating movie length)
-000B | 4 bytes      | Rerecords         | TAS rerecord count.
-000C | variable     | SourceLink        | (string) URL link to publication, video upload of this TAS, or any other relevant websites.
+0009 | 8 bytes      | TASLastModified   | (Unix epoch in seconds) Last time the TAS movie was edited. Usually TASVideos.org publication date.
+000A | 8 bytes      | DumpLastModified  | (Unix epoch in seconds) Last time this file was edited.
+000B | 4 bytes      | TotalFrames       | Total number of frames from original movie, including lag frames. (useful for calculating movie length)
+000C | 4 bytes      | Rerecords         | TAS rerecord count.
+000D | variable     | SourceLink        | (string) URL link to publication, video upload of this TAS, or any other relevant websites.
 
-000D | 2 bytes      | BlankFrames       | Signed 16-bit number of blank frames to prepend to the TAS inputs (positive number), or frames to ignore from the start of the TAS (negative number).
-000E | 1 byte       | Verified          | Whether or not this TAS has been verified by someone. (boolean, value of either 00 or 01)
+000E | 2 bytes      | BlankFrames       | Signed 16-bit number of blank frames to prepend to the TAS inputs (positive number), or frames to ignore from the start of the TAS (negative number).
+000F | 1 byte       | Verified          | Whether or not this TAS has been verified by someone. (boolean, value of either 00 or 01)
 
-000F | 1 + 1 + v + k + n + p bytes | MemoryInit | Initialization of named memory space. First byte is the kind of initialization. Second byte is whether or not this is required for verifications (0 = optional, 1 = required). Then the name of the space. And an optional custom payload. (1 byte type, 1 byte verification requirement, v = 1 byte exponent for k, k = length of n, n = name string, p = memory payload)
+0010 | 1 + 1 + v + k + n + p bytes | MemoryInit | Initialization of named memory space. First byte is the kind of initialization.
+    Second byte is whether or not this is required for verifications (0 = optional, 1 = required). Then the name of the space.
+    And an optional custom payload. (1 byte type, 1 byte verification requirement, v = 1 byte exponent for k, k = length of n, n = name string, p = memory payload)
+    
     -> 01 = No intialization required (p = 0)
     -> 02 = All 0x00 (p = 0)
     -> 03 = All 0xFF (p = 0)
@@ -71,7 +75,7 @@ Key  | Payload Size | Name              | Description
     -> 05 = Random (implementation-dependent) (p = 0)
     -> FF = Custom: The 'p' section of payload is used to initialize the 'n' named memory space (e.g. "EEPROM", "WRAM", "Save", etc.)
 
-00F0 | 1 + 1 + 1 bytes | PortController | Specify which controller is plugged into a specific port number (1-indexed). (1 byte Port Number, 2 byte Controller Type)
+00F0 | 1 + 2 bytes  | PortController | Specify which controller is plugged into a specific port number (1-indexed). (1 byte Port Number, 2 byte Controller Type)
     -> xx 01 01 = NES Standard
     -> xx 01 02 = NES Multitap (Four Score)
     -> xx 01 03 = NES Zapper
