@@ -82,12 +82,13 @@ Key  | Payload Size | Name              | Description
     -> xx 02 04 = SNES Superscope
     
     -> xx 03 01 = N64 Standard
-    -> xx 03 02 = N64 Standard with Controller Pak
-    -> xx 03 03 = N64 Standard with Transfer Pak
-    -> xx 03 04 = N64 Mouse
-    -> xx 03 05 = N64 Voice Recognition Unit (VRU)
-    -> xx 03 06 = N64 RandNet Keyboard
-    -> xx 03 07 = N64 Densha de Go (used for only 1 game)
+    -> xx 03 02 = N64 Standard with Rumble Pak
+    -> xx 03 03 = N64 Standard with Controller Pak
+    -> xx 03 04 = N64 Standard with Transfer Pak
+    -> xx 03 05 = N64 Mouse
+    -> xx 03 06 = N64 Voice Recognition Unit (VRU)
+    -> xx 03 07 = N64 RandNet Keyboard
+    -> xx 03 08 = N64 Densha de Go (used for only 1 game)
     
     -> xx 04 01 = GC Standard
     -> xx 04 02 = GC Keyboard

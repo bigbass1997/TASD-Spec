@@ -105,18 +105,26 @@ bits 15-8 = Analog Stick X-Axis (signed 8bit number, decimal -128 to +127)
 bits  7-0 = Analog Stick Y-Axis (signed 8bit number, decimal -128 to +127)
 
 
-=== N64 Standard with Controller Pak ===
+=== N64 Standard with Rumble Pak ===
 Spec Type: 03 02
+
+Identical to N64 Standard (03 01)
+
+
+=== N64 Standard with Controller Pak ===
+Spec Type: 03 03
+
 Identical to N64 Standard (03 01)
 
 
 === N64 Standard with Transfer Pak ===
-Spec Type: 03 03
+Spec Type: 03 04
+
 Identical to N64 Standard (03 01)
 
 
 === N64 Mouse ===
-Spec Type: 03 04
+Spec Type: 03 05
 Length: 4 bytes
 The N64 uses the Joybus Protocol. Pressed buttons are represented as a binary '1'.
 Protocol details can be found here: https://n64brew.dev/wiki/Joybus_Protocol
@@ -131,14 +139,14 @@ bits  7-0 = Relative Y-Axis position (signed 8bit number, decimal -128 to +127)
 
 
 === N64 Voice Recognition Unit (VRU) ===
-Spec Type: 03 04
+Spec Type: 03 06
 Length: ?
 
 Unknown at this time, more research is required to understand the VRU.
 
 
 === N64 RandNet Keyboard ===
-Spec Type: 03 05
+Spec Type: 03 07
 Length: 7 bytes
 The N64 uses the Joybus Protocol. Protocol details can be found here: https://n64brew.dev/wiki/Joybus_Protocol
 And Keyboard specific details here: https://sites.google.com/site/consoleprotocols/home/nintendo-joy-bus-documentation/n64-specific/randnet-keyboard
@@ -150,7 +158,7 @@ bits  7- 0 = special keyboard flags
 
 
 === N64 Densha de Go ===
-Spec Type: 03 06
+Spec Type: 03 08
 Length: 4 bytes
 The N64 uses the Joybus Protocol. Pressed buttons are represented as a binary '1'.
 Protocol details can be found here: https://n64brew.dev/wiki/Joybus_Protocol
@@ -211,6 +219,7 @@ Spec Type: 06 01
 Length: 1 byte
 
 Identical to GB Gamepad (05 01)
+
 
 === GBA(SP) Gamepad ===
 Spec Type: 07 01
