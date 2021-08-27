@@ -1,3 +1,12 @@
-The goal of this project is to create a file format that can eliminate the need for multiple intermediary dump files (e.g. r08, r16, etc). The format should be expandable without radical changes to the spec. The format shouldn't care what a replay device is, nor how the file should get into a replay device. The format needs to be easily generatable from Lua, and specifically the Lua contained in emulators. Keep in mind that dumps are performed sequentially, possibly without the ability to go back to something already written.
+The **TASD (Tool Assisted Speedrun Dump)**, is a dump file format for replaying TASes on real hardware. It is structured to be independent on any given console, replay-device, or emulator. It can contain any amount of data, including attributions, emulation context, inputs, transitions, replay constraints, and much more.
 
-Current task is to formalize _what_ and _how much_ data may need to be stored, either at dump-time, or via external software at a later time.
+Specification details and examples can be found in [Spec.md](Spec.md). Controller input maps are defined in [inputmaps.txt](inputmaps.txt).
+
+**Latest Version:** 0x0001
+
+## Tools and Scripts
+[TASD-Edit](https://github.com/bigbass1997/TASD-Edit) is a cross-platform, CLI-based editor for TASD files. Can create/edit TASD files, and import or export legacy formats: r08, r16m, and GBI.
+
+ViGreyTech has created a single-file [Lua dump script]() that works across multiple emulators and consoles.
+
+If you'd like to create your own Lua script, Bigbass has created a [Lua API/library]() to aid in generating TASD files.
