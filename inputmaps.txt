@@ -1,0 +1,324 @@
+When inputs are stored in a TASD file, their values are formatted in a specific order. Data is stored as close to the console-native format as possible.
+
+Most consoles use "active-low" signals for button presses. That means that if a button is pressed, it sends a logical LOW signal, represented as binary '0'. For example, a NES controller pressing 'A' and 'Left' can be represented as binary '01111101' or hex 0x7D. However, some consoles may include "active-high" signals, or have a more complex protocol.
+
+Each controller map will include their spec-defined controller type that's used in PortController packets. All inputs that are active-low, will have a forward slash '/' infront of them. For example, all of the buttons on the NES standard controller are active-low, as seen below. Unless otherwise specified, button inputs without a '/' will be active-high, or have a custom protocol.
+
+
+=== NES Standard ===
+Spec Type: 01 01
+Length: 1 byte
+
+bit 7 = /A
+bit 6 = /B
+bit 5 = /Select
+bit 4 = /Start
+bit 3 = /Up
+bit 2 = /Down
+bit 1 = /Left
+bit 0 = /Right
+
+
+=== NES Multitap (Four Score) ===
+Spec Type: 01 02
+Length: ?
+
+???
+
+
+=== NES Zapper ===
+Spec Type: 01 03
+Length: ?
+
+???
+
+
+=== SNES Standard ===
+Spec Type: 02 01
+Length: 2 bytes
+
+bit 15 = /B
+bit 14 = /Y
+bit 13 = /Select
+bit 12 = /Start
+bit 11 = /Up
+bit 10 = /Down
+bit  9 = /Left
+bit  8 = /Right
+
+bit  7 = /A
+bit  6 = /X
+bit  5 = /L
+bit  4 = /R
+bit  3 = 1
+bit  2 = 1
+bit  1 = 1
+bit  0 = 1
+
+
+=== SNES Multitap ===
+Spec Type: 02 02
+Length: ?
+
+???
+
+
+=== SNES Mouse ===
+Spec Type: 02 03
+Length: ?
+
+???
+
+
+=== SNES Superscope ===
+Spec Type: 02 04
+Length: ?
+
+???
+
+
+=== N64 Standard ===
+Spec Type: 03 01
+Length: 4 bytes
+The N64 uses the Joybus Protocol. Pressed buttons are represented as a binary '1'.
+Protocol details can be found here: https://n64brew.dev/wiki/Joybus_Protocol
+
+bit 31 = A
+bit 30 = B
+bit 29 = Z
+bit 28 = Start
+bit 27 = D-Pad Up
+bit 26 = D-Pad Down
+bit 25 = D-Pad Left
+bit 24 = D-Pad Right
+
+bit 23 = RST (special controller reset bit)
+bit 22 = 0
+bit 21 = Left Trigger
+bit 20 = Right Trigger
+bit 19 = C-Up
+bit 18 = C-Down
+bit 17 = C-Left
+bit 16 = C-Right
+
+bits 15-8 = Analog Stick X-Axis (signed 8bit number, decimal -128 to +127)
+bits  7-0 = Analog Stick Y-Axis (signed 8bit number, decimal -128 to +127)
+
+
+=== N64 Standard with Controller Pak ===
+Spec Type: 03 02
+Identical to N64 Standard (03 01)
+
+
+=== N64 Standard with Transfer Pak ===
+Spec Type: 03 03
+Identical to N64 Standard (03 01)
+
+
+=== N64 Mouse ===
+Spec Type: 03 04
+Length: 4 bytes
+The N64 uses the Joybus Protocol. Pressed buttons are represented as a binary '1'.
+Protocol details can be found here: https://n64brew.dev/wiki/Joybus_Protocol
+
+bit 31 = A
+bit 30 = B
+bits 29-24 = 0
+
+bits 23-16 = 0
+bits 15-8 = Relative X-Axis position (signed 8bit number, decimal -128 to +127)
+bits  7-0 = Relative Y-Axis position (signed 8bit number, decimal -128 to +127)
+
+
+=== N64 Voice Recognition Unit (VRU) ===
+Spec Type: 03 04
+Length: ?
+
+Unknown at this time, more research is required to understand the VRU.
+
+
+=== N64 RandNet Keyboard ===
+Spec Type: 03 05
+Length: 7 bytes
+The N64 uses the Joybus Protocol. Protocol details can be found here: https://n64brew.dev/wiki/Joybus_Protocol
+And Keyboard specific details here: https://sites.google.com/site/consoleprotocols/home/nintendo-joy-bus-documentation/n64-specific/randnet-keyboard
+
+bits 55-40 = first key ID or all zeros
+bits 39-24 = second key ID or all zeros
+bits 23- 8 = third key ID or all zeros
+bits  7- 0 = special keyboard flags
+
+
+=== N64 Densha de Go ===
+Spec Type: 03 06
+Length: 4 bytes
+The N64 uses the Joybus Protocol. Pressed buttons are represented as a binary '1'.
+Protocol details can be found here: https://n64brew.dev/wiki/Joybus_Protocol
+
+bit 31 = B
+bit 30 = A
+bit 29 = Accelerator
+bit 28 = Start
+bit 27 = Accelerator
+bit 26 = 0
+bit 25 = 0
+bit 24 = Accelerator
+
+bit 23 = 0
+bit 22 = 0
+bit 21 = C
+bit 20 = Select
+bits 19-16 = Brake
+
+bits 15-8 = 0
+bits  7-0 = 0
+
+
+=== GC Standard ===
+Spec Type: 04 01
+Length: 8 bytes
+The GC uses the Joybus Protocol. Pressed buttons are represented as a binary '1'.
+Protocol details can be found here: https://n64brew.dev/wiki/Joybus_Protocol
+
+TODO
+
+
+=== GC Keyboard ===
+Spec Type: 04 02
+Length: ?
+The GC uses the Joybus Protocol. Pressed buttons are represented as a binary '1'.
+Protocol details can be found here: https://n64brew.dev/wiki/Joybus_Protocol
+
+TODO
+
+
+=== GB Gamepad ===
+Spec Type: 05 01
+Length: 1 byte
+
+bit 7 = /Down
+bit 6 = /Up
+bit 5 = /Left
+bit 4 = /Right
+bit 3 = /Start
+bit 2 = /Select
+bit 1 = /B
+bit 0 = /A
+
+
+=== GBC Gamepad ===
+Spec Type: 06 01
+Length: 1 byte
+
+Identical to GB Gamepad (05 01)
+
+=== GBA(SP) Gamepad ===
+Spec Type: 07 01
+Length: 2 bytes
+
+bits 15-10 = 1
+bit 9 = /L
+bit 8 = /R
+
+bit 7 = /Down
+bit 6 = /Up
+bit 5 = /Left
+bit 4 = /Right
+bit 3 = /Start
+bit 2 = /Select
+bit 1 = /B
+bit 0 = /A
+
+
+=== Genesis 3-Button ===
+Spec Type: 08 01
+Length: 1 byte
+
+bit 7 = /A
+bit 6 = /Start
+bit 5 = /Up
+bit 4 = /Down
+bit 3 = /Left
+bit 2 = /Right
+bit 1 = /B
+bit 0 = /C
+
+
+=== Genesis 6-Button ===
+Spec Type: 08 02
+Length: 2 bytes
+
+bit 15 = /A
+bit 14 = /Start
+bit 13 = /Up
+bit 12 = /Down
+bit 11 = /Left
+bit 10 = /Right
+bit  9 = /B
+bit  8 = /C
+
+bit 7 = /Z
+bit 6 = /Y
+bit 5 = /X
+bit 4 = /Mode
+bit 3 = 1
+bit 2 = 1
+bit 1 = 1
+bit 0 = 1
+
+
+=== A2600 Joystick ===
+Spec Type: 09 01
+Length: 1 byte
+
+bit 7 = /Up
+bit 6 = /Down
+bit 5 = /Left
+bit 4 = /Right
+bit 3 = 1
+bit 2 = /Button
+bit 1 = 1
+bit 0 = 1
+
+
+=== A2600 Paddle ===
+Spec Type: 09 02
+Length: 1 byte
+
+bit 7 = 1
+bit 6 = 1
+bit 5 = /LeftButton
+bit 4 = /RightButton
+bit 3 = RightPot
+bit 2 = LeftPot
+bit 1 = 1
+bit 0 = 1
+
+
+=== A2600 Keypad ===
+Spec Type: 09 03
+Length: 1 byte
+
+bit 7 = /Row1
+bit 6 = /Row2
+bit 5 = /Row3
+bit 4 = /Row4
+bit 3 = /Column1
+bit 2 = /Column3
+bit 1 = /Column2
+bit 0 = 1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
