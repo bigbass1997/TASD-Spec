@@ -167,21 +167,22 @@ FE01 | 1 + n bytes  | InputChunks       | Port number (1-indexed) + a variable n
     Therefore, any following input packets are appended to the inputs contained in this one.
     Input values are usually in native format (usually active-low), refer to 'inputmaps.txt' for details.
 
-FE0x | 1 + 4 + n bytes | InputMoment    | (PROPOSED) Port number (1-indexed) + 32-bit frame/index number + a single instance of input for that port.
+FE02 | 1 + 4 + n bytes | InputMoment    | Port number (1-indexed) + 32-bit index number + a single instance of input for that port.
     Similar to InputChunks but instead specifies an input at a specific point in time.
     Useful for consoles with many repeated inputs or that use clock cycles as an index number.
-    Some consoles may interpret these packets as inputs that are held until the next specified InputMoment,
+    Some consoles may interpret these packets as inputs that are held until the next specified InputMoment (e.g. GB/C/A),
     or they may use a default input state until the next InputMoment is reached.
+    Index number can be based on anything, but should be consistent throughout a file (e.g. clock cycles, frames, seconds, etc).
     Sequential order is not necessary. Refer to 'inputmaps.txt' for input formats.
 
-FE02 | 4 + 1 + n bytes | Transition     | Defines a transition at a specific point in the TAS. First 4 bytes is the frame/index number (0-indexed) based on all inputs contained in all FE01 packets. Then 1 byte specifying the transition type. Followed by a variable number of bytes if applicable.
+FE03 | 4 + 1 + n bytes | Transition     | Defines a transition at a specific point in the TAS. First 4 bytes is the frame/index number (0-indexed) based on all inputs contained in all FE01 packets. Then 1 byte specifying the transition type. Followed by a variable number of bytes if applicable.
     -> 01 = "Soft" Reset (n = 0)
     -> 02 = Power Reset (n = 0)
     -> FF = Packet-derived (Place a spec-defined packet here which will indicate a change at this transition. All FExx keys should NOT be used here.)
 
-FE03 | 4 + 4 bytes  | LagFrameChunk     | Specifies a chunk of lag frames based on the original TAS movie. First 4 bytes is the frame number (0-indexed) this chunk starts on. Second 4 bytes is the number of sequential lag frames in this chunk.
+FE04 | 4 + 4 bytes  | LagFrameChunk     | Specifies a chunk of lag frames based on the original TAS movie. First 4 bytes is the frame number (0-indexed) this chunk starts on. Second 4 bytes is the number of sequential lag frames in this chunk.
 
-FE04 | 4 + 1 + n bytes | MovieTransition | Defines a transition based on the original TAS movie frames (including lag frames). Using this packet requires FE03 packets. First 4 bytes is the movie frame number (0-indexed). Then 1 byte specifying the transition type. Followed by a variable number of bytes if applicable.
+FE05 | 4 + 1 + n bytes | MovieTransition | Defines a transition based on the original TAS movie frames (including lag frames). Using this packet requires FE03 packets. First 4 bytes is the movie frame number (0-indexed). Then 1 byte specifying the transition type. Followed by a variable number of bytes if applicable.
     -> 01 = "Soft" Reset (n = 0)
     -> 02 = Power Reset (n = 0)
     -> FF = Packet-derived (Place a spec-defined packet here which will inidicate a change at this transition. All FExx keys should NOT be used here.)
