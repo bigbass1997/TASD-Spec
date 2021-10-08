@@ -191,6 +191,11 @@ FE05 | 4 + 1 + n bytes | MovieTransition | Defines a transition based on the ori
     -> FF = Packet-derived (Place a spec-defined packet here which will inidicate a change at this transition. All FExx keys should NOT be used here.)
 ```
 
+#### Unspecified
+```
+FFFF | n bytes | Unspecified | The payload of this packet is unspecified. Intended for implementation-specific/custom use cases. Do not use unless you have to.
+```
+
 ## Controller Input Maps
 Each controller from each console has defined data needed for each frame (or frame equivalent), which is stored in a specific number of bytes. This data is what is stored in InputChunks packets. These maps are designed to match the real hardware as much as possible, to make decoding easier. If you need to write an emulator/movie dump script, be aware that emulators may format these inputs in a different order. Refer to the `inputmaps.txt` file for specific details.
 
