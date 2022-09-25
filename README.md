@@ -6,7 +6,7 @@ Specification and Tools for the Tool Assisted Speedrun Dump (TASD) interchange f
 
 ## Description:
 
-The Tool Assisted Speedrun Dump (TASD) interchange format is a file format designed by [Vi Grey](https://github.com/vigrey) and [bigbass](https://github.com/bigbass1997) for storing data to allow "Tool Assisted Speedruns" or "Tool Assited Superplays" to be played on physical video game console hardware using TAS replay devices.  Created to be hardware and software agnostic, the TASD interchange format uses a key-based, binary, packet format to break up pieces of information into easily-parsable and forward-compatible chunks.  The format is extensible by simply defining additional keys or value types as necessary.  When parsing the file, software can skip any packets whose key is unknown or unsupported.
+The Tool Assisted Speedrun Dump (TASD) interchange format is a file format designed by [Vi Grey](https://github.com/vigrey) and [Bigbass](https://github.com/bigbass1997) for storing data to allow "Tool Assisted Speedruns" or "Tool Assited Superplays" to be played on physical video game console hardware using TAS replay devices.  Created to be hardware and software agnostic, the TASD interchange format uses a key-based, binary, packet format to break up pieces of information into easily-parsable and forward-compatible chunks.  The format is extensible by simply defining additional keys or value types as necessary.  When parsing the file, software can skip any packets whose key is unknown or unsupported.
 
 Keys can be used multiple times or completely omitted as needed.  This reusability eliminates the need of a predefined delimiter to separate pieces of data such as a list of TAS authors.
 
