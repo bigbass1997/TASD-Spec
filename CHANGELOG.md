@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), although currently without version numbers added.
 
 ## 2022-09-26
+### Added
+- TODO.md file
+- "Licenses" section in `README.md` file
+- "Contributing" section in `README.md` file
+
+### Removed
+- "TODO" section in `README.md` file
+
+
+## 2022-09-26
 ### Changed
 - Rename `docs/draft-tasd-spec-0001/` to `docs/tasd-spec-0001/`
 
