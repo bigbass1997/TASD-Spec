@@ -24,7 +24,8 @@
 # SUCH DAMAGE.
 
 DOC_NAME := draft-tasd-spec-0001
-DOC_NAME_NO_VERSION := draft-tasd-spec
+VERSION_DOC_NAME := tasd-spec-0001
+LATEST_DOC_NAME := draft-tasd-spec
 CURRENTDIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
 documents:
@@ -32,14 +33,14 @@ documents:
 	xml2rfc $(CURRENTDIR)src/docs/$(DOC_NAME).xml -p $(CURRENTDIR)build/docs --text --html --pdf --no-external-js --no-external-css --v3 --id-is-work-in-progress --no-pagination
 
 contribution:
-	mkdir -p $(CURRENTDIR)docs/$(DOC_NAME)
+	mkdir -p $(CURRENTDIR)docs/$(VERSION_DOC_NAME)
 	mkdir -p $(CURRENTDIR)docs/latest
-	cp $(CURRENTDIR)build/docs/$(DOC_NAME).txt $(CURRENTDIR)docs/$(DOC_NAME)/
-	cp $(CURRENTDIR)build/docs/$(DOC_NAME).html $(CURRENTDIR)docs/$(DOC_NAME)/
-	cp $(CURRENTDIR)build/docs/$(DOC_NAME).pdf $(CURRENTDIR)docs/$(DOC_NAME)/
-	cp $(CURRENTDIR)build/docs/$(DOC_NAME).txt $(CURRENTDIR)docs/latest/$(DOC_NAME_NO_VERSION).txt
-	cp $(CURRENTDIR)build/docs/$(DOC_NAME).html $(CURRENTDIR)docs/latest/$(DOC_NAME_NO_VERSION).html
-	cp $(CURRENTDIR)build/docs/$(DOC_NAME).pdf $(CURRENTDIR)docs/latest/$(DOC_NAME_NO_VERSION).pdf
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).txt $(CURRENTDIR)docs/$(VERSION_DOC_NAME)/
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).html $(CURRENTDIR)docs/$(VERSION_DOC_NAME)/
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).pdf $(CURRENTDIR)docs/$(VERSIO_DOC_NAME)/
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).txt $(CURRENTDIR)docs/latest/$(LATEST_DOC_NAME).txt
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).html $(CURRENTDIR)docs/latest/$(LATEST_DOC_NAME).html
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).pdf $(CURRENTDIR)docs/latest/$(LATEST_DOC_NAME).pdf
 
 clean:
 	rm -rf -- $(CURRENTDIR)build
