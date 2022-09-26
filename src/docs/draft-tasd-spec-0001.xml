@@ -376,7 +376,7 @@
             <dt><tt>[FF 01]</tt> - COMMENT</dt>
             <dd>Comment data.  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>MAY</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="comment"/>).</dd>
             <dt><tt>[FF FE]</tt> - EXPERIMENTAL</dt>
-            <dd>TASD file is using experimental packets.  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>SHOULD NOT</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="experimental"/>).</dd>
+            <dd>TASD file is using draft/experimental packets.  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>SHOULD NOT</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="experimental"/>).</dd>
             <dt><tt>[FF FF]</tt> - UNSPECIFIED</dt>
             <dd>Unspecified packet data.  Can contain any arbitrary data.  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>MAY</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="unspecified"/>).</dd>
           </dl>
@@ -1227,7 +1227,7 @@
             </artwork>
             <dl newline="true">
               <dt><strong>Experimental</strong></dt>
-              <dd>Boolean data that is <strong>TRUE</strong> if the TASD file is using experimental features (Currently SHOULD be TRUE).</dd>
+              <dd>Boolean data that is <strong>TRUE</strong> if the TASD file is using draft/experimental features (Currently SHOULD be <strong>TRUE</strong>) and <strong>FALSE</strong> if the TASD file is using only stable features.</dd>
               <dt><strong>PLEN</strong></dt>
               <dd>Length of the packet payload.</dd>
             </dl>
@@ -1816,6 +1816,8 @@
       <t>THIS DOCUMENTATION IS PROVIDED BY THE AUTHOR(S) "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</t>
     </section>
     <!-- Change Log
+
+draft 01 - 2022-09-26   VG    Add FALSE state description for EXPERIMENTAL packet and mention draft/experimental packets rather than just experimental packets
 
 draft 00 - 2022-09-24   VG    Initial draft
 

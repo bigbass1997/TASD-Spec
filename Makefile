@@ -23,15 +23,23 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-DOC_NAME := draft-tasd-0001
+DOC_NAME := draft-tasd-spec-0001
+DOC_NAME_NO_VERSION := draft-tasd-spec
 CURRENTDIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
 documents:
-	mkdir -p $(CURRENTDIR)build/docs; \
-	cd $(CURRENTDIR)src/docs; \
-	xml2rfc $(DOC_NAME).xml --text --html --pdf --no-external-js --no-external-css --v3 --id-is-work-in-progress --no-pagination; \
-	mv $(DOC_NAME).pdf $(DOC_NAME).html $(DOC_NAME).txt $(CURRENTDIR)build/docs; \
-	cd $(CURRENTDIR); \
+	mkdir -p $(CURRENTDIR)build/docs
+	xml2rfc $(CURRENTDIR)src/docs/$(DOC_NAME).xml -p $(CURRENTDIR)build/docs --text --html --pdf --no-external-js --no-external-css --v3 --id-is-work-in-progress --no-pagination
+
+contribution:
+	mkdir -p $(CURRENTDIR)docs/$(DOC_NAME)
+	mkdir -p $(CURRENTDIR)docs/latest
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).txt $(CURRENTDIR)docs/$(DOC_NAME)/
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).html $(CURRENTDIR)docs/$(DOC_NAME)/
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).pdf $(CURRENTDIR)docs/$(DOC_NAME)/
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).txt $(CURRENTDIR)docs/latest/$(DOC_NAME_NO_VERSION).txt
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).html $(CURRENTDIR)docs/latest/$(DOC_NAME_NO_VERSION).html
+	cp $(CURRENTDIR)build/docs/$(DOC_NAME).pdf $(CURRENTDIR)docs/latest/$(DOC_NAME_NO_VERSION).pdf
 
 clean:
-	rm -rf -- $(CURRENTDIR)build; \
+	rm -rf -- $(CURRENTDIR)build

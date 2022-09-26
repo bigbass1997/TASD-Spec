@@ -5,7 +5,7 @@
 Independent TAS Console Replay Research Group                    V. Grey
                                                           VG Interactive
                                                                  Bigbass
-                                                       24 September 2022
+                                                       26 September 2022
 
 
                 TASD File Format Specification Version 1
