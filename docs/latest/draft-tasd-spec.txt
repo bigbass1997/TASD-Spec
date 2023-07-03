@@ -5,7 +5,7 @@
 Independent TAS Console Replay Research Group                    V. Grey
                                                           VG Interactive
                                                                  Bigbass
-                                                       26 September 2022
+                                                             3 July 2023
 
 
                 TASD File Format Specification Version 1
@@ -80,7 +80,7 @@ Table of Contents
          3.3.3.1.  SNES_CLOCK_FILTER Packet
          3.3.3.2.  SNES_OVERREAD Packet
          3.3.3.3.  SNES_GAME_GENIE_CODE Packet
-         3.3.3.4.  SNES_LATCH_TRAIN Packet (RESERVED)
+         3.3.3.4.  SNES_LATCH_TRAIN Packet
        3.3.4.  Genesis Specific Key Payload Formats
          3.3.4.1.  GENESIS_GAME_GENIE_CODE Packet
        3.3.5.  Input Frame/Timing Key Payload Formats
@@ -165,6 +165,7 @@ Table of Contents
       (I) = Signed Integer
       (N) = Unsigned Integer
       (B) = Boolean
+      ([]N) = List of Unsigned Integers
 
    We use the terms *byte* and *octet* interchangeably in this document.
 
@@ -395,7 +396,7 @@ Table of Contents
    [02 02]  SNES_CLOCK_FILTER
    [02 03]  SNES_OVERREAD
    [02 04]  SNES_GAME_GENIE_CODE
-   [02 05]  SNES_LATCH_TRAIN (RESERVED)
+   [02 05]  SNES_LATCH_TRAIN
 
 3.1.4.  Genesis Specific Keys
 
@@ -579,27 +580,28 @@ Table of Contents
 
    [02 02] - SNES_CLOCK_FILTER
       Specifies a clock filter time in tenths of a microsecond (0.1
-      microseconds or 100 nanoseconds) for long how to wait after a
-      clock pulse before new clock pulses SHOULD be accepted by the
+      microseconds or 100 nanoseconds) for how long to wait after a
+      clock pulse until new clock pulses SHOULD be accepted by the
       replay device.  This packet type is OPTIONAL and a *TASD* file
       SHOULD NOT contain more than 1 of this packet type in direct form.
-      Discussed in (Section 3.3.2.2).
+      Discussed in (Section 3.3.3.1).
 
-   [02 03] - SNES_OVERREAD
+   [01 03] - SNES_OVERREAD
       Specifies whether a high or low signal SHOULD be sent to the SNES
       console if the console clocks the replay device for more input
       buttons than are expected for the latch.  This packet type is
       OPTIONAL and a *TASD* file SHOULD NOT contain more than 1 of this
       packet type in direct form.  Discussed in (Section 3.3.3.2).
 
-   [02 04] - SNES_GAME_GENIE_CODE
+   [01 04] - SNES_GAME_GENIE_CODE
       Specifies a Game Genie code for the TAS.  This packet type is
       OPTIONAL and a *TASD* file MAY contain more than 1 of this packet
       type.  Discussed in (Section 3.3.3.3).
 
-   [02 05] - SNES_LATCH_TRAIN (RESERVED)
-      This packet type is not yet designed and is intended to be
-      described in the future.  Discussed in (Section 3.3.3.4).
+   [01 04] - SNES_LATCH_TRAIN
+      Specifies Latch Trains for TAS.  This packet type is OPTIONAL and
+      a *TASD* file MAY contain more than 1 of this packet type.
+      Discussed in (Section 3.3.3.4).
 
 3.2.4.  Genesis Specific Key Descriptions
 
@@ -654,9 +656,9 @@ Table of Contents
       (Section 3.3.6.1).
 
    [FF FE] - EXPERIMENTAL
-      TASD file is using experimental packets.  This packet type is
-      OPTIONAL and a *TASD* file SHOULD NOT contain more than 1 of this
-      packet type.  Discussed in (Section 3.3.6.2).
+      TASD file is using draft/experimental packets.  This packet type
+      is OPTIONAL and a *TASD* file SHOULD NOT contain more than 1 of
+      this packet type.  Discussed in (Section 3.3.6.2).
 
    [FF FF] - UNSPECIFIED
       Unspecified packet data.  Can contain any arbitrary data.  This
@@ -989,7 +991,7 @@ Table of Contents
          +---------------+------+------+--------------+
          | Data Type (A) | Device (A)  | Required (B) | ...
          +---------------+------+------+--------------+
-              4         5...       6...
+              4         5...    5+NLEN...
          +----------+==========+==========+
          | NLEN (N) | Name (S) | Data (A) |
          +----------+==========+==========+
@@ -1021,7 +1023,7 @@ Table of Contents
          NLEN (Unsigned Integer)                 [1 octet]
          Name (String)                           [NLEN octets]
          Data (Binary Data)                      [PLEN - NLEN -
-                                                  4 octets]
+                                                  5 octets]
 
    *Data Type*
       Content type of initial memory.  If *Type* is not [FF], *Data*
@@ -1126,7 +1128,7 @@ Table of Contents
          +----------+==========+=============+
 
          NLEN (Unsigned Integer)                 [1 octet]
-         Name (String)                           [NLEN + 1 octets]
+         Name (String)                           [NLEN octets]
          Data (Binary Data)                      [PLEN - NLEN -
                                                   1 octets]
 
@@ -1305,10 +1307,28 @@ Table of Contents
    *PLEN*
       Length of the packet payload.
 
-3.3.3.4.  SNES_LATCH_TRAIN Packet (RESERVED)
+3.3.3.4.  SNES_LATCH_TRAIN Packet
 
-   This packet type is not yet designed and is intended to be described
-   in the future.
+   SNES_LATCH_TRAIN packets MUST be in the following format:
+
+                     0...
+         +==========================+
+         | Latch Train Points ([]N) |
+         +==========================+
+
+         Latch Train Points (List of Unsigned Integers)  [PLEN octets]
+
+   *Latch Train Points*
+      List of 64-bit unsigned integers of the Latch Train points.  MUST
+      be a multiple of 8 octets in size
+
+   *PLEN*
+      Length of the packet payload.
+
+   A single SNES_LATCH_TRAIN packet MAY contain up to every Latch Train
+   point of a SNES TAS movie console replay and MAY contain fewer than
+   every Latch Train point of a SNES TAS movie console replay.  There
+   MAY be more than 1 SNES_LATCH_TRAIN packet.
 
 3.3.4.  Genesis Specific Key Payload Formats
 
@@ -1529,8 +1549,9 @@ Table of Contents
          Experimental (Boolean)                  [PLEN octet]
 
    *Experimental*
-      Boolean data that is *TRUE* if the TASD file is using experimental
-      features (Currently SHOULD be TRUE).
+      Boolean data that is *TRUE* if the TASD file is using draft/
+      experimental features (Currently SHOULD be *TRUE*) and *FALSE* if
+      the TASD file is using only stable features.
 
    *PLEN*
       Length of the packet payload.

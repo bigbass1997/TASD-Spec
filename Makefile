@@ -30,17 +30,15 @@ CURRENTDIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
 documents:
 	mkdir -p $(CURRENTDIR)build/docs
-	xml2rfc $(CURRENTDIR)src/docs/$(DOC_NAME).xml -p $(CURRENTDIR)build/docs --text --html --pdf --no-external-js --no-external-css --v3 --id-is-work-in-progress --no-pagination
+	xml2rfc $(CURRENTDIR)src/docs/$(DOC_NAME).xml -p $(CURRENTDIR)build/docs --text --html --no-external-js --no-external-css --v3 --id-is-work-in-progress --no-pagination
 
 contribution:
 	mkdir -p $(CURRENTDIR)docs/$(VERSION_DOC_NAME)
 	mkdir -p $(CURRENTDIR)docs/latest
 	cp $(CURRENTDIR)build/docs/$(DOC_NAME).txt $(CURRENTDIR)docs/$(VERSION_DOC_NAME)/
 	cp $(CURRENTDIR)build/docs/$(DOC_NAME).html $(CURRENTDIR)docs/$(VERSION_DOC_NAME)/
-	cp $(CURRENTDIR)build/docs/$(DOC_NAME).pdf $(CURRENTDIR)docs/$(VERSIO_DOC_NAME)/
 	cp $(CURRENTDIR)build/docs/$(DOC_NAME).txt $(CURRENTDIR)docs/latest/$(LATEST_DOC_NAME).txt
 	cp $(CURRENTDIR)build/docs/$(DOC_NAME).html $(CURRENTDIR)docs/latest/$(LATEST_DOC_NAME).html
-	cp $(CURRENTDIR)build/docs/$(DOC_NAME).pdf $(CURRENTDIR)docs/latest/$(LATEST_DOC_NAME).pdf
 
 clean:
 	rm -rf -- $(CURRENTDIR)build

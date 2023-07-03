@@ -3,6 +3,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), although currently without version numbers added.
 
+## 2023-07-03
+### Added
+- SNES\_LATCH\_TRAIN to spec
+
+### Removed
+- PDF files from `docs/`
+- PDF file generation via Makefile
+
+### Fixed
+- Correct length for Data of MEMORY\_INIT in spec
+- Correct length of Name of MOVIE\_FILE packet in spec
+
+
 ## 2022-09-26
 ### Added
 - TODO.md file
