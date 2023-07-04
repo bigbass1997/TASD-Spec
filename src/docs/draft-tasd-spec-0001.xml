@@ -1390,6 +1390,66 @@
             <dt>Bit 0:</dt><dd>Direction (0: up; 1: down)</dd>
           </dl>
         </section>
+		        <section numbered="true" toc="default">
+          <name>SNES Super Multitap</name>
+          <t>Single Input Length: 5 Octets</t>
+          <t><strong>Octet 0</strong> : </t>
+          <dl spacing="compact">
+            <dt>Bit 7:</dt><dd>1</dd>
+            <dt>Bit 6:</dt><dd>1</dd>
+            <dt>Bit 5:</dt><dd>1</dd>
+            <dt>Bit 4:</dt><dd>1</dd>
+            <dt>Bit 3:</dt><dd>1</dd>
+            <dt>Bit 2:</dt><dd>1</dd>
+            <dt>Bit 1:</dt><dd>1</dd>
+            <dt>Bit 0:</dt><dd>I/O Pin State</dd>
+          </dl>
+          <t><strong>Octet 1</strong></t>
+          <dl spacing="compact">
+            <dt>Bit 7:</dt><dd>Controller N-1 or N-3 /B</dd>
+            <dt>Bit 6:</dt><dd>Controller N-1 or N-3 /Y</dd>
+            <dt>Bit 5:</dt><dd>Controller N-1 or N-3 /Select</dd>
+            <dt>Bit 4:</dt><dd>Controller N-1 or N-3 /Start</dd>
+            <dt>Bit 3:</dt><dd>Controller N-1 or N-3 /Up</dd>
+            <dt>Bit 2:</dt><dd>Controller N-1 or N-3 /Down</dd>
+            <dt>Bit 1:</dt><dd>Controller N-1 or N-3 /Left</dd>
+            <dt>Bit 0:</dt><dd>Controller N-1 or N-3 /Right</dd>
+          </dl>
+          <t><strong>Octet 2</strong></t>
+          <dl spacing="compact">
+            <dt>Bit 7:</dt><dd>Controller N-1 or N-3 /A</dd>
+            <dt>Bit 6:</dt><dd>Controller N-1 or N-3 /X</dd>
+            <dt>Bit 5:</dt><dd>Controller N-1 or N-3 /L</dd>
+            <dt>Bit 4:</dt><dd>Controller N-1 or N-3 /R</dd>
+            <dt>Bit 3:</dt><dd>1</dd>
+            <dt>Bit 2:</dt><dd>1</dd>
+            <dt>Bit 1:</dt><dd>1</dd>
+            <dt>Bit 0:</dt><dd>1</dd>
+          </dl>
+          <t><strong>Octet 3</strong></t>
+          <dl spacing="compact">
+            <dt>Bit 7:</dt><dd>Controller N-2 or N-4 /B</dd>
+            <dt>Bit 6:</dt><dd>Controller N-2 or N-4 /Y</dd>
+            <dt>Bit 5:</dt><dd>Controller N-2 or N-4 /Select</dd>
+            <dt>Bit 4:</dt><dd>Controller N-2 or N-4 /Start</dd>
+            <dt>Bit 3:</dt><dd>Controller N-2 or N-4 /Up</dd>
+            <dt>Bit 2:</dt><dd>Controller N-2 or N-4 /Down</dd>
+            <dt>Bit 1:</dt><dd>Controller N-2 or N-4 /Left</dd>
+            <dt>Bit 0:</dt><dd>Controller N-2 or N-4 /Right</dd>
+          </dl>
+          <t><strong>Octet 4</strong></t>
+          <dl spacing="compact">
+            <dt>Bit 7:</dt><dd>Controller N-2 or N-4 /A</dd>
+            <dt>Bit 6:</dt><dd>Controller N-2 or N-4 /X</dd>
+            <dt>Bit 5:</dt><dd>Controller N-2 or N-4 /L</dd>
+            <dt>Bit 4:</dt><dd>Controller N-2 or N-4 /R</dd>
+            <dt>Bit 3:</dt><dd>1</dd>
+            <dt>Bit 2:</dt><dd>1</dd>
+            <dt>Bit 1:</dt><dd>1</dd>
+            <dt>Bit 0:</dt><dd>1</dd>
+          </dl>
+          <t><strong>Controller N</strong> is the controller port number on the console that the Multitap is connected to. <strong>Controller N-1...N-4</strong> are the controller ports <strong>1...4</strong> on the Multitap. Two Multitap ports are polled simultaneously by the game - either <strong>1 and 3</strong>, or <strong>2 and 4</strong>. The I/O Pin state in octet 0 <strong>MUST</strong> be <strong>1</strong> for multitap ports <strong>1 and 3</strong>, or <strong>0</strong> for ports <strong>2 and 4</strong>.</t>
+        </section>
       </section>
       <section numbered="true" toc="default">
         <name>N64 Controller Types</name>
