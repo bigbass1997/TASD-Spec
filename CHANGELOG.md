@@ -10,6 +10,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 - Updated copyright year in `LICENSES.txt` and in spec
+- Reordered Genesis 3-button and 6-button controller formats
 
 ## 2023-07-03
 ### Added
