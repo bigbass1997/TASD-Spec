@@ -17,7 +17,6 @@
     <title abbrev="TASD File Format Specification">TASD File Format Specification Version 1</title>
     <seriesInfo name="Internet-Draft" stream="independent" value="draft-tasd-v0001-00" status="informational"/>
     <author fullname="Vi Grey" initials="V." surname="Grey">
-      <organization>VG Interactive</organization>
       <address>
         <email>vi@vigrey.com</email>
         <uri>https://vigrey.com</uri>
@@ -26,6 +25,11 @@
     <author fullname="Bigbass" surname="Bigbass">
       <address>
         <uri>https://github.com/bigbass1997</uri>
+      </address>
+    </author>
+    <author fullname="rasteri" surname="rasteri">
+      <address>
+        <uri>https://github.com/rasteri</uri>
       </address>
     </author>
     <date year="2023"/>
@@ -1448,7 +1452,7 @@
             <dt>Bit 1:</dt><dd>1</dd>
             <dt>Bit 0:</dt><dd>1</dd>
           </dl>
-          <t><strong>Controller N</strong> is the controller port number on the console that the Multitap is connected to. <strong>Controller N-1...N-4</strong> are the controller ports <strong>1...4</strong> on the Multitap. Two Multitap ports are polled simultaneously by the game - either <strong>1 and 2</strong>, or <strong>3 and 4</strong>. The I/O Pin state in octet 0 <strong>MUST</strong> be <strong>1</strong> for multitap ports <strong>1 and 2</strong>, or <strong>0</strong> for ports <strong>3 and 4</strong>.</t>
+          <t><strong>Controller N</strong> is the controller port number on the console that the Multitap is connected to. <strong>Controller N-1...N-4</strong> are the controller ports <strong>1...4</strong> on the Multitap. Two Multitap ports are polled simultaneously by the game - either <strong>1 and 2</strong>, or <strong>3 and 4</strong>. The I/O Pin state in octet 0 <bcp14>MUST</bcp14> be <strong>1</strong> for multitap ports <strong>1 and 2</strong>, or <strong>0</strong> for ports <strong>3 and 4</strong>.</t>
         </section>
       </section>
       <section numbered="true" toc="default">
@@ -1878,7 +1882,7 @@
     </references>
     <section numbered="false" toc="default">
       <name>Copyright Notice</name>
-      <t>Copyright (c) 2021-2023, Vi Grey and Bigbass</t>
+      <t>Copyright (c) 2021-2023, Vi Grey, Bigbass, and rasteri</t>
       <t>All rights reserved.</t>
       <t>Redistribution and use of this documentation in source (XML format) and/or "compiled" forms (TXT, PDF, HTML, etc), with or without modification, are permitted provided that the following conditions are met:</t>
       <ol>
@@ -1888,6 +1892,9 @@
       <t>THIS DOCUMENTATION IS PROVIDED BY THE AUTHOR(S) "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</t>
     </section>
     <!-- Change Log
+
+draft 05 - 2023-07-06   VG    surround MUST with <bcp14> tag instead of <strong> tag
+
 draft 04 - 2023-07-06   Bigbass Reordered Genesis 3-button and 6-button controller formats to better align with real hardware
 
 draft 03 - 2023-07-06   rasteri Add SNES Super Multitap input format

@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), although currently without version numbers added.
 
+
+## 2023-07-06
+### Added
+- rasteri to `LICENSES.txt`, spec contributors list, and spec LICENSE
+
+### Removed
+- VG Interactive organization Vi Grey
+
+### Fixed
+- \<bcp14\> tag around MUST instead of \<strong\> tag in spec
+
+
 ## 2023-07-06
 ### Added
 - SNES Super Multitap input format to spec
@@ -11,6 +23,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Updated copyright year in `LICENSES.txt` and in spec
 - Reordered Genesis 3-button and 6-button controller formats
+
 
 ## 2023-07-03
 ### Added

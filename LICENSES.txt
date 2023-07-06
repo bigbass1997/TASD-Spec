@@ -1,5 +1,5 @@
 TASD File Format Specification Version 1
-   Copyright (c) 2021-2023, Vi Grey and Bigbass
+   Copyright (c) 2021-2023, Vi Grey, Bigbass, and rasteri
 
    All rights reserved.
 

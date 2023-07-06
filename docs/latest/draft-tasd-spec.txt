@@ -3,9 +3,11 @@
 
 
 Independent TAS Console Replay Research Group                    V. Grey
-                                                          VG Interactive
+                                                                        
                                                                  Bigbass
-                                                             3 July 2023
+                                                                        
+                                                                 rasteri
+                                                             6 July 2023
 
 
                 TASD File Format Specification Version 1
@@ -100,6 +102,7 @@ Table of Contents
      4.2.  SNES Controller Types
        4.2.1.  SNES Standard Controller
        4.2.2.  SNES Mouse
+       4.2.3.  SNES Super Multitap
      4.3.  N64 Controller Types
        4.3.1.  N64 Standard Controller
        4.3.2.  N64 Standard Controller with Rumble
@@ -1716,6 +1719,73 @@ Table of Contents
    Bits 7-1:  /Horizontal displacement since last read
    Bit 0:  Direction (0: up; 1: down)
 
+4.2.3.  SNES Super Multitap
+
+   Single Input Length: 5 Octets
+
+   *Octet 0* :
+
+   Bit 7:  1
+   Bit 6:  1
+   Bit 5:  1
+   Bit 4:  1
+   Bit 3:  1
+   Bit 2:  1
+   Bit 1:  1
+   Bit 0:  I/O Pin State - *1* if Multitap ports *1 and 2* are being
+      polled, *0* if ports *3 and 4* are.
+
+   *Octet 1*
+
+   Bit 7:  Controller N-1 or N-3 /B
+   Bit 6:  Controller N-1 or N-3 /Y
+   Bit 5:  Controller N-1 or N-3 /Select
+   Bit 4:  Controller N-1 or N-3 /Start
+   Bit 3:  Controller N-1 or N-3 /Up
+   Bit 2:  Controller N-1 or N-3 /Down
+   Bit 1:  Controller N-1 or N-3 /Left
+   Bit 0:  Controller N-1 or N-3 /Right
+
+   *Octet 2*
+
+   Bit 7:  Controller N-1 or N-3 /A
+   Bit 6:  Controller N-1 or N-3 /X
+   Bit 5:  Controller N-1 or N-3 /L
+   Bit 4:  Controller N-1 or N-3 /R
+   Bit 3:  1
+   Bit 2:  1
+   Bit 1:  1
+   Bit 0:  1
+
+   *Octet 3*
+
+   Bit 7:  Controller N-2 or N-4 /B
+   Bit 6:  Controller N-2 or N-4 /Y
+   Bit 5:  Controller N-2 or N-4 /Select
+   Bit 4:  Controller N-2 or N-4 /Start
+   Bit 3:  Controller N-2 or N-4 /Up
+   Bit 2:  Controller N-2 or N-4 /Down
+   Bit 1:  Controller N-2 or N-4 /Left
+   Bit 0:  Controller N-2 or N-4 /Right
+
+   *Octet 4*
+
+   Bit 7:  Controller N-2 or N-4 /A
+   Bit 6:  Controller N-2 or N-4 /X
+   Bit 5:  Controller N-2 or N-4 /L
+   Bit 4:  Controller N-2 or N-4 /R
+   Bit 3:  1
+   Bit 2:  1
+   Bit 1:  1
+   Bit 0:  1
+
+   *Controller N* is the controller port number on the console that the
+   Multitap is connected to. *Controller N-1...N-4* are the controller
+   ports *1...4* on the Multitap.  Two Multitap ports are polled
+   simultaneously by the game - either *1 and 2*, or *3 and 4*. The I/O
+   Pin state in octet 0 MUST be *1* for multitap ports *1 and 2*, or *0*
+   for ports *3 and 4*.
+
 4.3.  N64 Controller Types
 
 4.3.1.  N64 Standard Controller
@@ -2055,14 +2125,14 @@ Table of Contents
 
    *Octet 0*
 
-   Bit 7:  /A
-   Bit 6:  /Start
-   Bit 5:  /Up
-   Bit 4:  /Down
-   Bit 3:  /Left
-   Bit 2:  /Right
-   Bit 1:  /B
-   Bit 0:  /C
+   Bit 7:  /Up
+   Bit 6:  /Down
+   Bit 5:  /Left
+   Bit 4:  /Right
+   Bit 3:  /B
+   Bit 2:  /C
+   Bit 1:  /A
+   Bit 0:  /Start
 
 4.8.2.  Genesis (Mega Drive) 6-Button
 
@@ -2070,14 +2140,14 @@ Table of Contents
 
    *Octet 0*
 
-   Bit 7:  /A
-   Bit 6:  /Start
-   Bit 5:  /Up
-   Bit 4:  /Down
-   Bit 3:  /Left
-   Bit 2:  /Right
-   Bit 1:  /B
-   Bit 0:  /C
+   Bit 7:  /Up
+   Bit 6:  /Down
+   Bit 5:  /Left
+   Bit 4:  /Right
+   Bit 3:  /B
+   Bit 2:  /C
+   Bit 1:  /A
+   Bit 0:  /Start
 
    *Octet 1*
 
@@ -2137,7 +2207,7 @@ Table of Contents
 
 Copyright Notice
 
-   Copyright (c) 2021-2022, Vi Grey and Bigbass
+   Copyright (c) 2021-2023, Vi Grey, Bigbass, and rasteri
 
    All rights reserved.
 
@@ -2170,10 +2240,13 @@ Copyright Notice
 Authors' Addresses
 
    Vi Grey
-   VG Interactive
    Email: vi@vigrey.com
    URI:   https://vigrey.com
 
 
    Bigbass
    URI:   https://github.com/bigbass1997
+
+
+   rasteri
+   URI:   https://github.com/rasteri

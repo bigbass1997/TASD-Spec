@@ -7,6 +7,7 @@
 <title>TASD File Format Specification Version 1</title>
 <meta content="Vi Grey" name="author">
 <meta content="Bigbass" name="author">
+<meta content="rasteri" name="author">
 <meta content='
        The  TASD  file format is used for storing "Tool Assisted Speedrun" or "Tool Assisted Superplay" (TAS) data for TAS replay devices to replay on physical video game console hardware.  The format is defined to be expandable for future needs.  The format is also defined to be parsable by programs that do not understand portions of the format, whether that is due to incomplete support of the format specification or due to new features being added to later versions of the specification at a later date. 
        This document defines the file format specification for  TASD  files. 
@@ -1206,7 +1207,7 @@ li > p:last-of-type:only-child {
 <td class="right">July 2023</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Grey &amp; Bigbass</td>
+<td class="left">Grey, et al.</td>
 <td class="center">Informational</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
@@ -1218,16 +1219,18 @@ li > p:last-of-type:only-child {
 <dd class="workgroup">Independent TAS Console Replay Research Group</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-07-03" class="published">3 July 2023</time>
+<time datetime="2023-07-06" class="published">6 July 2023</time>
     </dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
       <div class="author-name">V. Grey</div>
-<div class="org">VG Interactive</div>
 </div>
 <div class="author">
       <div class="author-name">Bigbass</div>
+</div>
+<div class="author">
+      <div class="author-name">rasteri</div>
 </div>
 </dd>
 </dl>
@@ -1493,6 +1496,9 @@ li > p:last-of-type:only-child {
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2">
                     <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-snes-mouse" class="internal xref">SNES Mouse</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.3">
+                    <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="auto internal xref">4.2.3</a>.  <a href="#name-snes-super-multitap" class="internal xref">SNES Super Multitap</a></p>
 </li>
                 </ul>
 </li>
@@ -3922,6 +3928,188 @@ li > p:last-of-type:only-child {
           <dd class="break"></dd>
 </dl>
 </section>
+<section id="section-4.2.3">
+          <h4 id="name-snes-super-multitap">
+<a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-snes-super-multitap" class="section-name selfRef">SNES Super Multitap</a>
+          </h4>
+<p id="section-4.2.3-1">Single Input Length: 5 Octets<a href="#section-4.2.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.2.3-2"><strong>Octet 0</strong> :<a href="#section-4.2.3-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-4.2.3-3">
+            <dt id="section-4.2.3-3.1">Bit 7:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-3.2">1<a href="#section-4.2.3-3.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-3.3">Bit 6:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-3.4">1<a href="#section-4.2.3-3.4" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-3.5">Bit 5:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-3.6">1<a href="#section-4.2.3-3.6" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-3.7">Bit 4:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-3.8">1<a href="#section-4.2.3-3.8" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-3.9">Bit 3:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-3.10">1<a href="#section-4.2.3-3.10" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-3.11">Bit 2:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-3.12">1<a href="#section-4.2.3-3.12" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-3.13">Bit 1:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-3.14">1<a href="#section-4.2.3-3.14" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-3.15">Bit 0:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-3.16">I/O Pin State - <strong>1</strong> if Multitap ports <strong>1 and 2</strong> are being polled, <strong>0</strong> if ports <strong>3 and 4</strong> are.<a href="#section-4.2.3-3.16" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<p id="section-4.2.3-4"><strong>Octet 1</strong><a href="#section-4.2.3-4" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-4.2.3-5">
+            <dt id="section-4.2.3-5.1">Bit 7:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-5.2">Controller N-1 or N-3 /B<a href="#section-4.2.3-5.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-5.3">Bit 6:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-5.4">Controller N-1 or N-3 /Y<a href="#section-4.2.3-5.4" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-5.5">Bit 5:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-5.6">Controller N-1 or N-3 /Select<a href="#section-4.2.3-5.6" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-5.7">Bit 4:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-5.8">Controller N-1 or N-3 /Start<a href="#section-4.2.3-5.8" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-5.9">Bit 3:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-5.10">Controller N-1 or N-3 /Up<a href="#section-4.2.3-5.10" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-5.11">Bit 2:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-5.12">Controller N-1 or N-3 /Down<a href="#section-4.2.3-5.12" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-5.13">Bit 1:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-5.14">Controller N-1 or N-3 /Left<a href="#section-4.2.3-5.14" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-5.15">Bit 0:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-5.16">Controller N-1 or N-3 /Right<a href="#section-4.2.3-5.16" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<p id="section-4.2.3-6"><strong>Octet 2</strong><a href="#section-4.2.3-6" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-4.2.3-7">
+            <dt id="section-4.2.3-7.1">Bit 7:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-7.2">Controller N-1 or N-3 /A<a href="#section-4.2.3-7.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-7.3">Bit 6:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-7.4">Controller N-1 or N-3 /X<a href="#section-4.2.3-7.4" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-7.5">Bit 5:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-7.6">Controller N-1 or N-3 /L<a href="#section-4.2.3-7.6" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-7.7">Bit 4:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-7.8">Controller N-1 or N-3 /R<a href="#section-4.2.3-7.8" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-7.9">Bit 3:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-7.10">1<a href="#section-4.2.3-7.10" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-7.11">Bit 2:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-7.12">1<a href="#section-4.2.3-7.12" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-7.13">Bit 1:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-7.14">1<a href="#section-4.2.3-7.14" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-7.15">Bit 0:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-7.16">1<a href="#section-4.2.3-7.16" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<p id="section-4.2.3-8"><strong>Octet 3</strong><a href="#section-4.2.3-8" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-4.2.3-9">
+            <dt id="section-4.2.3-9.1">Bit 7:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-9.2">Controller N-2 or N-4 /B<a href="#section-4.2.3-9.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-9.3">Bit 6:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-9.4">Controller N-2 or N-4 /Y<a href="#section-4.2.3-9.4" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-9.5">Bit 5:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-9.6">Controller N-2 or N-4 /Select<a href="#section-4.2.3-9.6" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-9.7">Bit 4:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-9.8">Controller N-2 or N-4 /Start<a href="#section-4.2.3-9.8" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-9.9">Bit 3:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-9.10">Controller N-2 or N-4 /Up<a href="#section-4.2.3-9.10" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-9.11">Bit 2:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-9.12">Controller N-2 or N-4 /Down<a href="#section-4.2.3-9.12" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-9.13">Bit 1:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-9.14">Controller N-2 or N-4 /Left<a href="#section-4.2.3-9.14" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-9.15">Bit 0:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-9.16">Controller N-2 or N-4 /Right<a href="#section-4.2.3-9.16" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<p id="section-4.2.3-10"><strong>Octet 4</strong><a href="#section-4.2.3-10" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlCompact dlParallel" id="section-4.2.3-11">
+            <dt id="section-4.2.3-11.1">Bit 7:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-11.2">Controller N-2 or N-4 /A<a href="#section-4.2.3-11.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-11.3">Bit 6:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-11.4">Controller N-2 or N-4 /X<a href="#section-4.2.3-11.4" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-11.5">Bit 5:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-11.6">Controller N-2 or N-4 /L<a href="#section-4.2.3-11.6" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-11.7">Bit 4:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-11.8">Controller N-2 or N-4 /R<a href="#section-4.2.3-11.8" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-11.9">Bit 3:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-11.10">1<a href="#section-4.2.3-11.10" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-11.11">Bit 2:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-11.12">1<a href="#section-4.2.3-11.12" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-11.13">Bit 1:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-11.14">1<a href="#section-4.2.3-11.14" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.3-11.15">Bit 0:</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-11.16">1<a href="#section-4.2.3-11.16" class="pilcrow">¶</a>
+</dd>
+          <dd class="break"></dd>
+</dl>
+<p id="section-4.2.3-12"><strong>Controller N</strong> is the controller port number on the console that the Multitap is connected to. <strong>Controller N-1...N-4</strong> are the controller ports <strong>1...4</strong> on the Multitap. Two Multitap ports are polled simultaneously by the game - either <strong>1 and 2</strong>, or <strong>3 and 4</strong>. The I/O Pin state in octet 0 <span class="bcp14">MUST</span> be <strong>1</strong> for multitap ports <strong>1 and 2</strong>, or <strong>0</strong> for ports <strong>3 and 4</strong>.<a href="#section-4.2.3-12" class="pilcrow">¶</a></p>
+</section>
 </section>
 <section id="section-4.3">
         <h3 id="name-n64-controller-types">
@@ -4820,35 +5008,35 @@ li > p:last-of-type:only-child {
 <p id="section-4.8.1-2"><strong>Octet 0</strong><a href="#section-4.8.1-2" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlCompact dlParallel" id="section-4.8.1-3">
             <dt id="section-4.8.1-3.1">Bit 7:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.1-3.2">/A<a href="#section-4.8.1-3.2" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.1-3.2">/Up<a href="#section-4.8.1-3.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.1-3.3">Bit 6:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.1-3.4">/Start<a href="#section-4.8.1-3.4" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.1-3.4">/Down<a href="#section-4.8.1-3.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.1-3.5">Bit 5:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.1-3.6">/Up<a href="#section-4.8.1-3.6" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.1-3.6">/Left<a href="#section-4.8.1-3.6" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.1-3.7">Bit 4:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.1-3.8">/Down<a href="#section-4.8.1-3.8" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.1-3.8">/Right<a href="#section-4.8.1-3.8" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.1-3.9">Bit 3:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.1-3.10">/Left<a href="#section-4.8.1-3.10" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.1-3.10">/B<a href="#section-4.8.1-3.10" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.1-3.11">Bit 2:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.1-3.12">/Right<a href="#section-4.8.1-3.12" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.1-3.12">/C<a href="#section-4.8.1-3.12" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.1-3.13">Bit 1:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.1-3.14">/B<a href="#section-4.8.1-3.14" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.1-3.14">/A<a href="#section-4.8.1-3.14" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.1-3.15">Bit 0:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.1-3.16">/C<a href="#section-4.8.1-3.16" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.1-3.16">/Start<a href="#section-4.8.1-3.16" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -4861,35 +5049,35 @@ li > p:last-of-type:only-child {
 <p id="section-4.8.2-2"><strong>Octet 0</strong><a href="#section-4.8.2-2" class="pilcrow">¶</a></p>
 <span class="break"></span><dl class="dlCompact dlParallel" id="section-4.8.2-3">
             <dt id="section-4.8.2-3.1">Bit 7:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.2-3.2">/A<a href="#section-4.8.2-3.2" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.2-3.2">/Up<a href="#section-4.8.2-3.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.2-3.3">Bit 6:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.2-3.4">/Start<a href="#section-4.8.2-3.4" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.2-3.4">/Down<a href="#section-4.8.2-3.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.2-3.5">Bit 5:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.2-3.6">/Up<a href="#section-4.8.2-3.6" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.2-3.6">/Left<a href="#section-4.8.2-3.6" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.2-3.7">Bit 4:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.2-3.8">/Down<a href="#section-4.8.2-3.8" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.2-3.8">/Right<a href="#section-4.8.2-3.8" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.2-3.9">Bit 3:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.2-3.10">/Left<a href="#section-4.8.2-3.10" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.2-3.10">/B<a href="#section-4.8.2-3.10" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.2-3.11">Bit 2:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.2-3.12">/Right<a href="#section-4.8.2-3.12" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.2-3.12">/C<a href="#section-4.8.2-3.12" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.2-3.13">Bit 1:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.2-3.14">/B<a href="#section-4.8.2-3.14" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.2-3.14">/A<a href="#section-4.8.2-3.14" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.8.2-3.15">Bit 0:</dt>
-            <dd style="margin-left: 1.5em" id="section-4.8.2-3.16">/C<a href="#section-4.8.2-3.16" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.8.2-3.16">/Start<a href="#section-4.8.2-3.16" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -5043,7 +5231,7 @@ li > p:last-of-type:only-child {
       <h2 id="name-copyright-notice">
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
       </h2>
-<p id="appendix-A-1">Copyright (c) 2021-2022, Vi Grey and Bigbass<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">Copyright (c) 2021-2023, Vi Grey, Bigbass, and rasteri<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <p id="appendix-A-2">All rights reserved.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <p id="appendix-A-3">Redistribution and use of this documentation in source (XML format) and/or "compiled" forms (TXT, PDF, HTML, etc), with or without modification, are permitted provided that the following conditions are met:<a href="#appendix-A-3" class="pilcrow">¶</a></p>
 <ol start="1" type="1" class="normal type-1" id="appendix-A-4">
@@ -5061,7 +5249,6 @@ li > p:last-of-type:only-child {
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Vi Grey</span></div>
-<div dir="auto" class="left"><span class="org">VG Interactive</span></div>
 <div class="email">
 <span>Email:</span>
 <a href="mailto:vi@vigrey.com" class="email">vi@vigrey.com</a>
@@ -5076,6 +5263,13 @@ li > p:last-of-type:only-child {
 <div class="url">
 <span>URI:</span>
 <a href="https://github.com/bigbass1997" class="url">https://github.com/bigbass1997</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">rasteri</span></div>
+<div class="url">
+<span>URI:</span>
+<a href="https://github.com/rasteri" class="url">https://github.com/rasteri</a>
 </div>
 </address>
 </section>
