@@ -3,6 +3,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), although currently without version numbers added.
 
+## 2023-07-06
+### Added
+- SNES Super Multitap input format to spec
+- Additional build instructions
+
+### Changed
+- Updated copyright year in `LICENSES.txt` and in spec
+
 ## 2023-07-03
 ### Added
 - SNES\_LATCH\_TRAIN to spec
