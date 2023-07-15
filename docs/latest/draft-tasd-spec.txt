@@ -7,7 +7,7 @@ Independent TAS Console Replay Research Group                    V. Grey
                                                                  Bigbass
                                                                         
                                                                  rasteri
-                                                             6 July 2023
+                                                            15 July 2023
 
 
                 TASD File Format Specification Version 1
@@ -133,7 +133,7 @@ Table of Contents
 
    The Tool Assisted Speedrun Dump (*TASD*) interchange format is a file
    format for storing data to allow "Tool Assisted Speedruns" or "Tool
-   Assited Superplays" to be played on physical video game console
+   Assisted Superplays" to be played on physical video game console
    hardware using TAS replay devices.  Created to be hardware and
    software agnostic, the *TASD* interchange format uses a key-based,
    binary, packet format to break up pieces of information into easily-
@@ -263,7 +263,7 @@ Table of Contents
 
       In this example, enough variable boxes are in the packet diagram
       to require being split into 2 sections to take up less horizontal
-      space in this documentation.  The packet diagram is seperated by
+      space in this documentation.  The packet diagram is separated by
       an ellipsis (...) on the same text row as the variable names to
       signify that the packet diagram is continuing.
 
@@ -382,7 +382,7 @@ Table of Contents
    [00 10]  BLANK_FRAMES
    [00 11]  VERIFIED
    [00 12]  MEMORY_INIT
-   [00 13]  GAME_IDENIFIER
+   [00 13]  GAME_IDENTIFIER
    [00 14]  MOVIE_LICENSE
    [00 15]  MOVIE_FILE
    [00 F0]  PORT_CONTROLLER
@@ -481,7 +481,7 @@ Table of Contents
       of this packet type in direct form.  Discussed in
       (Section 3.3.1.10).
 
-   [00 0B] - DUMP_CREATEED
+   [00 0B] - DUMP_CREATED
       Specifies when the *TASD* file was first created.  This packet is
       OPTIONAL but SHOULD be included in a *TASD* file and a *TASD* file
       SHOULD NOT contain more than 1 of this packet type.  Discussed in
