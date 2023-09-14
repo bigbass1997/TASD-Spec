@@ -1024,19 +1024,19 @@
             <t>SNES_LATCH_TRAIN packets <bcp14>MUST</bcp14> be in the following format:</t>
             <artwork><![CDATA[
                   0...
-      +==========================+
-      | Latch Train Points ([]N) |
-      +==========================+
+      +====================+
+      | Latch Trains ([]N) |
+      +====================+
 
-      Latch Train Points (List of Unsigned Integers)  [PLEN octets]]]>
+      Latch Trains (List of Unsigned Integers)  [PLEN octets]]]>
             </artwork>
             <dl newline="true">
-              <dt><strong>Latch Train Points</strong></dt>
-              <dd>List of 64-bit unsigned integers of the Latch Train points.  <bcp14>MUST</bcp14> be a multiple of 8 octets in size</dd>
+              <dt><strong>Latch Trains</strong></dt>
+              <dd>List of 64-bit unsigned integers in which each integer is the length of one Latch Train.  <bcp14>MUST</bcp14> be a multiple of 8 octets in size</dd>
               <dt><strong>PLEN</strong></dt>
               <dd>Length of the packet payload.</dd>
             </dl>
-            <t>A single SNES_LATCH_TRAIN packet <bcp14>MAY</bcp14> contain up to every Latch Train point of a SNES TAS movie console replay and <bcp14>MAY</bcp14> contain fewer than every Latch Train point of a SNES TAS movie console replay.  There <bcp14>MAY</bcp14> be more than 1 SNES_LATCH_TRAIN packet.</t>
+            <t>A single SNES_LATCH_TRAIN packet <bcp14>MAY</bcp14> contain up to every Latch Train of a SNES TAS movie console replay and <bcp14>MAY</bcp14> contain fewer than every Latch Train of a SNES TAS movie console replay.  There <bcp14>MAY</bcp14> be more than 1 SNES_LATCH_TRAIN packet.</t>
           </section>
         </section>
         <section numbered="true" toc="default">
@@ -1892,6 +1892,8 @@
       <t>THIS DOCUMENTATION IS PROVIDED BY THE AUTHOR(S) "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</t>
     </section>
     <!-- Change Log
+    
+draft 07 - 2023-09-14   Bigbass Changed wording on SNES_LATCH_TRAIN to better explain what each interger represents
 
 draft 06 - 2023-07-15   Bigbass Fixed spelling mistakes
 

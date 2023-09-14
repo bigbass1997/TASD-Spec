@@ -7,7 +7,7 @@ Independent TAS Console Replay Research Group                    V. Grey
                                                                  Bigbass
                                                                         
                                                                  rasteri
-                                                            15 July 2023
+                                                       14 September 2023
 
 
                 TASD File Format Specification Version 1
@@ -1315,23 +1315,23 @@ Table of Contents
    SNES_LATCH_TRAIN packets MUST be in the following format:
 
                      0...
-         +==========================+
-         | Latch Train Points ([]N) |
-         +==========================+
+         +====================+
+         | Latch Trains ([]N) |
+         +====================+
 
-         Latch Train Points (List of Unsigned Integers)  [PLEN octets]
+         Latch Trains (List of Unsigned Integers)  [PLEN octets]
 
-   *Latch Train Points*
-      List of 64-bit unsigned integers of the Latch Train points.  MUST
-      be a multiple of 8 octets in size
+   *Latch Trains*
+      List of 64-bit unsigned integers in which each integer is the
+      length of one Latch Train.  MUST be a multiple of 8 octets in size
 
    *PLEN*
       Length of the packet payload.
 
    A single SNES_LATCH_TRAIN packet MAY contain up to every Latch Train
-   point of a SNES TAS movie console replay and MAY contain fewer than
-   every Latch Train point of a SNES TAS movie console replay.  There
-   MAY be more than 1 SNES_LATCH_TRAIN packet.
+   of a SNES TAS movie console replay and MAY contain fewer than every
+   Latch Train of a SNES TAS movie console replay.  There MAY be more
+   than 1 SNES_LATCH_TRAIN packet.
 
 3.3.4.  Genesis Specific Key Payload Formats
 

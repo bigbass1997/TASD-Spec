@@ -1174,7 +1174,7 @@ li > p:last-of-type {
 <thead><tr>
 <td class="left"></td>
 <td class="center">TASD File Format Specification</td>
-<td class="right">July 2023</td>
+<td class="right">September 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Grey, et al.</td>
@@ -3187,16 +3187,16 @@ li > p:last-of-type {
 <div class="alignLeft art-text artwork" id="section-3.3.3.4-2">
 <pre>
                   0...
-      +==========================+
-      | Latch Train Points ([]N) |
-      +==========================+
+      +====================+
+      | Latch Trains ([]N) |
+      +====================+
 
-      Latch Train Points (List of Unsigned Integers)  [PLEN octets]
+      Latch Trains (List of Unsigned Integers)  [PLEN octets]
 </pre><a href="#section-3.3.3.4-2" class="pilcrow">¶</a>
 </div>
 <span class="break"></span><dl class="dlNewline" id="section-3.3.3.4-3">
-              <dt id="section-3.3.3.4-3.1"><strong>Latch Train Points</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-3.3.3.4-3.2">List of 64-bit unsigned integers of the Latch Train points.  <span class="bcp14">MUST</span> be a multiple of 8 octets in size<a href="#section-3.3.3.4-3.2" class="pilcrow">¶</a>
+              <dt id="section-3.3.3.4-3.1"><strong>Latch Trains</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-3.3.3.4-3.2">List of 64-bit unsigned integers in which each integer is the length of one Latch Train.  <span class="bcp14">MUST</span> be a multiple of 8 octets in size<a href="#section-3.3.3.4-3.2" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
 <dt id="section-3.3.3.4-3.3"><strong>PLEN</strong></dt>
@@ -3204,7 +3204,7 @@ li > p:last-of-type {
 </dd>
             <dd class="break"></dd>
 </dl>
-<p id="section-3.3.3.4-4">A single SNES_LATCH_TRAIN packet <span class="bcp14">MAY</span> contain up to every Latch Train point of a SNES TAS movie console replay and <span class="bcp14">MAY</span> contain fewer than every Latch Train point of a SNES TAS movie console replay.  There <span class="bcp14">MAY</span> be more than 1 SNES_LATCH_TRAIN packet.<a href="#section-3.3.3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.3.3.4-4">A single SNES_LATCH_TRAIN packet <span class="bcp14">MAY</span> contain up to every Latch Train of a SNES TAS movie console replay and <span class="bcp14">MAY</span> contain fewer than every Latch Train of a SNES TAS movie console replay.  There <span class="bcp14">MAY</span> be more than 1 SNES_LATCH_TRAIN packet.<a href="#section-3.3.3.4-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
