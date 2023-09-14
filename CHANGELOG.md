@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 
 ## 2023-09-14
+### Fixed
+- Key values in description section 3.2.3
+
 ### Changed
 - SNES_LATCH_TRAIN description
 

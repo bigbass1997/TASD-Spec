@@ -589,19 +589,19 @@ Table of Contents
       SHOULD NOT contain more than 1 of this packet type in direct form.
       Discussed in (Section 3.3.3.1).
 
-   [01 03] - SNES_OVERREAD
+   [02 03] - SNES_OVERREAD
       Specifies whether a high or low signal SHOULD be sent to the SNES
       console if the console clocks the replay device for more input
       buttons than are expected for the latch.  This packet type is
       OPTIONAL and a *TASD* file SHOULD NOT contain more than 1 of this
       packet type in direct form.  Discussed in (Section 3.3.3.2).
 
-   [01 04] - SNES_GAME_GENIE_CODE
+   [02 04] - SNES_GAME_GENIE_CODE
       Specifies a Game Genie code for the TAS.  This packet type is
       OPTIONAL and a *TASD* file MAY contain more than 1 of this packet
       type.  Discussed in (Section 3.3.3.3).
 
-   [01 04] - SNES_LATCH_TRAIN
+   [02 05] - SNES_LATCH_TRAIN
       Specifies Latch Trains for TAS.  This packet type is OPTIONAL and
       a *TASD* file MAY contain more than 1 of this packet type.
       Discussed in (Section 3.3.3.4).

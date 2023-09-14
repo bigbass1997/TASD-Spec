@@ -341,11 +341,11 @@
           <dl newline="true">
             <dt><tt>[02 02]</tt> - SNES_CLOCK_FILTER</dt>
             <dd>Specifies a clock filter time in tenths of a microsecond (0.1 microseconds or 100 nanoseconds) for how long to wait after a clock pulse until new clock pulses <bcp14>SHOULD</bcp14> be accepted by the replay device.  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>SHOULD NOT</bcp14> contain more than 1 of this packet type in direct form.  Discussed in (<xref target="snes_clock_filter"/>).</dd>
-            <dt><tt>[01 03]</tt> - SNES_OVERREAD</dt>
+            <dt><tt>[02 03]</tt> - SNES_OVERREAD</dt>
             <dd>Specifies whether a high or low signal <bcp14>SHOULD</bcp14> be sent to the SNES console if the console clocks the replay device for more input buttons than are expected for the latch.  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>SHOULD NOT</bcp14> contain more than 1 of this packet type in direct form. Discussed in (<xref target="snes_overread"/>).</dd>
-            <dt><tt>[01 04]</tt> - SNES_GAME_GENIE_CODE</dt>
+            <dt><tt>[02 04]</tt> - SNES_GAME_GENIE_CODE</dt>
             <dd>Specifies a Game Genie code for the TAS. This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>MAY</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="snes_game_genie_code"/>).</dd>
-            <dt><tt>[01 04]</tt> - SNES_LATCH_TRAIN</dt>
+            <dt><tt>[02 05]</tt> - SNES_LATCH_TRAIN</dt>
             <dd>Specifies Latch Trains for TAS. This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>MAY</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="snes_latch_train"/>).</dd>
           </dl>
         </section>
@@ -1892,6 +1892,8 @@
       <t>THIS DOCUMENTATION IS PROVIDED BY THE AUTHOR(S) "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</t>
     </section>
     <!-- Change Log
+    
+draft 08 - 2023-09-14   Bigbass Fixed key numbering for packets SNES_OVERREAD, SNES_GAME_GENIE_CODE, and SNES_LATCH_TRAIN in section 3.2.3
     
 draft 07 - 2023-09-14   Bigbass Changed wording on SNES_LATCH_TRAIN to better explain what each interger represents
 
