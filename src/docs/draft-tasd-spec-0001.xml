@@ -151,9 +151,30 @@
         </section>
       </section>
     </section>
+    
     <section numbered="true" toc="default">
+      <name>Structure</name>
+      <t><strong>TASD</strong> files <bcp14>MUST</bcp14> begin with a header. The header <bcp14>MUST</bcp14> be followed by <strong>0 or more</strong> packets.</t>
+      <artwork><![CDATA[
+       0 1 2 3 4 5 6     7...
+      +-+-+-+-+-+-+-+=============+
+      | Header (A)  | Packets (A) |
+      +-+-+-+-+-+-+-+=============+
+
+      Header (Binary Data)                    [7 octets]
+      Packets (Binary Data)                   [? octets]]]>
+      </artwork>
+      <dl newline="true">
+        <dt><strong>Header</strong></dt>
+        <dd>7 octet header as defined in <xref target="header"/>.</dd>
+        <dt><strong>Packets</strong></dt>
+        <dd>List of 0 or more packets. Refer to <xref target="packets"/> for packet definitions.</dd>
+      </dl>
+    </section>
+      
+    <section numbered="true" toc="default" anchor="header">
       <name>Header</name>
-      <t><strong>TASD</strong> files <bcp14>MUST</bcp14> include a header, which <bcp14>MUST</bcp14> be in the following format:</t>
+      <t>The <strong>TASD</strong> file header <bcp14>MUST</bcp14> be in the following format:</t>
       <artwork><![CDATA[
         0    1    2    3     4      5          6
       +----+----+----+----+------+------+--------------+
@@ -174,9 +195,9 @@
       </dl>
     </section>
     
-    <section numbered="true" toc="default">
+    <section numbered="true" toc="default" anchor="packets">
       <name>Packets</name>
-      <t>Packets <bcp14>MUST</bcp14> be in the following format:</t>
+      <t>Each packet <bcp14>MUST</bcp14> be in the following format:</t>
       <artwork><![CDATA[
       +=========+----------+==========+=============+
       | Key (A) | PEXP (N) | PLEN (N) | Payload (A) |
@@ -197,7 +218,7 @@
         <dt><strong>Payload</strong></dt>
         <dd>Payload/Content of the packet.</dd>
         <dt><strong>G_KEYLEN</strong></dt>
-        <dd>Length of <strong>Key</strong> in packets and is specified in the <strong>TASD</strong> file header.</dd>
+        <dd>Length of <strong>Key</strong> in each packet and is specified in the <strong>TASD</strong> file header.</dd>
       </dl>
       <t>All packets are <bcp14>OPTIONAL</bcp14>.</t>
       <section numbered="true" toc="default">
@@ -1892,6 +1913,8 @@
       <t>THIS DOCUMENTATION IS PROVIDED BY THE AUTHOR(S) "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</t>
     </section>
     <!-- Change Log
+    
+draft 09 - 2023-09-17   Bigbass Added "Structure" section to better define the overall structure of a TASD file
     
 draft 08 - 2023-09-14   Bigbass Fixed key numbering for packets SNES_OVERREAD, SNES_GAME_GENIE_CODE, and SNES_LATCH_TRAIN in section 3.2.3
     
