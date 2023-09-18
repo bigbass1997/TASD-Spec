@@ -12,14 +12,13 @@
        The  TASD  file format is used for storing "Tool Assisted Speedrun" or "Tool Assisted Superplay" (TAS) data for TAS replay devices to replay on physical video game console hardware.  The format is defined to be expandable for future needs.  The format is also defined to be parsable by programs that do not understand portions of the format, whether that is due to incomplete support of the format specification or due to new features being added to later versions of the specification at a later date. 
        This document defines the file format specification for  TASD  files. 
     ' name="description">
-<meta content="xml2rfc 3.12.2" name="generator">
+<meta content="xml2rfc 3.18.0" name="generator">
 <meta content="draft-tasd-v0001-00" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.12.2
-    Python 3.10.6
-    weasyprint 54.1
+  xml2rfc 3.18.0
+    Python 3.11.5
 -->
-<link href="/data/projects/tas-replay-file-format/src/docs/draft-tasd-spec-0001.xml" rel="alternate" type="application/rfc+xml">
+<link href="/home/vi/code/git/TASD-Spec/src/docs/draft-tasd-spec-0001.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -29,7 +28,7 @@
   this can be consolidated so that style settings occur only in one place, but
   for now the contents of this file consists first of the initial CSS work as
   provided to the RFC Formatter (xml2rfc) work, followed by itemized and
-  commented changes found necssary during the development of the v3
+  commented changes found necessary during the development of the v3
   formatters.
 
 */
@@ -39,9 +38,14 @@
 @import url('https://fonts.googleapis.com/css?family=Noto+Serif'); /* Serif (print) */
 @import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); /* Monospace */
 
+:root {
+  --font-sans: 'Noto Sans', Arial, Helvetica, sans-serif;
+  --font-serif: 'Noto Serif', 'Times', 'Times New Roman', serif;
+  --font-mono: 'Roboto Mono', Courier, 'Courier New', monospace;
+}
+
 @viewport {
   zoom: 1.0;
-  width: extend-to-zoom;
 }
 @-ms-viewport {
   width: extend-to-zoom;
@@ -56,9 +60,10 @@ body {
   color: #222;
   background-color: #fff;
   font-size: 14px;
-  font-family: 'Noto Sans', Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
   line-height: 1.6;
   scroll-behavior: smooth;
+  overflow-wrap: break-word;
 }
 .ears {
   display: none;
@@ -145,6 +150,15 @@ div {
 svg {
   display: block;
 }
+svg[font-family~="serif" i], svg [font-family~="serif" i] {
+  font-family: var(--font-serif);
+}
+svg[font-family~="sans-serif" i], svg [font-family~="sans-serif" i] {
+  font-family: var(--font-sans);
+}
+svg[font-family~="monospace" i], svg [font-family~="monospace" i] {
+  font-family: var(--font-mono);
+}
 .alignCenter.art-text {
   background-color: #f9f9f9;
   border: 1px solid #eee;
@@ -159,11 +173,8 @@ svg {
   margin: 1em 0;
 }
 .alignCenter > *:first-child {
-  border: none;
-  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
-     support flexbox yet.
-  */
   display: table;
+  border: none;
   margin: 0 auto;
 }
 
@@ -231,7 +242,8 @@ a[href]:hover {
   background-color: #f2f2f2;
 }
 figcaption a[href],
-a[href].selfRef {
+a[href].selfRef,
+.iref + a[href].internal {
   color: #222;
 }
 /* XXX probably not this:
@@ -241,9 +253,9 @@ a.selfRef:hover {
 } */
 
 /* Figures */
-tt, code, pre, code {
+tt, code, pre {
   background-color: #f9f9f9;
-  font-family: 'Roboto Mono', monospace;
+  font-family: var(--font-mono);
 }
 pre {
   border: 1px solid #eee;
@@ -480,7 +492,7 @@ address.vcard .nameRole {
   margin-left: 0;
 }
 address.vcard .label {
-  font-family: "Noto Sans",Arial,Helvetica,sans-serif;
+  font-family: var(--font-sans);
   margin: 0.5em 0;
 }
 address.vcard .type {
@@ -620,7 +632,6 @@ hr.addr {
 /* pagination */
 @media print {
   body {
-
     width: 100%;
   }
   p {
@@ -642,6 +653,9 @@ hr.addr {
   }
   figure {
     overflow: scroll;
+  }
+  .breakable pre {
+    break-inside: auto;
   }
   h1, h2, h3, h4, h5, h6 {
     page-break-after: avoid;
@@ -710,7 +724,7 @@ hr.addr {
   size: A4;
   margin-bottom: 45mm;
   padding-top: 20px;
-  /* The follwing is commented out here, but set appropriately by in code, as
+  /* The following is commented out here, but set appropriately by in code, as
      the content depends on the document */
   /*
   @top-left {
@@ -810,12 +824,12 @@ section {
 }
 
 /* prevent monospace from becoming overly large */
-tt, code, pre, code {
+tt, code, pre {
   font-size: 95%;
 }
 
 /* Fix the height/width aspect for ascii art*/
-pre.sourcecode,
+.sourcecode pre,
 .art-text pre {
   line-height: 1.12;
 }
@@ -851,7 +865,7 @@ table th.text-right {
   text-align: right;
 }
 
-/* Make the alternative author contact informatio look less like just another
+/* Make the alternative author contact information look less like just another
    author, and group it closer with the primary author contact information */
 .alternative-contact {
   margin: 0.5em 0 0.25em 0;
@@ -1033,6 +1047,7 @@ aside > p {
 /* Sourcecode margin in print, when there's no pilcrow */
 @media print {
   .artwork,
+  .artwork > pre,
   .sourcecode {
     margin-bottom: 1em;
   }
@@ -1047,12 +1062,15 @@ ol.type-A { list-style-type: upper-alpha; }
 ol.type-i { list-style-type: lower-roman; }
 ol.type-I { list-style-type: lower-roman; }
 /* Apply the print table and row borders in general, on request from the RPC,
-and increase the contrast between border and odd row background sligthtly */
+and increase the contrast between border and odd row background slightly */
 table {
   border: 1px solid #ddd;
 }
 td {
   border-top: 1px solid #ddd;
+}
+tr {
+  break-inside: avoid;
 }
 tr:nth-child(2n+1) > td {
   background-color: #f8f8f8;
@@ -1104,7 +1122,7 @@ span.break, dd.break {
     break-before: auto;
   }
 }
-/* Text in compact lists should not get extra bottim margin space,
+/* Text in compact lists should not get extra bottom margin space,
    since that would makes the list not compact */
 ul.compact p, .ulCompact p,
 ol.compact p, .olCompact p {
@@ -1129,7 +1147,7 @@ p tt, p code, li tt, li code {
 pre {
    margin-top: 0.5px;
 }
-/* Tweak the comact list text */
+/* Tweak the compact list text */
 ul.compact, .ulCompact,
 ol.compact, .olCompact,
 dl.compact, .dlCompact {
@@ -1147,7 +1165,7 @@ dd > div.artwork:first-child,
 dd > aside:first-child,
 dd > figure:first-child,
 dd > ol:first-child,
-dd > div:first-child > pre.sourcecode,
+dd > div.sourcecode:first-child,
 dd > table:first-child,
 dd > ul:first-child {
   clear: left;
@@ -1161,14 +1179,14 @@ li > p {
   margin-bottom: 0.5em
 }
 /* Don't let p margin spill out from inside list items */
-li > p:last-of-type {
+li > p:last-of-type:only-child {
   margin-bottom: 0;
 }
 </style>
 <link href="rfc-local.css" rel="stylesheet" type="text/css">
 <script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
 </head>
-<body>
+<body class="xml2rfc">
 <script src="metadata.min.js"></script>
 <table class="ears">
 <thead><tr>
@@ -1187,6 +1205,10 @@ li > p:last-of-type {
 <dl id="identifiers">
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">Independent TAS Console Replay Research Group</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2023-09-18" class="published">18 September 2023</time>
+    </dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1209,233 +1231,233 @@ li > p:last-of-type {
 </section>
 <div id="toc">
 <section id="section-toc.1">
-        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents-2">
-<a href="#name-table-of-contents-2" class="section-name selfRef">Table of Contents</a>
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
         </h2>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction-2" class="xref">Introduction</a></p>
+            <p id="section-toc.1-1.1.1"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
-                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-overview-and-preliminaries-2" class="xref">Overview and Preliminaries</a></p>
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-overview-and-preliminaries" class="internal xref">Overview and Preliminaries</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1.2.1">
-                    <p id="section-toc.1-1.1.2.1.2.1.1" class="keepWithNext"><a href="#section-1.1.1" class="xref">1.1.1</a>.  <a href="#name-notation-and-vocabulary-2" class="xref">Notation and Vocabulary</a></p>
+                    <p id="section-toc.1-1.1.2.1.2.1.1" class="keepWithNext"><a href="#section-1.1.1" class="auto internal xref">1.1.1</a>.  <a href="#name-notation-and-vocabulary" class="internal xref">Notation and Vocabulary</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
-                <p id="section-toc.1-1.1.2.2.1"><a href="#section-1.2" class="xref">1.2</a>.  <a href="#name-motivations-2" class="xref">Motivations</a></p>
+                <p id="section-toc.1-1.1.2.2.1"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-motivations" class="internal xref">Motivations</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2.2.1">
-                    <p id="section-toc.1-1.1.2.2.2.1.1" class="keepWithNext"><a href="#section-1.2.1" class="xref">1.2.1</a>.  <a href="#name-problems-with-existing-forma" class="xref">Problems With Existing Formats</a></p>
+                    <p id="section-toc.1-1.1.2.2.2.1.1" class="keepWithNext"><a href="#section-1.2.1" class="auto internal xref">1.2.1</a>.  <a href="#name-problems-with-existing-form" class="internal xref">Problems With Existing Formats</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-structure-2" class="xref">Structure</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-structure" class="internal xref">Structure</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-header-2" class="xref">Header</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-header" class="internal xref">Header</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-packets-2" class="xref">Packets</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-packets" class="internal xref">Packets</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-assigned-packet-keys-without" class="xref">Assigned Packet Keys Without Descriptions</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="auto internal xref">4.1</a>.  <a href="#name-assigned-packet-keys-withou" class="internal xref">Assigned Packet Keys Without Descriptions</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.1">
-                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="xref">4.1.1</a>.  <a href="#name-general-keys-2" class="xref">General Keys</a></p>
+                    <p id="section-toc.1-1.4.2.1.2.1.1"><a href="#section-4.1.1" class="auto internal xref">4.1.1</a>.  <a href="#name-general-keys" class="internal xref">General Keys</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.2">
-                    <p id="section-toc.1-1.4.2.1.2.2.1"><a href="#section-4.1.2" class="xref">4.1.2</a>.  <a href="#name-nes-specific-keys-2" class="xref">NES Specific Keys</a></p>
+                    <p id="section-toc.1-1.4.2.1.2.2.1"><a href="#section-4.1.2" class="auto internal xref">4.1.2</a>.  <a href="#name-nes-specific-keys" class="internal xref">NES Specific Keys</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.3">
-                    <p id="section-toc.1-1.4.2.1.2.3.1"><a href="#section-4.1.3" class="xref">4.1.3</a>.  <a href="#name-snes-specific-keys-2" class="xref">SNES Specific Keys</a></p>
+                    <p id="section-toc.1-1.4.2.1.2.3.1"><a href="#section-4.1.3" class="auto internal xref">4.1.3</a>.  <a href="#name-snes-specific-keys" class="internal xref">SNES Specific Keys</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.4">
-                    <p id="section-toc.1-1.4.2.1.2.4.1"><a href="#section-4.1.4" class="xref">4.1.4</a>.  <a href="#name-genesis-specific-keys-2" class="xref">Genesis Specific Keys</a></p>
+                    <p id="section-toc.1-1.4.2.1.2.4.1"><a href="#section-4.1.4" class="auto internal xref">4.1.4</a>.  <a href="#name-genesis-specific-keys" class="internal xref">Genesis Specific Keys</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.5">
-                    <p id="section-toc.1-1.4.2.1.2.5.1"><a href="#section-4.1.5" class="xref">4.1.5</a>.  <a href="#name-input-frame-timing-keys-2" class="xref">Input Frame/Timing Keys</a></p>
+                    <p id="section-toc.1-1.4.2.1.2.5.1"><a href="#section-4.1.5" class="auto internal xref">4.1.5</a>.  <a href="#name-input-frame-timing-keys" class="internal xref">Input Frame/Timing Keys</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1.2.6">
-                    <p id="section-toc.1-1.4.2.1.2.6.1"><a href="#section-4.1.6" class="xref">4.1.6</a>.  <a href="#name-extraneous-keys-2" class="xref">Extraneous Keys</a></p>
+                    <p id="section-toc.1-1.4.2.1.2.6.1"><a href="#section-4.1.6" class="auto internal xref">4.1.6</a>.  <a href="#name-extraneous-keys" class="internal xref">Extraneous Keys</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-assigned-packet-keys-with-de" class="xref">Assigned Packet Keys With Descriptions</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="auto internal xref">4.2</a>.  <a href="#name-assigned-packet-keys-with-d" class="internal xref">Assigned Packet Keys With Descriptions</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
-                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="xref">4.2.1</a>.  <a href="#name-general-key-descriptions-2" class="xref">General Key Descriptions</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="auto internal xref">4.2.1</a>.  <a href="#name-general-key-descriptions" class="internal xref">General Key Descriptions</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.2">
-                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="xref">4.2.2</a>.  <a href="#name-nes-specific-key-description" class="xref">NES Specific Key Descriptions</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.2.1"><a href="#section-4.2.2" class="auto internal xref">4.2.2</a>.  <a href="#name-nes-specific-key-descriptio" class="internal xref">NES Specific Key Descriptions</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.3">
-                    <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="xref">4.2.3</a>.  <a href="#name-snes-specific-key-descriptio" class="xref">SNES Specific Key Descriptions</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.3.1"><a href="#section-4.2.3" class="auto internal xref">4.2.3</a>.  <a href="#name-snes-specific-key-descripti" class="internal xref">SNES Specific Key Descriptions</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.4">
-                    <p id="section-toc.1-1.4.2.2.2.4.1"><a href="#section-4.2.4" class="xref">4.2.4</a>.  <a href="#name-genesis-specific-key-descrip" class="xref">Genesis Specific Key Descriptions</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.4.1"><a href="#section-4.2.4" class="auto internal xref">4.2.4</a>.  <a href="#name-genesis-specific-key-descri" class="internal xref">Genesis Specific Key Descriptions</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.5">
-                    <p id="section-toc.1-1.4.2.2.2.5.1"><a href="#section-4.2.5" class="xref">4.2.5</a>.  <a href="#name-input-frame-timing-key-descr" class="xref">Input Frame/Timing Key Descriptions</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.5.1"><a href="#section-4.2.5" class="auto internal xref">4.2.5</a>.  <a href="#name-input-frame-timing-key-desc" class="internal xref">Input Frame/Timing Key Descriptions</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.6">
-                    <p id="section-toc.1-1.4.2.2.2.6.1"><a href="#section-4.2.6" class="xref">4.2.6</a>.  <a href="#name-extraneous-key-descriptions-2" class="xref">Extraneous Key Descriptions</a></p>
+                    <p id="section-toc.1-1.4.2.2.2.6.1"><a href="#section-4.2.6" class="auto internal xref">4.2.6</a>.  <a href="#name-extraneous-key-descriptions" class="internal xref">Extraneous Key Descriptions</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-packet-payload-formats-2" class="xref">Packet Payload Formats</a></p>
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="auto internal xref">4.3</a>.  <a href="#name-packet-payload-formats" class="internal xref">Packet Payload Formats</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1">
-                    <p id="section-toc.1-1.4.2.3.2.1.1"><a href="#section-4.3.1" class="xref">4.3.1</a>.  <a href="#name-general-key-payload-formats-2" class="xref">General Key Payload Formats</a></p>
+                    <p id="section-toc.1-1.4.2.3.2.1.1"><a href="#section-4.3.1" class="auto internal xref">4.3.1</a>.  <a href="#name-general-key-payload-formats" class="internal xref">General Key Payload Formats</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.1">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.1.1"><a href="#section-4.3.1.1" class="xref">4.3.1.1</a>.  <a href="#name-console_type-packet-2" class="xref">CONSOLE_TYPE Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.1.1"><a href="#section-4.3.1.1" class="auto internal xref">4.3.1.1</a>.  <a href="#name-console_type-packet" class="internal xref">CONSOLE_TYPE Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.2">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.2.1"><a href="#section-4.3.1.2" class="xref">4.3.1.2</a>.  <a href="#name-console_region-packet-2" class="xref">CONSOLE_REGION Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.2.1"><a href="#section-4.3.1.2" class="auto internal xref">4.3.1.2</a>.  <a href="#name-console_region-packet" class="internal xref">CONSOLE_REGION Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.3">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.3.1"><a href="#section-4.3.1.3" class="xref">4.3.1.3</a>.  <a href="#name-game_title-packet-2" class="xref">GAME_TITLE Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.3.1"><a href="#section-4.3.1.3" class="auto internal xref">4.3.1.3</a>.  <a href="#name-game_title-packet" class="internal xref">GAME_TITLE Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.4">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.4.1"><a href="#section-4.3.1.4" class="xref">4.3.1.4</a>.  <a href="#name-rom_name-packet-2" class="xref">ROM_NAME Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.4.1"><a href="#section-4.3.1.4" class="auto internal xref">4.3.1.4</a>.  <a href="#name-rom_name-packet" class="internal xref">ROM_NAME Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.5">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.5.1"><a href="#section-4.3.1.5" class="xref">4.3.1.5</a>.  <a href="#name-attribution-packet-2" class="xref">ATTRIBUTION Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.5.1"><a href="#section-4.3.1.5" class="auto internal xref">4.3.1.5</a>.  <a href="#name-attribution-packet" class="internal xref">ATTRIBUTION Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.6">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.6.1"><a href="#section-4.3.1.6" class="xref">4.3.1.6</a>.  <a href="#name-category-packet-2" class="xref">CATEGORY Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.6.1"><a href="#section-4.3.1.6" class="auto internal xref">4.3.1.6</a>.  <a href="#name-category-packet" class="internal xref">CATEGORY Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.7">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.7.1"><a href="#section-4.3.1.7" class="xref">4.3.1.7</a>.  <a href="#name-emulator_name-packet-2" class="xref">EMULATOR_NAME Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.7.1"><a href="#section-4.3.1.7" class="auto internal xref">4.3.1.7</a>.  <a href="#name-emulator_name-packet" class="internal xref">EMULATOR_NAME Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.8">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.8.1"><a href="#section-4.3.1.8" class="xref">4.3.1.8</a>.  <a href="#name-emulator_version-packet-2" class="xref">EMULATOR_VERSION Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.8.1"><a href="#section-4.3.1.8" class="auto internal xref">4.3.1.8</a>.  <a href="#name-emulator_version-packet" class="internal xref">EMULATOR_VERSION Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.9">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.9.1"><a href="#section-4.3.1.9" class="xref">4.3.1.9</a>.  <a href="#name-emulator_core-packet-2" class="xref">EMULATOR_CORE Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.9.1"><a href="#section-4.3.1.9" class="auto internal xref">4.3.1.9</a>.  <a href="#name-emulator_core-packet" class="internal xref">EMULATOR_CORE Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.10">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.10.1"><a href="#section-4.3.1.10" class="xref">4.3.1.10</a>. <a href="#name-tas_last_modified-packet-2" class="xref">TAS_LAST_MODIFIED Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.10.1"><a href="#section-4.3.1.10" class="auto internal xref">4.3.1.10</a>. <a href="#name-tas_last_modified-packet" class="internal xref">TAS_LAST_MODIFIED Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.11">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.11.1"><a href="#section-4.3.1.11" class="xref">4.3.1.11</a>. <a href="#name-dump_created-packet-2" class="xref">DUMP_CREATED Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.11.1"><a href="#section-4.3.1.11" class="auto internal xref">4.3.1.11</a>. <a href="#name-dump_created-packet" class="internal xref">DUMP_CREATED Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.12">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.12.1"><a href="#section-4.3.1.12" class="xref">4.3.1.12</a>. <a href="#name-dump_last_modified-packet-2" class="xref">DUMP_LAST_MODIFIED Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.12.1"><a href="#section-4.3.1.12" class="auto internal xref">4.3.1.12</a>. <a href="#name-dump_last_modified-packet" class="internal xref">DUMP_LAST_MODIFIED Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.13">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.13.1"><a href="#section-4.3.1.13" class="xref">4.3.1.13</a>. <a href="#name-total_frames-packet-2" class="xref">TOTAL_FRAMES Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.13.1"><a href="#section-4.3.1.13" class="auto internal xref">4.3.1.13</a>. <a href="#name-total_frames-packet" class="internal xref">TOTAL_FRAMES Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.14">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.14.1"><a href="#section-4.3.1.14" class="xref">4.3.1.14</a>. <a href="#name-rerecords-packet-2" class="xref">RERECORDS Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.14.1"><a href="#section-4.3.1.14" class="auto internal xref">4.3.1.14</a>. <a href="#name-rerecords-packet" class="internal xref">RERECORDS Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.15">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.15.1"><a href="#section-4.3.1.15" class="xref">4.3.1.15</a>. <a href="#name-source_link-packet-2" class="xref">SOURCE_LINK Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.15.1"><a href="#section-4.3.1.15" class="auto internal xref">4.3.1.15</a>. <a href="#name-source_link-packet" class="internal xref">SOURCE_LINK Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.16">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.16.1"><a href="#section-4.3.1.16" class="xref">4.3.1.16</a>. <a href="#name-blank_frames-packet-2" class="xref">BLANK_FRAMES Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.16.1"><a href="#section-4.3.1.16" class="auto internal xref">4.3.1.16</a>. <a href="#name-blank_frames-packet" class="internal xref">BLANK_FRAMES Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.17">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.17.1"><a href="#section-4.3.1.17" class="xref">4.3.1.17</a>. <a href="#name-verified-packet-2" class="xref">VERIFIED Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.17.1"><a href="#section-4.3.1.17" class="auto internal xref">4.3.1.17</a>. <a href="#name-verified-packet" class="internal xref">VERIFIED Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.18">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.18.1"><a href="#section-4.3.1.18" class="xref">4.3.1.18</a>. <a href="#name-memory_init-packet-2" class="xref">MEMORY_INIT Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.18.1"><a href="#section-4.3.1.18" class="auto internal xref">4.3.1.18</a>. <a href="#name-memory_init-packet" class="internal xref">MEMORY_INIT Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.19">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.19.1"><a href="#section-4.3.1.19" class="xref">4.3.1.19</a>. <a href="#name-game_identifier-packet-2" class="xref">GAME_IDENTIFIER Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.19.1"><a href="#section-4.3.1.19" class="auto internal xref">4.3.1.19</a>. <a href="#name-game_identifier-packet" class="internal xref">GAME_IDENTIFIER Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.20">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.20.1"><a href="#section-4.3.1.20" class="xref">4.3.1.20</a>. <a href="#name-movie_license-packet-2" class="xref">MOVIE_LICENSE Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.20.1"><a href="#section-4.3.1.20" class="auto internal xref">4.3.1.20</a>. <a href="#name-movie_license-packet" class="internal xref">MOVIE_LICENSE Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.21">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.21.1"><a href="#section-4.3.1.21" class="xref">4.3.1.21</a>. <a href="#name-movie_file-packet-2" class="xref">MOVIE_FILE Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.21.1"><a href="#section-4.3.1.21" class="auto internal xref">4.3.1.21</a>. <a href="#name-movie_file-packet" class="internal xref">MOVIE_FILE Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.22">
-                        <p id="section-toc.1-1.4.2.3.2.1.2.22.1"><a href="#section-4.3.1.22" class="xref">4.3.1.22</a>. <a href="#name-port_controller-packet-2" class="xref">PORT_CONTROLLER Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.1.2.22.1"><a href="#section-4.3.1.22" class="auto internal xref">4.3.1.22</a>. <a href="#name-port_controller-packet" class="internal xref">PORT_CONTROLLER Packet</a></p>
 </li>
                     </ul>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2">
-                    <p id="section-toc.1-1.4.2.3.2.2.1"><a href="#section-4.3.2" class="xref">4.3.2</a>.  <a href="#name-nes-specific-key-payload-for" class="xref">NES Specific Key Payload Formats</a></p>
+                    <p id="section-toc.1-1.4.2.3.2.2.1"><a href="#section-4.3.2" class="auto internal xref">4.3.2</a>.  <a href="#name-nes-specific-key-payload-fo" class="internal xref">NES Specific Key Payload Formats</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2.2.1">
-                        <p id="section-toc.1-1.4.2.3.2.2.2.1.1"><a href="#section-4.3.2.1" class="xref">4.3.2.1</a>.  <a href="#name-nes_latch_filter-packet-2" class="xref">NES_LATCH_FILTER Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.2.2.1.1"><a href="#section-4.3.2.1" class="auto internal xref">4.3.2.1</a>.  <a href="#name-nes_latch_filter-packet" class="internal xref">NES_LATCH_FILTER Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2.2.2">
-                        <p id="section-toc.1-1.4.2.3.2.2.2.2.1"><a href="#section-4.3.2.2" class="xref">4.3.2.2</a>.  <a href="#name-nes_clock_filter-packet-2" class="xref">NES_CLOCK_FILTER Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.2.2.2.1"><a href="#section-4.3.2.2" class="auto internal xref">4.3.2.2</a>.  <a href="#name-nes_clock_filter-packet" class="internal xref">NES_CLOCK_FILTER Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2.2.3">
-                        <p id="section-toc.1-1.4.2.3.2.2.2.3.1"><a href="#section-4.3.2.3" class="xref">4.3.2.3</a>.  <a href="#name-nes_overread-packet-2" class="xref">NES_OVERREAD Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.2.2.3.1"><a href="#section-4.3.2.3" class="auto internal xref">4.3.2.3</a>.  <a href="#name-nes_overread-packet" class="internal xref">NES_OVERREAD Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2.2.4">
-                        <p id="section-toc.1-1.4.2.3.2.2.2.4.1"><a href="#section-4.3.2.4" class="xref">4.3.2.4</a>.  <a href="#name-nes_game_genie_code-packet-2" class="xref">NES_GAME_GENIE_CODE Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.2.2.4.1"><a href="#section-4.3.2.4" class="auto internal xref">4.3.2.4</a>.  <a href="#name-nes_game_genie_code-packet" class="internal xref">NES_GAME_GENIE_CODE Packet</a></p>
 </li>
                     </ul>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3">
-                    <p id="section-toc.1-1.4.2.3.2.3.1"><a href="#section-4.3.3" class="xref">4.3.3</a>.  <a href="#name-snes-specific-key-payload-fo" class="xref">SNES Specific Key Payload Formats</a></p>
+                    <p id="section-toc.1-1.4.2.3.2.3.1"><a href="#section-4.3.3" class="auto internal xref">4.3.3</a>.  <a href="#name-snes-specific-key-payload-f" class="internal xref">SNES Specific Key Payload Formats</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3.2.1">
-                        <p id="section-toc.1-1.4.2.3.2.3.2.1.1"><a href="#section-4.3.3.1" class="xref">4.3.3.1</a>.  <a href="#name-snes_clock_filter-packet-2" class="xref">SNES_CLOCK_FILTER Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.3.2.1.1"><a href="#section-4.3.3.1" class="auto internal xref">4.3.3.1</a>.  <a href="#name-snes_clock_filter-packet" class="internal xref">SNES_CLOCK_FILTER Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3.2.2">
-                        <p id="section-toc.1-1.4.2.3.2.3.2.2.1"><a href="#section-4.3.3.2" class="xref">4.3.3.2</a>.  <a href="#name-snes_overread-packet-2" class="xref">SNES_OVERREAD Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.3.2.2.1"><a href="#section-4.3.3.2" class="auto internal xref">4.3.3.2</a>.  <a href="#name-snes_overread-packet" class="internal xref">SNES_OVERREAD Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3.2.3">
-                        <p id="section-toc.1-1.4.2.3.2.3.2.3.1"><a href="#section-4.3.3.3" class="xref">4.3.3.3</a>.  <a href="#name-snes_game_genie_code-packet-2" class="xref">SNES_GAME_GENIE_CODE Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.3.2.3.1"><a href="#section-4.3.3.3" class="auto internal xref">4.3.3.3</a>.  <a href="#name-snes_game_genie_code-packet" class="internal xref">SNES_GAME_GENIE_CODE Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3.2.4">
-                        <p id="section-toc.1-1.4.2.3.2.3.2.4.1"><a href="#section-4.3.3.4" class="xref">4.3.3.4</a>.  <a href="#name-snes_latch_train-packet-2" class="xref">SNES_LATCH_TRAIN Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.3.2.4.1"><a href="#section-4.3.3.4" class="auto internal xref">4.3.3.4</a>.  <a href="#name-snes_latch_train-packet" class="internal xref">SNES_LATCH_TRAIN Packet</a></p>
 </li>
                     </ul>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.4">
-                    <p id="section-toc.1-1.4.2.3.2.4.1"><a href="#section-4.3.4" class="xref">4.3.4</a>.  <a href="#name-genesis-specific-key-payload" class="xref">Genesis Specific Key Payload Formats</a></p>
+                    <p id="section-toc.1-1.4.2.3.2.4.1"><a href="#section-4.3.4" class="auto internal xref">4.3.4</a>.  <a href="#name-genesis-specific-key-payloa" class="internal xref">Genesis Specific Key Payload Formats</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.4.2.1">
-                        <p id="section-toc.1-1.4.2.3.2.4.2.1.1"><a href="#section-4.3.4.1" class="xref">4.3.4.1</a>.  <a href="#name-genesis_game_genie_code-pack" class="xref">GENESIS_GAME_GENIE_CODE Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.4.2.1.1"><a href="#section-4.3.4.1" class="auto internal xref">4.3.4.1</a>.  <a href="#name-genesis_game_genie_code-pac" class="internal xref">GENESIS_GAME_GENIE_CODE Packet</a></p>
 </li>
                     </ul>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.5">
-                    <p id="section-toc.1-1.4.2.3.2.5.1"><a href="#section-4.3.5" class="xref">4.3.5</a>.  <a href="#name-input-frame-timing-key-paylo" class="xref">Input Frame/Timing Key Payload Formats</a></p>
+                    <p id="section-toc.1-1.4.2.3.2.5.1"><a href="#section-4.3.5" class="auto internal xref">4.3.5</a>.  <a href="#name-input-frame-timing-key-payl" class="internal xref">Input Frame/Timing Key Payload Formats</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.5.2.1">
-                        <p id="section-toc.1-1.4.2.3.2.5.2.1.1"><a href="#section-4.3.5.1" class="xref">4.3.5.1</a>.  <a href="#name-input_chunk-packet-2" class="xref">INPUT_CHUNK Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.5.2.1.1"><a href="#section-4.3.5.1" class="auto internal xref">4.3.5.1</a>.  <a href="#name-input_chunk-packet" class="internal xref">INPUT_CHUNK Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.5.2.2">
-                        <p id="section-toc.1-1.4.2.3.2.5.2.2.1"><a href="#section-4.3.5.2" class="xref">4.3.5.2</a>.  <a href="#name-input_moment-packet-2" class="xref">INPUT_MOMENT Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.5.2.2.1"><a href="#section-4.3.5.2" class="auto internal xref">4.3.5.2</a>.  <a href="#name-input_moment-packet" class="internal xref">INPUT_MOMENT Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.5.2.3">
-                        <p id="section-toc.1-1.4.2.3.2.5.2.3.1"><a href="#section-4.3.5.3" class="xref">4.3.5.3</a>.  <a href="#name-transition-packet-2" class="xref">TRANSITION Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.5.2.3.1"><a href="#section-4.3.5.3" class="auto internal xref">4.3.5.3</a>.  <a href="#name-transition-packet" class="internal xref">TRANSITION Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.5.2.4">
-                        <p id="section-toc.1-1.4.2.3.2.5.2.4.1"><a href="#section-4.3.5.4" class="xref">4.3.5.4</a>.  <a href="#name-lag_frame_chunk-packet-2" class="xref">LAG_FRAME_CHUNK Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.5.2.4.1"><a href="#section-4.3.5.4" class="auto internal xref">4.3.5.4</a>.  <a href="#name-lag_frame_chunk-packet" class="internal xref">LAG_FRAME_CHUNK Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.5.2.5">
-                        <p id="section-toc.1-1.4.2.3.2.5.2.5.1"><a href="#section-4.3.5.5" class="xref">4.3.5.5</a>.  <a href="#name-movie_transition-2" class="xref">MOVIE_TRANSITION</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.5.2.5.1"><a href="#section-4.3.5.5" class="auto internal xref">4.3.5.5</a>.  <a href="#name-movie_transition" class="internal xref">MOVIE_TRANSITION</a></p>
 </li>
                     </ul>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.6">
-                    <p id="section-toc.1-1.4.2.3.2.6.1"><a href="#section-4.3.6" class="xref">4.3.6</a>.  <a href="#name-extraneous-key-payload-forma" class="xref">Extraneous Key Payload Formats</a></p>
+                    <p id="section-toc.1-1.4.2.3.2.6.1"><a href="#section-4.3.6" class="auto internal xref">4.3.6</a>.  <a href="#name-extraneous-key-payload-form" class="internal xref">Extraneous Key Payload Formats</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.6.2.1">
-                        <p id="section-toc.1-1.4.2.3.2.6.2.1.1"><a href="#section-4.3.6.1" class="xref">4.3.6.1</a>.  <a href="#name-comment-packet-2" class="xref">COMMENT Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.6.2.1.1"><a href="#section-4.3.6.1" class="auto internal xref">4.3.6.1</a>.  <a href="#name-comment-packet" class="internal xref">COMMENT Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.6.2.2">
-                        <p id="section-toc.1-1.4.2.3.2.6.2.2.1"><a href="#section-4.3.6.2" class="xref">4.3.6.2</a>.  <a href="#name-experimental-packet-2" class="xref">EXPERIMENTAL Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.6.2.2.1"><a href="#section-4.3.6.2" class="auto internal xref">4.3.6.2</a>.  <a href="#name-experimental-packet" class="internal xref">EXPERIMENTAL Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.6.2.3">
-                        <p id="section-toc.1-1.4.2.3.2.6.2.3.1"><a href="#section-4.3.6.3" class="xref">4.3.6.3</a>.  <a href="#name-unspecified-packet-2" class="xref">UNSPECIFIED Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.6.2.3.1"><a href="#section-4.3.6.3" class="auto internal xref">4.3.6.3</a>.  <a href="#name-unspecified-packet" class="internal xref">UNSPECIFIED Packet</a></p>
 </li>
                     </ul>
 </li>
@@ -1444,125 +1466,125 @@ li > p:last-of-type {
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-controller-input-formats-2" class="xref">Controller Input Formats</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-controller-input-formats" class="internal xref">Controller Input Formats</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
-                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-nes-famicom-controller-types" class="xref">NES/Famicom Controller Types</a></p>
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="auto internal xref">5.1</a>.  <a href="#name-nes-famicom-controller-type" class="internal xref">NES/Famicom Controller Types</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.1">
-                    <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="xref">5.1.1</a>.  <a href="#name-nes-standard-controller-2" class="xref">NES Standard Controller</a></p>
+                    <p id="section-toc.1-1.5.2.1.2.1.1"><a href="#section-5.1.1" class="auto internal xref">5.1.1</a>.  <a href="#name-nes-standard-controller" class="internal xref">NES Standard Controller</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1.2.2">
-                    <p id="section-toc.1-1.5.2.1.2.2.1"><a href="#section-5.1.2" class="xref">5.1.2</a>.  <a href="#name-nes-four-score-2" class="xref">NES Four Score</a></p>
+                    <p id="section-toc.1-1.5.2.1.2.2.1"><a href="#section-5.1.2" class="auto internal xref">5.1.2</a>.  <a href="#name-nes-four-score" class="internal xref">NES Four Score</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
-                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-snes-controller-types-2" class="xref">SNES Controller Types</a></p>
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="auto internal xref">5.2</a>.  <a href="#name-snes-controller-types" class="internal xref">SNES Controller Types</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.1">
-                    <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="xref">5.2.1</a>.  <a href="#name-snes-standard-controller-2" class="xref">SNES Standard Controller</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.1.1"><a href="#section-5.2.1" class="auto internal xref">5.2.1</a>.  <a href="#name-snes-standard-controller" class="internal xref">SNES Standard Controller</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.2">
-                    <p id="section-toc.1-1.5.2.2.2.2.1"><a href="#section-5.2.2" class="xref">5.2.2</a>.  <a href="#name-snes-mouse-2" class="xref">SNES Mouse</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.2.1"><a href="#section-5.2.2" class="auto internal xref">5.2.2</a>.  <a href="#name-snes-mouse" class="internal xref">SNES Mouse</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2.2.3">
-                    <p id="section-toc.1-1.5.2.2.2.3.1"><a href="#section-5.2.3" class="xref">5.2.3</a>.  <a href="#name-snes-super-multitap-2" class="xref">SNES Super Multitap</a></p>
+                    <p id="section-toc.1-1.5.2.2.2.3.1"><a href="#section-5.2.3" class="auto internal xref">5.2.3</a>.  <a href="#name-snes-super-multitap" class="internal xref">SNES Super Multitap</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3">
-                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-n64-controller-types-2" class="xref">N64 Controller Types</a></p>
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="auto internal xref">5.3</a>.  <a href="#name-n64-controller-types" class="internal xref">N64 Controller Types</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.1">
-                    <p id="section-toc.1-1.5.2.3.2.1.1"><a href="#section-5.3.1" class="xref">5.3.1</a>.  <a href="#name-n64-standard-controller-2" class="xref">N64 Standard Controller</a></p>
+                    <p id="section-toc.1-1.5.2.3.2.1.1"><a href="#section-5.3.1" class="auto internal xref">5.3.1</a>.  <a href="#name-n64-standard-controller" class="internal xref">N64 Standard Controller</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.2">
-                    <p id="section-toc.1-1.5.2.3.2.2.1"><a href="#section-5.3.2" class="xref">5.3.2</a>.  <a href="#name-n64-standard-controller-with-r" class="xref">N64 Standard Controller with Rumble</a></p>
+                    <p id="section-toc.1-1.5.2.3.2.2.1"><a href="#section-5.3.2" class="auto internal xref">5.3.2</a>.  <a href="#name-n64-standard-controller-wit" class="internal xref">N64 Standard Controller with Rumble</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.3">
-                    <p id="section-toc.1-1.5.2.3.2.3.1"><a href="#section-5.3.3" class="xref">5.3.3</a>.  <a href="#name-n64-standard-controller-with-c" class="xref">N64 Standard Controller with Controller Pak</a></p>
+                    <p id="section-toc.1-1.5.2.3.2.3.1"><a href="#section-5.3.3" class="auto internal xref">5.3.3</a>.  <a href="#name-n64-standard-controller-with" class="internal xref">N64 Standard Controller with Controller Pak</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.4">
-                    <p id="section-toc.1-1.5.2.3.2.4.1"><a href="#section-5.3.4" class="xref">5.3.4</a>.  <a href="#name-n64-standard-controller-with-t" class="xref">N64 Standard Controller with Transfer Pak</a></p>
+                    <p id="section-toc.1-1.5.2.3.2.4.1"><a href="#section-5.3.4" class="auto internal xref">5.3.4</a>.  <a href="#name-n64-standard-controller-with-" class="internal xref">N64 Standard Controller with Transfer Pak</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.5">
-                    <p id="section-toc.1-1.5.2.3.2.5.1"><a href="#section-5.3.5" class="xref">5.3.5</a>.  <a href="#name-n64-mouse-2" class="xref">N64 Mouse</a></p>
+                    <p id="section-toc.1-1.5.2.3.2.5.1"><a href="#section-5.3.5" class="auto internal xref">5.3.5</a>.  <a href="#name-n64-mouse" class="internal xref">N64 Mouse</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.3.2.6">
-                    <p id="section-toc.1-1.5.2.3.2.6.1"><a href="#section-5.3.6" class="xref">5.3.6</a>.  <a href="#name-n64-densha-de-go-2" class="xref">N64 Densha de Go</a></p>
+                    <p id="section-toc.1-1.5.2.3.2.6.1"><a href="#section-5.3.6" class="auto internal xref">5.3.6</a>.  <a href="#name-n64-densha-de-go" class="internal xref">N64 Densha de Go</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4">
-                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-gamecube-controller-types-2" class="xref">GameCube Controller Types</a></p>
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="auto internal xref">5.4</a>.  <a href="#name-gamecube-controller-types" class="internal xref">GameCube Controller Types</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.4.2.1">
-                    <p id="section-toc.1-1.5.2.4.2.1.1"><a href="#section-5.4.1" class="xref">5.4.1</a>.  <a href="#name-gamecube-standard-controller" class="xref">GameCube Standard Controller</a></p>
+                    <p id="section-toc.1-1.5.2.4.2.1.1"><a href="#section-5.4.1" class="auto internal xref">5.4.1</a>.  <a href="#name-gamecube-standard-controlle" class="internal xref">GameCube Standard Controller</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5">
-                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="xref">5.5</a>.  <a href="#name-game-boy-controller-types-2" class="xref">Game Boy Controller Types</a></p>
+                <p id="section-toc.1-1.5.2.5.1"><a href="#section-5.5" class="auto internal xref">5.5</a>.  <a href="#name-game-boy-controller-types" class="internal xref">Game Boy Controller Types</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.5.2.1">
-                    <p id="section-toc.1-1.5.2.5.2.1.1"><a href="#section-5.5.1" class="xref">5.5.1</a>.  <a href="#name-gb-standard-controller-2" class="xref">GB Standard Controller</a></p>
+                    <p id="section-toc.1-1.5.2.5.2.1.1"><a href="#section-5.5.1" class="auto internal xref">5.5.1</a>.  <a href="#name-gb-standard-controller" class="internal xref">GB Standard Controller</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6">
-                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="xref">5.6</a>.  <a href="#name-game-boy-color-controller-ty" class="xref">Game Boy Color Controller Types</a></p>
+                <p id="section-toc.1-1.5.2.6.1"><a href="#section-5.6" class="auto internal xref">5.6</a>.  <a href="#name-game-boy-color-controller-t" class="internal xref">Game Boy Color Controller Types</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.6.2.1">
-                    <p id="section-toc.1-1.5.2.6.2.1.1"><a href="#section-5.6.1" class="xref">5.6.1</a>.  <a href="#name-gbc-standard-controller-2" class="xref">GBC Standard Controller</a></p>
+                    <p id="section-toc.1-1.5.2.6.2.1.1"><a href="#section-5.6.1" class="auto internal xref">5.6.1</a>.  <a href="#name-gbc-standard-controller" class="internal xref">GBC Standard Controller</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.7">
-                <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="xref">5.7</a>.  <a href="#name-game-boy-advance-controller-" class="xref">Game Boy Advance Controller Types</a></p>
+                <p id="section-toc.1-1.5.2.7.1"><a href="#section-5.7" class="auto internal xref">5.7</a>.  <a href="#name-game-boy-advance-controller" class="internal xref">Game Boy Advance Controller Types</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.7.2.1">
-                    <p id="section-toc.1-1.5.2.7.2.1.1"><a href="#section-5.7.1" class="xref">5.7.1</a>.  <a href="#name-gba-standard-controller-2" class="xref">GBA Standard Controller</a></p>
+                    <p id="section-toc.1-1.5.2.7.2.1.1"><a href="#section-5.7.1" class="auto internal xref">5.7.1</a>.  <a href="#name-gba-standard-controller" class="internal xref">GBA Standard Controller</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.8">
-                <p id="section-toc.1-1.5.2.8.1"><a href="#section-5.8" class="xref">5.8</a>.  <a href="#name-genesis-controller-types-2" class="xref">Genesis Controller Types</a></p>
+                <p id="section-toc.1-1.5.2.8.1"><a href="#section-5.8" class="auto internal xref">5.8</a>.  <a href="#name-genesis-controller-types" class="internal xref">Genesis Controller Types</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.8.2.1">
-                    <p id="section-toc.1-1.5.2.8.2.1.1"><a href="#section-5.8.1" class="xref">5.8.1</a>.  <a href="#name-genesis-mega-drive-3-button-2" class="xref">Genesis (Mega Drive) 3-Button</a></p>
+                    <p id="section-toc.1-1.5.2.8.2.1.1"><a href="#section-5.8.1" class="auto internal xref">5.8.1</a>.  <a href="#name-genesis-mega-drive-3-button" class="internal xref">Genesis (Mega Drive) 3-Button</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.8.2.2">
-                    <p id="section-toc.1-1.5.2.8.2.2.1"><a href="#section-5.8.2" class="xref">5.8.2</a>.  <a href="#name-genesis-mega-drive-6-button-2" class="xref">Genesis (Mega Drive) 6-Button</a></p>
+                    <p id="section-toc.1-1.5.2.8.2.2.1"><a href="#section-5.8.2" class="auto internal xref">5.8.2</a>.  <a href="#name-genesis-mega-drive-6-button" class="internal xref">Genesis (Mega Drive) 6-Button</a></p>
 </li>
                 </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.9">
-                <p id="section-toc.1-1.5.2.9.1"><a href="#section-5.9" class="xref">5.9</a>.  <a href="#name-atari-2600-controller-types-2" class="xref">Atari 2600 Controller Types</a></p>
+                <p id="section-toc.1-1.5.2.9.1"><a href="#section-5.9" class="auto internal xref">5.9</a>.  <a href="#name-atari-2600-controller-types" class="internal xref">Atari 2600 Controller Types</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.9.2.1">
-                    <p id="section-toc.1-1.5.2.9.2.1.1"><a href="#section-5.9.1" class="xref">5.9.1</a>.  <a href="#name-a2600-joystick-2" class="xref">A2600 Joystick</a></p>
+                    <p id="section-toc.1-1.5.2.9.2.1.1"><a href="#section-5.9.1" class="auto internal xref">5.9.1</a>.  <a href="#name-a2600-joystick" class="internal xref">A2600 Joystick</a></p>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.9.2.2">
-                    <p id="section-toc.1-1.5.2.9.2.2.1"><a href="#section-5.9.2" class="xref">5.9.2</a>.  <a href="#name-a2600-keyboard-controller-2" class="xref">A2600 Keyboard Controller</a></p>
+                    <p id="section-toc.1-1.5.2.9.2.2.1"><a href="#section-5.9.2" class="auto internal xref">5.9.2</a>.  <a href="#name-a2600-keyboard-controller" class="internal xref">A2600 Keyboard Controller</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-references-2" class="xref">References</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-references" class="internal xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="xref">6.1</a>.  <a href="#name-normative-references-2" class="xref">Normative References</a></p>
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="xref"></a><a href="#name-copyright-notice-2" class="xref">Copyright Notice</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-copyright-notice" class="internal xref">Copyright Notice</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="xref"></a><a href="#name-authors-addresses-2" class="xref">Authors' Addresses</a></p>
+            <p id="section-toc.1-1.8.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-addresses" class="internal xref">Authors' Addresses</a></p>
 </li>
         </ul>
 </nav>
@@ -1570,20 +1592,20 @@ li > p:last-of-type {
 </div>
 <div id="introduction">
 <section id="section-1">
-      <h2 id="name-introduction-2">
-<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction-2" class="section-name selfRef">Introduction</a>
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">The Tool Assisted Speedrun Dump (<strong>TASD</strong>) interchange format is a file format for storing data to allow "Tool Assisted Speedruns" or "Tool Assisted Superplays" to be played on physical video game console hardware using TAS replay devices.  Created to be hardware and software agnostic, the <strong>TASD</strong> interchange format uses a key-based, binary, packet format to break up pieces of information into easily-parsable and forward-compatible chunks. The format is extensible by simply defining additional keys or value types as necessary. When parsing the file, software can skip any packets whose key is unknown or unsupported.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">Keys can be used multiple times or completely omitted as needed. This reusability eliminates the need of a predefined delimiter to separate pieces of data such as a list of TAS authors.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">While files generated by emulator dump scripts should provide as much information as possible, because keys are optional, the file can be expanded later with any additional data as desired. No intermediary file format is necessary.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <section id="section-1.1">
-        <h3 id="name-overview-and-preliminaries-2">
-<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-overview-and-preliminaries-2" class="section-name selfRef">Overview and Preliminaries</a>
+        <h3 id="name-overview-and-preliminaries">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-overview-and-preliminaries" class="section-name selfRef">Overview and Preliminaries</a>
         </h3>
-<p id="section-1.1-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>", "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>", "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 <section id="section-1.1.1">
-          <h4 id="name-notation-and-vocabulary-2">
-<a href="#section-1.1.1" class="section-number selfRef">1.1.1. </a><a href="#name-notation-and-vocabulary-2" class="section-name selfRef">Notation and Vocabulary</a>
+          <h4 id="name-notation-and-vocabulary">
+<a href="#section-1.1.1" class="section-number selfRef">1.1.1. </a><a href="#name-notation-and-vocabulary" class="section-name selfRef">Notation and Vocabulary</a>
           </h4>
 <p id="section-1.1.1-1">Data Types:<a href="#section-1.1.1-1" class="pilcrow">¶</a></p>
 <ul class="compact ulEmpty">
@@ -1603,7 +1625,7 @@ li > p:last-of-type {
 <p id="section-1.1.1-3">We use the terms <strong>byte</strong> and <strong>octet</strong> interchangeably in this document.<a href="#section-1.1.1-3" class="pilcrow">¶</a></p>
 <p id="section-1.1.1-4">Unless specified otherwise, all multi-octet integers are big-endian.<a href="#section-1.1.1-4" class="pilcrow">¶</a></p>
 <p id="section-1.1.1-5">We use the terms <strong>Tool Assisted Speedrun</strong>, <strong>Tool Assisted Superplay</strong> and <strong>TAS</strong> interchangeably in this document.<a href="#section-1.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-1.1.1-6">In subsections of (<a href="#descriptions" class="xref">Section 4.2</a>), the term "in direct form" is used.  That term is defined to mean a packet in a <strong>TASD</strong> file directly (first order packet) rather than a packet inside a TRANSITION or MOVIE_TRANSITION packet (second order packet).<a href="#section-1.1.1-6" class="pilcrow">¶</a></p>
+<p id="section-1.1.1-6">In subsections of (<a href="#descriptions" class="auto internal xref">Section 4.2</a>), the term "in direct form" is used.  That term is defined to mean a packet in a <strong>TASD</strong> file directly (first order packet) rather than a packet inside a TRANSITION or MOVIE_TRANSITION packet (second order packet).<a href="#section-1.1.1-6" class="pilcrow">¶</a></p>
 <p id="section-1.1.1-7">String values <span class="bcp14">MUST</span> use UTF-8 encoding.  If an example of a string value is given, the example will be between quotation marks.  The quotation marks are not included in the string.  Not all content between quotations will be string value examples, so be aware of that when continuing through this document.<a href="#section-1.1.1-7" class="pilcrow">¶</a></p>
 <p id="section-1.1.1-8">Unsigned and signed integers can have different bit widths.  For instance, an 8-bit integer can be used in one part of the specification and a 64-bit integer can be used in another part of the specification.<a href="#section-1.1.1-8" class="pilcrow">¶</a></p>
 <p id="section-1.1.1-9">Boolean values <span class="bcp14">MUST</span> be a single octet with the value of <code>0</code> for <strong>FALSE</strong> or <code>1</code> for <strong>TRUE</strong>.<a href="#section-1.1.1-9" class="pilcrow">¶</a></p>
@@ -1707,8 +1729,8 @@ li > p:last-of-type {
 </section>
 </section>
 <section id="section-1.2">
-        <h3 id="name-motivations-2">
-<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-motivations-2" class="section-name selfRef">Motivations</a>
+        <h3 id="name-motivations">
+<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-motivations" class="section-name selfRef">Motivations</a>
         </h3>
 <p id="section-1.2-1">This file format's primary goal is to provide a comprehensive and replay device agnostic TAS movie controller input dump format that is usable for any console.  Additional goals include:<a href="#section-1.2-1" class="pilcrow">¶</a></p>
 <ul class="normal">
@@ -1723,8 +1745,8 @@ li > p:last-of-type {
         </ul>
 <p id="section-1.2-3">Consideration was also given to how usable the format would be for the software that interacts with replay devices (examples: methods of ingestion/parsing, ease of ingestion/parsing in various languages).<a href="#section-1.2-3" class="pilcrow">¶</a></p>
 <section id="section-1.2.1">
-          <h4 id="name-problems-with-existing-forma">
-<a href="#section-1.2.1" class="section-number selfRef">1.2.1. </a><a href="#name-problems-with-existing-forma" class="section-name selfRef">Problems With Existing Formats</a>
+          <h4 id="name-problems-with-existing-form">
+<a href="#section-1.2.1" class="section-number selfRef">1.2.1. </a><a href="#name-problems-with-existing-form" class="section-name selfRef">Problems With Existing Formats</a>
           </h4>
 <p id="section-1.2.1-1">Most existing formats are either incomplete for some verification needs or don't exist at all for some consoles.  A format commonly used for NES console verifications (r08) only encodes 2 standard controllers worth of sequential data and a format commonly used for SNES console verifications (r16m) only encodes up to 8 standard controllers worth of sequential data.  There is no built in way to store <strong>RESET</strong> press timing information or indicate additional settings/information.  Non-standard controllers are also not supported in commonly used formats.<a href="#section-1.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-1.2.1-2">For consoles not as popular as the NES and SNES, controller input formats would frequently be written in a way that is meant only to work and not in a "standard" way.  While that process works, it's less than ideal for redistribution of console replays so that others (especially with differing TAS replay devices) can also verify the same TAS.<a href="#section-1.2.1-2" class="pilcrow">¶</a></p>
@@ -1733,8 +1755,8 @@ li > p:last-of-type {
 </section>
 </div>
 <section id="section-2">
-      <h2 id="name-structure-2">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-structure-2" class="section-name selfRef">Structure</a>
+      <h2 id="name-structure">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-structure" class="section-name selfRef">Structure</a>
       </h2>
 <p id="section-2-1"><strong>TASD</strong> files <span class="bcp14">MUST</span> begin with a header. The header <span class="bcp14">MUST</span> be followed by <strong>0 or more</strong> packets.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-2-2">
@@ -1750,19 +1772,19 @@ li > p:last-of-type {
 </div>
 <span class="break"></span><dl class="dlNewline" id="section-2-3">
         <dt id="section-2-3.1"><strong>Header</strong></dt>
-        <dd style="margin-left: 1.5em" id="section-2-3.2">7 octet header as defined in <a href="#header" class="xref">Section 3</a>.<a href="#section-2-3.2" class="pilcrow">¶</a>
+        <dd style="margin-left: 1.5em" id="section-2-3.2">7 octet header as defined in <a href="#header" class="auto internal xref">Section 3</a>.<a href="#section-2-3.2" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
 <dt id="section-2-3.3"><strong>Packets</strong></dt>
-        <dd style="margin-left: 1.5em" id="section-2-3.4">List of 0 or more packets. Refer to <a href="#packets" class="xref">Section 4</a> for packet definitions.<a href="#section-2-3.4" class="pilcrow">¶</a>
+        <dd style="margin-left: 1.5em" id="section-2-3.4">List of 0 or more packets. Refer to <a href="#packets" class="auto internal xref">Section 4</a> for packet definitions.<a href="#section-2-3.4" class="pilcrow">¶</a>
 </dd>
       <dd class="break"></dd>
 </dl>
 </section>
 <div id="header">
 <section id="section-3">
-      <h2 id="name-header-2">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-header-2" class="section-name selfRef">Header</a>
+      <h2 id="name-header">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-header" class="section-name selfRef">Header</a>
       </h2>
 <p id="section-3-1">The <strong>TASD</strong> file header <span class="bcp14">MUST</span> be in the following format:<a href="#section-3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-3-2">
@@ -1795,8 +1817,8 @@ li > p:last-of-type {
 </div>
 <div id="packets">
 <section id="section-4">
-      <h2 id="name-packets-2">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-packets-2" class="section-name selfRef">Packets</a>
+      <h2 id="name-packets">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-packets" class="section-name selfRef">Packets</a>
       </h2>
 <p id="section-4-1">Each packet <span class="bcp14">MUST</span> be in the following format:<a href="#section-4-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4-2">
@@ -1817,7 +1839,7 @@ li > p:last-of-type {
 </dd>
         <dd class="break"></dd>
 <dt id="section-4-3.3"><strong>PEXP</strong></dt>
-        <dd style="margin-left: 1.5em" id="section-4-3.4">Length of <strong>PLEN</strong>.<a href="#section-4-3.4" class="pilcrow">¶</a>
+        <dd style="margin-left: 1.5em" id="section-4-3.4">Length of <strong>PLEN</strong>.  <strong>PEXP</strong> <span class="bcp14">MUST</span> be a value greater than 0.<a href="#section-4-3.4" class="pilcrow">¶</a>
 </dd>
         <dd class="break"></dd>
 <dt id="section-4-3.5"><strong>PLEN</strong></dt>
@@ -1835,12 +1857,12 @@ li > p:last-of-type {
 </dl>
 <p id="section-4-4">All packets are <span class="bcp14">OPTIONAL</span>.<a href="#section-4-4" class="pilcrow">¶</a></p>
 <section id="section-4.1">
-        <h3 id="name-assigned-packet-keys-without">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-assigned-packet-keys-without" class="section-name selfRef">Assigned Packet Keys Without Descriptions</a>
+        <h3 id="name-assigned-packet-keys-withou">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-assigned-packet-keys-withou" class="section-name selfRef">Assigned Packet Keys Without Descriptions</a>
         </h3>
 <section id="section-4.1.1">
-          <h4 id="name-general-keys-2">
-<a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-general-keys-2" class="section-name selfRef">General Keys</a>
+          <h4 id="name-general-keys">
+<a href="#section-4.1.1" class="section-number selfRef">4.1.1. </a><a href="#name-general-keys" class="section-name selfRef">General Keys</a>
           </h4>
 <span class="break"></span><dl class="dlCompact dlParallel" id="section-4.1.1-1">
             <dt id="section-4.1.1-1.1"><code>[00 01]</code></dt>
@@ -1934,8 +1956,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-4.1.2">
-          <h4 id="name-nes-specific-keys-2">
-<a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-nes-specific-keys-2" class="section-name selfRef">NES Specific Keys</a>
+          <h4 id="name-nes-specific-keys">
+<a href="#section-4.1.2" class="section-number selfRef">4.1.2. </a><a href="#name-nes-specific-keys" class="section-name selfRef">NES Specific Keys</a>
           </h4>
 <span class="break"></span><dl class="dlCompact dlParallel" id="section-4.1.2-1">
             <dt id="section-4.1.2-1.1"><code>[01 01]</code></dt>
@@ -1957,8 +1979,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-4.1.3">
-          <h4 id="name-snes-specific-keys-2">
-<a href="#section-4.1.3" class="section-number selfRef">4.1.3. </a><a href="#name-snes-specific-keys-2" class="section-name selfRef">SNES Specific Keys</a>
+          <h4 id="name-snes-specific-keys">
+<a href="#section-4.1.3" class="section-number selfRef">4.1.3. </a><a href="#name-snes-specific-keys" class="section-name selfRef">SNES Specific Keys</a>
           </h4>
 <span class="break"></span><dl class="dlCompact dlParallel" id="section-4.1.3-1">
             <dt id="section-4.1.3-1.1"><code>[02 02]</code></dt>
@@ -1980,8 +2002,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-4.1.4">
-          <h4 id="name-genesis-specific-keys-2">
-<a href="#section-4.1.4" class="section-number selfRef">4.1.4. </a><a href="#name-genesis-specific-keys-2" class="section-name selfRef">Genesis Specific Keys</a>
+          <h4 id="name-genesis-specific-keys">
+<a href="#section-4.1.4" class="section-number selfRef">4.1.4. </a><a href="#name-genesis-specific-keys" class="section-name selfRef">Genesis Specific Keys</a>
           </h4>
 <span class="break"></span><dl class="dlCompact dlParallel" id="section-4.1.4-1">
             <dt id="section-4.1.4-1.1"><code>[08 04]</code></dt>
@@ -1991,8 +2013,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-4.1.5">
-          <h4 id="name-input-frame-timing-keys-2">
-<a href="#section-4.1.5" class="section-number selfRef">4.1.5. </a><a href="#name-input-frame-timing-keys-2" class="section-name selfRef">Input Frame/Timing Keys</a>
+          <h4 id="name-input-frame-timing-keys">
+<a href="#section-4.1.5" class="section-number selfRef">4.1.5. </a><a href="#name-input-frame-timing-keys" class="section-name selfRef">Input Frame/Timing Keys</a>
           </h4>
 <span class="break"></span><dl class="dlCompact dlParallel" id="section-4.1.5-1">
             <dt id="section-4.1.5-1.1"><code>[FE 01]</code></dt>
@@ -2018,8 +2040,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-4.1.6">
-          <h4 id="name-extraneous-keys-2">
-<a href="#section-4.1.6" class="section-number selfRef">4.1.6. </a><a href="#name-extraneous-keys-2" class="section-name selfRef">Extraneous Keys</a>
+          <h4 id="name-extraneous-keys">
+<a href="#section-4.1.6" class="section-number selfRef">4.1.6. </a><a href="#name-extraneous-keys" class="section-name selfRef">Extraneous Keys</a>
           </h4>
 <span class="break"></span><dl class="dlCompact dlParallel" id="section-4.1.6-1">
             <dt id="section-4.1.6-1.1"><code>[FF 01]</code></dt>
@@ -2039,242 +2061,242 @@ li > p:last-of-type {
 </section>
 <div id="descriptions">
 <section id="section-4.2">
-        <h3 id="name-assigned-packet-keys-with-de">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-assigned-packet-keys-with-de" class="section-name selfRef">Assigned Packet Keys With Descriptions</a>
+        <h3 id="name-assigned-packet-keys-with-d">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-assigned-packet-keys-with-d" class="section-name selfRef">Assigned Packet Keys With Descriptions</a>
         </h3>
 <section id="section-4.2.1">
-          <h4 id="name-general-key-descriptions-2">
-<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-general-key-descriptions-2" class="section-name selfRef">General Key Descriptions</a>
+          <h4 id="name-general-key-descriptions">
+<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-general-key-descriptions" class="section-name selfRef">General Key Descriptions</a>
           </h4>
 <span class="break"></span><dl class="dlNewline" id="section-4.2.1-1">
             <dt id="section-4.2.1-1.1">
 <code>[00 01]</code> - CONSOLE_TYPE</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.2">Specifies console used on emulator when dumping the TAS controller inputs.  This packet type is <span class="bcp14">OPTIONAL</span> but <span class="bcp14">SHOULD</span> be included in a <strong>TASD</strong> file and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#console_type" class="xref">Section 4.3.1.1</a>).<a href="#section-4.2.1-1.2" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.2">Specifies console used on emulator when dumping the TAS controller inputs.  This packet type is <span class="bcp14">OPTIONAL</span> but <span class="bcp14">SHOULD</span> be included in a <strong>TASD</strong> file and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#console_type" class="auto internal xref">Section 4.3.1.1</a>).<a href="#section-4.2.1-1.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.3">
 <code>[00 02]</code> - CONSOLE_REGION</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.4">Specifies video region of console used for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#console_region" class="xref">Section 4.3.1.2</a>).<a href="#section-4.2.1-1.4" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.4">Specifies video region of console used for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#console_region" class="auto internal xref">Section 4.3.1.2</a>).<a href="#section-4.2.1-1.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.5">
 <code>[00 03]</code> - GAME_TITLE</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.6">Specifies the name of the game the TAS is written for.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#game_title" class="xref">Section 4.3.1.3</a>).<a href="#section-4.2.1-1.6" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.6">Specifies the name of the game the TAS is written for.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#game_title" class="auto internal xref">Section 4.3.1.3</a>).<a href="#section-4.2.1-1.6" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.7">
 <code>[00 04]</code> - ROM_NAME</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.8">Specifies the name of the specific ROM file used for the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#rom_name" class="xref">Section 4.3.1.4</a>).<a href="#section-4.2.1-1.8" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.8">Specifies the name of the specific ROM file used for the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#rom_name" class="auto internal xref">Section 4.3.1.4</a>).<a href="#section-4.2.1-1.8" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.9">
 <code>[00 05]</code> - ATTRIBUTION</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.10">Specifies the name of someone involved in the TAS or the creation or management of the <strong>TASD</strong> file in order to provide proper attribution for work done.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#author" class="xref">Section 4.3.1.5</a>).<a href="#section-4.2.1-1.10" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.10">Specifies the name of someone involved in the TAS or the creation or management of the <strong>TASD</strong> file in order to provide proper attribution for work done.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#author" class="auto internal xref">Section 4.3.1.5</a>).<a href="#section-4.2.1-1.10" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.11">
 <code>[00 06]</code> - CATEGORY</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.12">Specifies the run category of the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#category" class="xref">Section 4.3.1.6</a>).<a href="#section-4.2.1-1.12" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.12">Specifies the run category of the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#category" class="auto internal xref">Section 4.3.1.6</a>).<a href="#section-4.2.1-1.12" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.13">
 <code>[00 07]</code> - EMULATOR_NAME</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.14">Specifies the emulator used while dumping TAS controller inputs.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#emulator_name" class="xref">Section 4.3.1.7</a>).<a href="#section-4.2.1-1.14" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.14">Specifies the emulator used while dumping TAS controller inputs.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#emulator_name" class="auto internal xref">Section 4.3.1.7</a>).<a href="#section-4.2.1-1.14" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.15">
 <code>[00 08]</code> - EMULATOR_VERSION</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.16">Specifies the version of the emulator used while dump the TAS controller inputs.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#emulator_version" class="xref">Section 4.3.1.8</a>).<a href="#section-4.2.1-1.16" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.16">Specifies the version of the emulator used while dump the TAS controller inputs.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#emulator_version" class="auto internal xref">Section 4.3.1.8</a>).<a href="#section-4.2.1-1.16" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.17">
 <code>[00 09]</code> - EMULATOR_CORE</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.18">Specifies the core of the emulator used while dumping the TAS controller inputs.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#emulator_core" class="xref">Section 4.3.1.9</a>).<a href="#section-4.2.1-1.18" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.18">Specifies the core of the emulator used while dumping the TAS controller inputs.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#emulator_core" class="auto internal xref">Section 4.3.1.9</a>).<a href="#section-4.2.1-1.18" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.19">
 <code>[00 0A]</code> - TAS_LAST_MODIFIED</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.20">Specifies when the TAS was last modified.  Frequently used to specify the date and time when the TAS was published.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#tas_last_modified" class="xref">Section 4.3.1.10</a>).<a href="#section-4.2.1-1.20" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.20">Specifies when the TAS was last modified.  Frequently used to specify the date and time when the TAS was published.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#tas_last_modified" class="auto internal xref">Section 4.3.1.10</a>).<a href="#section-4.2.1-1.20" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.21">
 <code>[00 0B]</code> - DUMP_CREATED</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.22">Specifies when the <strong>TASD</strong> file was first created.  This packet is <span class="bcp14">OPTIONAL</span> but <span class="bcp14">SHOULD</span> be included in a <strong>TASD</strong> file and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type. Discussed in (<a href="#dump_created" class="xref">Section 4.3.1.11</a>).<a href="#section-4.2.1-1.22" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.22">Specifies when the <strong>TASD</strong> file was first created.  This packet is <span class="bcp14">OPTIONAL</span> but <span class="bcp14">SHOULD</span> be included in a <strong>TASD</strong> file and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type. Discussed in (<a href="#dump_created" class="auto internal xref">Section 4.3.1.11</a>).<a href="#section-4.2.1-1.22" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.23">
 <code>[00 0C]</code> - DUMP_LAST_MODIFIED</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.24">Specifies when the <strong>TASD</strong> file was last modified.  This packet is <span class="bcp14">OPTIONAL</span> but <span class="bcp14">SHOULD</span> be included in a <strong>TASD</strong> file and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type. Discussed in (<a href="#dump_last_modified" class="xref">Section 4.3.1.12</a>).<a href="#section-4.2.1-1.24" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.24">Specifies when the <strong>TASD</strong> file was last modified.  This packet is <span class="bcp14">OPTIONAL</span> but <span class="bcp14">SHOULD</span> be included in a <strong>TASD</strong> file and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type. Discussed in (<a href="#dump_last_modified" class="auto internal xref">Section 4.3.1.12</a>).<a href="#section-4.2.1-1.24" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.25">
 <code>[00 0D]</code> - TOTAL_FRAMES</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.26">Specifies the total number of frames in the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#total_frames" class="xref">Section 4.3.1.13</a>).<a href="#section-4.2.1-1.26" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.26">Specifies the total number of frames in the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#total_frames" class="auto internal xref">Section 4.3.1.13</a>).<a href="#section-4.2.1-1.26" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.27">
 <code>[00 0E]</code> - RERECORDS</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.28">Specifies the total number of rerecords of the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#rerecords" class="xref">Section 4.3.1.14</a>).<a href="#section-4.2.1-1.28" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.28">Specifies the total number of rerecords of the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#rerecords" class="auto internal xref">Section 4.3.1.14</a>).<a href="#section-4.2.1-1.28" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.29">
 <code>[00 0F]</code> - SOURCE_LINK</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.30">Specifies the source link for the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type.  Discussed in (<a href="#source_link" class="xref">Section 4.3.1.15</a>).<a href="#section-4.2.1-1.30" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.30">Specifies the source link for the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type.  Discussed in (<a href="#source_link" class="auto internal xref">Section 4.3.1.15</a>).<a href="#section-4.2.1-1.30" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.31">
 <code>[00 10]</code> - BLANK_FRAMES</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.32">Specifies the number of blank controller inputs or frames to prepend to the inputs of the TAS when played on hardware.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#blank_frames" class="xref">Section 4.3.1.16</a>).<a href="#section-4.2.1-1.32" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.32">Specifies the number of blank controller inputs or frames to prepend to the inputs of the TAS when played on hardware.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#blank_frames" class="auto internal xref">Section 4.3.1.16</a>).<a href="#section-4.2.1-1.32" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.33">
 <code>[00 11]</code> - VERIFIED</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.34">Specifies whether the TAS is verified to run on hardware, also known as "console verified",  using the <strong>TASD</strong> file.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#verified" class="xref">Section 4.3.1.17</a>).<a href="#section-4.2.1-1.34" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.34">Specifies whether the TAS is verified to run on hardware, also known as "console verified",  using the <strong>TASD</strong> file.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#verified" class="auto internal xref">Section 4.3.1.17</a>).<a href="#section-4.2.1-1.34" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.35">
 <code>[00 12]</code> - MEMORY_INIT</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.36">Specifies initial memory values used for the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#memory_init" class="xref">Section 4.3.1.18</a>).<a href="#section-4.2.1-1.36" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.36">Specifies initial memory values used for the TAS.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#memory_init" class="auto internal xref">Section 4.3.1.18</a>).<a href="#section-4.2.1-1.36" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.37">
 <code>[00 13]</code> - GAME_IDENTIFIER</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.38">Specifies an identifier for the game the TAS is written for.  This can be checksums, hashes, or other identifying data.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#game_identifier" class="xref">Section 4.3.1.19</a>).<a href="#section-4.2.1-1.38" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.38">Specifies an identifier for the game the TAS is written for.  This can be checksums, hashes, or other identifying data.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#game_identifier" class="auto internal xref">Section 4.3.1.19</a>).<a href="#section-4.2.1-1.38" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.39">
 <code>[00 14]</code> - MOVIE_LICENSE</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.40">Specifies a copyright license for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#movie_license" class="xref">Section 4.3.1.20</a>).<a href="#section-4.2.1-1.40" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.40">Specifies a copyright license for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#movie_license" class="auto internal xref">Section 4.3.1.20</a>).<a href="#section-4.2.1-1.40" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.41">
 <code>[00 15]</code> - MOVIE_FILE</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.42">Specifies the TAS movie data.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type.  Discussed in (<a href="#movie_file" class="xref">Section 4.3.1.21</a>).<a href="#section-4.2.1-1.42" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.42">Specifies the TAS movie data.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type.  Discussed in (<a href="#movie_file" class="auto internal xref">Section 4.3.1.21</a>).<a href="#section-4.2.1-1.42" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.1-1.43">
 <code>[00 F0]</code> - PORT_CONTROLLER</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.1-1.44">Specifies the controller type in specific console controller ports for the TAS when played on hardware.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#port_controller" class="xref">Section 4.3.1.22</a>).<a href="#section-4.2.1-1.44" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.44">Specifies the controller type in specific console controller ports for the TAS when played on hardware.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#port_controller" class="auto internal xref">Section 4.3.1.22</a>).<a href="#section-4.2.1-1.44" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
 </section>
 <section id="section-4.2.2">
-          <h4 id="name-nes-specific-key-description">
-<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-nes-specific-key-description" class="section-name selfRef">NES Specific Key Descriptions</a>
+          <h4 id="name-nes-specific-key-descriptio">
+<a href="#section-4.2.2" class="section-number selfRef">4.2.2. </a><a href="#name-nes-specific-key-descriptio" class="section-name selfRef">NES Specific Key Descriptions</a>
           </h4>
 <span class="break"></span><dl class="dlNewline" id="section-4.2.2-1">
             <dt id="section-4.2.2-1.1">
 <code>[01 01]</code> - NES_LATCH_FILTER</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.2-1.2">Specifies a latch filter time in microseconds for how long how long to wait after a latch signal until new latch signals <span class="bcp14">SHOULD</span> be accepted by the replay device.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#nes_latch_filter" class="xref">Section 4.3.2.1</a>).<a href="#section-4.2.2-1.2" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.2-1.2">Specifies a latch filter time in microseconds for how long how long to wait after a latch signal until new latch signals <span class="bcp14">SHOULD</span> be accepted by the replay device.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#nes_latch_filter" class="auto internal xref">Section 4.3.2.1</a>).<a href="#section-4.2.2-1.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.2-1.3">
 <code>[01 02]</code> - NES_CLOCK_FILTER</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.2-1.4">Specifies a clock filter time in tenths of a microsecond (0.1 microseconds or 100 nanoseconds) for how long to wait after a clock pulse until new clock pulses <span class="bcp14">SHOULD</span> be accepted by the replay device.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#nes_clock_filter" class="xref">Section 4.3.2.2</a>).<a href="#section-4.2.2-1.4" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.2-1.4">Specifies a clock filter time in tenths of a microsecond (0.1 microseconds or 100 nanoseconds) for how long to wait after a clock pulse until new clock pulses <span class="bcp14">SHOULD</span> be accepted by the replay device.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#nes_clock_filter" class="auto internal xref">Section 4.3.2.2</a>).<a href="#section-4.2.2-1.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.2-1.5">
 <code>[01 03]</code> - NES_OVERREAD</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.2-1.6">Specifies whether a high or low signal <span class="bcp14">SHOULD</span> be sent to the NES console if the console clocks the replay device for more input buttons than are expected for the latch.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#nes_overread" class="xref">Section 4.3.2.3</a>).<a href="#section-4.2.2-1.6" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.2-1.6">Specifies whether a high or low signal <span class="bcp14">SHOULD</span> be sent to the NES console if the console clocks the replay device for more input buttons than are expected for the latch.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#nes_overread" class="auto internal xref">Section 4.3.2.3</a>).<a href="#section-4.2.2-1.6" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.2-1.7">
 <code>[01 04]</code> - NES_GAME_GENIE_CODE</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.2-1.8">Specifies a Game Genie code for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#nes_game_genie_code" class="xref">Section 4.3.2.4</a>).<a href="#section-4.2.2-1.8" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.2-1.8">Specifies a Game Genie code for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#nes_game_genie_code" class="auto internal xref">Section 4.3.2.4</a>).<a href="#section-4.2.2-1.8" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
 </section>
 <section id="section-4.2.3">
-          <h4 id="name-snes-specific-key-descriptio">
-<a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-snes-specific-key-descriptio" class="section-name selfRef">SNES Specific Key Descriptions</a>
+          <h4 id="name-snes-specific-key-descripti">
+<a href="#section-4.2.3" class="section-number selfRef">4.2.3. </a><a href="#name-snes-specific-key-descripti" class="section-name selfRef">SNES Specific Key Descriptions</a>
           </h4>
 <span class="break"></span><dl class="dlNewline" id="section-4.2.3-1">
             <dt id="section-4.2.3-1.1">
 <code>[02 02]</code> - SNES_CLOCK_FILTER</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.3-1.2">Specifies a clock filter time in tenths of a microsecond (0.1 microseconds or 100 nanoseconds) for how long to wait after a clock pulse until new clock pulses <span class="bcp14">SHOULD</span> be accepted by the replay device.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#snes_clock_filter" class="xref">Section 4.3.3.1</a>).<a href="#section-4.2.3-1.2" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-1.2">Specifies a clock filter time in tenths of a microsecond (0.1 microseconds or 100 nanoseconds) for how long to wait after a clock pulse until new clock pulses <span class="bcp14">SHOULD</span> be accepted by the replay device.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#snes_clock_filter" class="auto internal xref">Section 4.3.3.1</a>).<a href="#section-4.2.3-1.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.3-1.3">
 <code>[02 03]</code> - SNES_OVERREAD</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.3-1.4">Specifies whether a high or low signal <span class="bcp14">SHOULD</span> be sent to the SNES console if the console clocks the replay device for more input buttons than are expected for the latch.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#snes_overread" class="xref">Section 4.3.3.2</a>).<a href="#section-4.2.3-1.4" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-1.4">Specifies whether a high or low signal <span class="bcp14">SHOULD</span> be sent to the SNES console if the console clocks the replay device for more input buttons than are expected for the latch.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#snes_overread" class="auto internal xref">Section 4.3.3.2</a>).<a href="#section-4.2.3-1.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.3-1.5">
 <code>[02 04]</code> - SNES_GAME_GENIE_CODE</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.3-1.6">Specifies a Game Genie code for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#snes_game_genie_code" class="xref">Section 4.3.3.3</a>).<a href="#section-4.2.3-1.6" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-1.6">Specifies a Game Genie code for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#snes_game_genie_code" class="auto internal xref">Section 4.3.3.3</a>).<a href="#section-4.2.3-1.6" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.3-1.7">
 <code>[02 05]</code> - SNES_LATCH_TRAIN</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.3-1.8">Specifies Latch Trains for TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#snes_latch_train" class="xref">Section 4.3.3.4</a>).<a href="#section-4.2.3-1.8" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-1.8">Specifies Latch Trains for TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#snes_latch_train" class="auto internal xref">Section 4.3.3.4</a>).<a href="#section-4.2.3-1.8" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
 </section>
 <section id="section-4.2.4">
-          <h4 id="name-genesis-specific-key-descrip">
-<a href="#section-4.2.4" class="section-number selfRef">4.2.4. </a><a href="#name-genesis-specific-key-descrip" class="section-name selfRef">Genesis Specific Key Descriptions</a>
+          <h4 id="name-genesis-specific-key-descri">
+<a href="#section-4.2.4" class="section-number selfRef">4.2.4. </a><a href="#name-genesis-specific-key-descri" class="section-name selfRef">Genesis Specific Key Descriptions</a>
           </h4>
 <span class="break"></span><dl class="dlNewline" id="section-4.2.4-1">
             <dt id="section-4.2.4-1.1">
 <code>[08 04]</code> - GENESIS_GAME_GENIE_CODE</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.4-1.2">Specifies a Game Genie code for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#genesis_game_genie_code" class="xref">Section 4.3.4.1</a>).<a href="#section-4.2.4-1.2" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.4-1.2">Specifies a Game Genie code for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#genesis_game_genie_code" class="auto internal xref">Section 4.3.4.1</a>).<a href="#section-4.2.4-1.2" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
 </section>
 <section id="section-4.2.5">
-          <h4 id="name-input-frame-timing-key-descr">
-<a href="#section-4.2.5" class="section-number selfRef">4.2.5. </a><a href="#name-input-frame-timing-key-descr" class="section-name selfRef">Input Frame/Timing Key Descriptions</a>
+          <h4 id="name-input-frame-timing-key-desc">
+<a href="#section-4.2.5" class="section-number selfRef">4.2.5. </a><a href="#name-input-frame-timing-key-desc" class="section-name selfRef">Input Frame/Timing Key Descriptions</a>
           </h4>
 <span class="break"></span><dl class="dlNewline" id="section-4.2.5-1">
             <dt id="section-4.2.5-1.1">
 <code>[FE 01]</code> - INPUT_CHUNK</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.5-1.2">Specifies a chunk of input data for the TAS when played on hardware.  All data from INPUT_CHUNK packets are concatenated together in order of appearance in the <strong>TASD</strong> file.  If the INPUT_CHUNK packet type is used, the PORT_CONTROLLER packet type <span class="bcp14">MUST</span> be used.  If the INPUT_CHUNK packet type is used, the INPUT_MOMENT packet type <span class="bcp14">SHOULD NOT</span> be used. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#input_chunk" class="xref">Section 4.3.5.1</a>).<a href="#section-4.2.5-1.2" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.5-1.2">Specifies a chunk of input data for the TAS when played on hardware.  All data from INPUT_CHUNK packets are concatenated together in order of appearance in the <strong>TASD</strong> file.  If the INPUT_CHUNK packet type is used, the PORT_CONTROLLER packet type <span class="bcp14">MUST</span> be used.  If the INPUT_CHUNK packet type is used, the INPUT_MOMENT packet type <span class="bcp14">SHOULD NOT</span> be used. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#input_chunk" class="auto internal xref">Section 4.3.5.1</a>).<a href="#section-4.2.5-1.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.5-1.3">
 <code>[FE 02]</code> - INPUT_MOMENT</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.5-1.4">Specifies input data that is sent from the replay device to the console with specific timing.  If the INPUT_MOMENT packet type is used, the PORT_CONTROLLER packet type <span class="bcp14">MUST</span> be used.  If the INPUT_MOMENT packet type is used, the INPUT_CHUNK packet type <span class="bcp14">SHOULD NOT</span> be used.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#input_moment" class="xref">Section 4.3.5.2</a>).<a href="#section-4.2.5-1.4" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.5-1.4">Specifies input data that is sent from the replay device to the console with specific timing.  If the INPUT_MOMENT packet type is used, the PORT_CONTROLLER packet type <span class="bcp14">MUST</span> be used.  If the INPUT_MOMENT packet type is used, the INPUT_CHUNK packet type <span class="bcp14">SHOULD NOT</span> be used.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#input_moment" class="auto internal xref">Section 4.3.5.2</a>).<a href="#section-4.2.5-1.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.5-1.5">
 <code>[FE 03]</code> - TRANSITION</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.5-1.6">Specifies when a transition or change occurs during a TAS replay (example: console reset or changing of controller types).  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#transition" class="xref">Section 4.3.5.3</a>).<a href="#section-4.2.5-1.6" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.5-1.6">Specifies when a transition or change occurs during a TAS replay (example: console reset or changing of controller types).  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#transition" class="auto internal xref">Section 4.3.5.3</a>).<a href="#section-4.2.5-1.6" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.5-1.7">
 <code>[FE 04]</code> - LAG_FRAME_CHUNK</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.5-1.8">Specifies a chunk of lag frames in a TAS based on the original TAS movie.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#lag_frame_chunk" class="xref">Section 4.3.5.4</a>).<a href="#section-4.2.5-1.8" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.5-1.8">Specifies a chunk of lag frames in a TAS based on the original TAS movie.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#lag_frame_chunk" class="auto internal xref">Section 4.3.5.4</a>).<a href="#section-4.2.5-1.8" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.5-1.9">
 <code>[FE 05]</code> - MOVIE_TRANSITION</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.5-1.10">Specifies when a transition or change occurs in the original TAS movie (example: console reset or changing of controller types).  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type. Discussed in (<a href="#movie_transition" class="xref">Section 4.3.5.5</a>).<a href="#section-4.2.5-1.10" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.5-1.10">Specifies when a transition or change occurs in the original TAS movie (example: console reset or changing of controller types).  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type. Discussed in (<a href="#movie_transition" class="auto internal xref">Section 4.3.5.5</a>).<a href="#section-4.2.5-1.10" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
 </section>
 <section id="section-4.2.6">
-          <h4 id="name-extraneous-key-descriptions-2">
-<a href="#section-4.2.6" class="section-number selfRef">4.2.6. </a><a href="#name-extraneous-key-descriptions-2" class="section-name selfRef">Extraneous Key Descriptions</a>
+          <h4 id="name-extraneous-key-descriptions">
+<a href="#section-4.2.6" class="section-number selfRef">4.2.6. </a><a href="#name-extraneous-key-descriptions" class="section-name selfRef">Extraneous Key Descriptions</a>
           </h4>
 <span class="break"></span><dl class="dlNewline" id="section-4.2.6-1">
             <dt id="section-4.2.6-1.1">
 <code>[FF 01]</code> - COMMENT</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.6-1.2">Comment data.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#comment" class="xref">Section 4.3.6.1</a>).<a href="#section-4.2.6-1.2" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.6-1.2">Comment data.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#comment" class="auto internal xref">Section 4.3.6.1</a>).<a href="#section-4.2.6-1.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.6-1.3">
 <code>[FF FE]</code> - EXPERIMENTAL</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.6-1.4">TASD file is using draft/experimental packets.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type.  Discussed in (<a href="#experimental" class="xref">Section 4.3.6.2</a>).<a href="#section-4.2.6-1.4" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.6-1.4">TASD file is using draft/experimental packets.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type.  Discussed in (<a href="#experimental" class="auto internal xref">Section 4.3.6.2</a>).<a href="#section-4.2.6-1.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.6-1.5">
 <code>[FF FF]</code> - UNSPECIFIED</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.6-1.6">Unspecified packet data.  Can contain any arbitrary data.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#unspecified" class="xref">Section 4.3.6.3</a>).<a href="#section-4.2.6-1.6" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.6-1.6">Unspecified packet data.  Can contain any arbitrary data.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#unspecified" class="auto internal xref">Section 4.3.6.3</a>).<a href="#section-4.2.6-1.6" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -2282,17 +2304,17 @@ li > p:last-of-type {
 </section>
 </div>
 <section id="section-4.3">
-        <h3 id="name-packet-payload-formats-2">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-packet-payload-formats-2" class="section-name selfRef">Packet Payload Formats</a>
+        <h3 id="name-packet-payload-formats">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-packet-payload-formats" class="section-name selfRef">Packet Payload Formats</a>
         </h3>
 <section id="section-4.3.1">
-          <h4 id="name-general-key-payload-formats-2">
-<a href="#section-4.3.1" class="section-number selfRef">4.3.1. </a><a href="#name-general-key-payload-formats-2" class="section-name selfRef">General Key Payload Formats</a>
+          <h4 id="name-general-key-payload-formats">
+<a href="#section-4.3.1" class="section-number selfRef">4.3.1. </a><a href="#name-general-key-payload-formats" class="section-name selfRef">General Key Payload Formats</a>
           </h4>
 <div id="console_type">
 <section id="section-4.3.1.1">
-            <h5 id="name-console_type-packet-2">
-<a href="#section-4.3.1.1" class="section-number selfRef">4.3.1.1. </a><a href="#name-console_type-packet-2" class="section-name selfRef">CONSOLE_TYPE Packet</a>
+            <h5 id="name-console_type-packet">
+<a href="#section-4.3.1.1" class="section-number selfRef">4.3.1.1. </a><a href="#name-console_type-packet" class="section-name selfRef">CONSOLE_TYPE Packet</a>
             </h5>
 <p id="section-4.3.1.1-1">CONSOLE_TYPE packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.1-2">
@@ -2334,8 +2356,8 @@ li > p:last-of-type {
 </div>
 <div id="console_region">
 <section id="section-4.3.1.2">
-            <h5 id="name-console_region-packet-2">
-<a href="#section-4.3.1.2" class="section-number selfRef">4.3.1.2. </a><a href="#name-console_region-packet-2" class="section-name selfRef">CONSOLE_REGION Packet</a>
+            <h5 id="name-console_region-packet">
+<a href="#section-4.3.1.2" class="section-number selfRef">4.3.1.2. </a><a href="#name-console_region-packet" class="section-name selfRef">CONSOLE_REGION Packet</a>
             </h5>
 <p id="section-4.3.1.2-1">CONSOLE_REGION packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.2-2">
@@ -2361,8 +2383,8 @@ li > p:last-of-type {
 </div>
 <div id="game_title">
 <section id="section-4.3.1.3">
-            <h5 id="name-game_title-packet-2">
-<a href="#section-4.3.1.3" class="section-number selfRef">4.3.1.3. </a><a href="#name-game_title-packet-2" class="section-name selfRef">GAME_TITLE Packet</a>
+            <h5 id="name-game_title-packet">
+<a href="#section-4.3.1.3" class="section-number selfRef">4.3.1.3. </a><a href="#name-game_title-packet" class="section-name selfRef">GAME_TITLE Packet</a>
             </h5>
 <p id="section-4.3.1.3-1">GAME_TITLE packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.3-2">
@@ -2389,8 +2411,8 @@ li > p:last-of-type {
 </div>
 <div id="rom_name">
 <section id="section-4.3.1.4">
-            <h5 id="name-rom_name-packet-2">
-<a href="#section-4.3.1.4" class="section-number selfRef">4.3.1.4. </a><a href="#name-rom_name-packet-2" class="section-name selfRef">ROM_NAME Packet</a>
+            <h5 id="name-rom_name-packet">
+<a href="#section-4.3.1.4" class="section-number selfRef">4.3.1.4. </a><a href="#name-rom_name-packet" class="section-name selfRef">ROM_NAME Packet</a>
             </h5>
 <p id="section-4.3.1.4-1">ROM_NAME packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.4-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.4-2">
@@ -2417,8 +2439,8 @@ li > p:last-of-type {
 </div>
 <div id="author">
 <section id="section-4.3.1.5">
-            <h5 id="name-attribution-packet-2">
-<a href="#section-4.3.1.5" class="section-number selfRef">4.3.1.5. </a><a href="#name-attribution-packet-2" class="section-name selfRef">ATTRIBUTION Packet</a>
+            <h5 id="name-attribution-packet">
+<a href="#section-4.3.1.5" class="section-number selfRef">4.3.1.5. </a><a href="#name-attribution-packet" class="section-name selfRef">ATTRIBUTION Packet</a>
             </h5>
 <p id="section-4.3.1.5-1">ATTRIBUTION packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.5-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.5-2">
@@ -2455,8 +2477,8 @@ li > p:last-of-type {
 </div>
 <div id="category">
 <section id="section-4.3.1.6">
-            <h5 id="name-category-packet-2">
-<a href="#section-4.3.1.6" class="section-number selfRef">4.3.1.6. </a><a href="#name-category-packet-2" class="section-name selfRef">CATEGORY Packet</a>
+            <h5 id="name-category-packet">
+<a href="#section-4.3.1.6" class="section-number selfRef">4.3.1.6. </a><a href="#name-category-packet" class="section-name selfRef">CATEGORY Packet</a>
             </h5>
 <p id="section-4.3.1.6-1">CATEGORY packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.6-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.6-2">
@@ -2483,8 +2505,8 @@ li > p:last-of-type {
 </div>
 <div id="emulator_name">
 <section id="section-4.3.1.7">
-            <h5 id="name-emulator_name-packet-2">
-<a href="#section-4.3.1.7" class="section-number selfRef">4.3.1.7. </a><a href="#name-emulator_name-packet-2" class="section-name selfRef">EMULATOR_NAME Packet</a>
+            <h5 id="name-emulator_name-packet">
+<a href="#section-4.3.1.7" class="section-number selfRef">4.3.1.7. </a><a href="#name-emulator_name-packet" class="section-name selfRef">EMULATOR_NAME Packet</a>
             </h5>
 <p id="section-4.3.1.7-1">EMULATOR_NAME packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.7-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.7-2">
@@ -2511,8 +2533,8 @@ li > p:last-of-type {
 </div>
 <div id="emulator_version">
 <section id="section-4.3.1.8">
-            <h5 id="name-emulator_version-packet-2">
-<a href="#section-4.3.1.8" class="section-number selfRef">4.3.1.8. </a><a href="#name-emulator_version-packet-2" class="section-name selfRef">EMULATOR_VERSION Packet</a>
+            <h5 id="name-emulator_version-packet">
+<a href="#section-4.3.1.8" class="section-number selfRef">4.3.1.8. </a><a href="#name-emulator_version-packet" class="section-name selfRef">EMULATOR_VERSION Packet</a>
             </h5>
 <p id="section-4.3.1.8-1">EMULATOR_VERSION packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.8-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.8-2">
@@ -2539,8 +2561,8 @@ li > p:last-of-type {
 </div>
 <div id="emulator_core">
 <section id="section-4.3.1.9">
-            <h5 id="name-emulator_core-packet-2">
-<a href="#section-4.3.1.9" class="section-number selfRef">4.3.1.9. </a><a href="#name-emulator_core-packet-2" class="section-name selfRef">EMULATOR_CORE Packet</a>
+            <h5 id="name-emulator_core-packet">
+<a href="#section-4.3.1.9" class="section-number selfRef">4.3.1.9. </a><a href="#name-emulator_core-packet" class="section-name selfRef">EMULATOR_CORE Packet</a>
             </h5>
 <p id="section-4.3.1.9-1">EMULATOR_CORE packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.9-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.9-2">
@@ -2567,8 +2589,8 @@ li > p:last-of-type {
 </div>
 <div id="tas_last_modified">
 <section id="section-4.3.1.10">
-            <h5 id="name-tas_last_modified-packet-2">
-<a href="#section-4.3.1.10" class="section-number selfRef">4.3.1.10. </a><a href="#name-tas_last_modified-packet-2" class="section-name selfRef">TAS_LAST_MODIFIED Packet</a>
+            <h5 id="name-tas_last_modified-packet">
+<a href="#section-4.3.1.10" class="section-number selfRef">4.3.1.10. </a><a href="#name-tas_last_modified-packet" class="section-name selfRef">TAS_LAST_MODIFIED Packet</a>
             </h5>
 <p id="section-4.3.1.10-1">TAS_LAST_MODIFIED packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.10-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.10-2">
@@ -2591,8 +2613,8 @@ li > p:last-of-type {
 </div>
 <div id="dump_created">
 <section id="section-4.3.1.11">
-            <h5 id="name-dump_created-packet-2">
-<a href="#section-4.3.1.11" class="section-number selfRef">4.3.1.11. </a><a href="#name-dump_created-packet-2" class="section-name selfRef">DUMP_CREATED Packet</a>
+            <h5 id="name-dump_created-packet">
+<a href="#section-4.3.1.11" class="section-number selfRef">4.3.1.11. </a><a href="#name-dump_created-packet" class="section-name selfRef">DUMP_CREATED Packet</a>
             </h5>
 <p id="section-4.3.1.11-1">DUMP_CREATED packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.11-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.11-2">
@@ -2615,8 +2637,8 @@ li > p:last-of-type {
 </div>
 <div id="dump_last_modified">
 <section id="section-4.3.1.12">
-            <h5 id="name-dump_last_modified-packet-2">
-<a href="#section-4.3.1.12" class="section-number selfRef">4.3.1.12. </a><a href="#name-dump_last_modified-packet-2" class="section-name selfRef">DUMP_LAST_MODIFIED Packet</a>
+            <h5 id="name-dump_last_modified-packet">
+<a href="#section-4.3.1.12" class="section-number selfRef">4.3.1.12. </a><a href="#name-dump_last_modified-packet" class="section-name selfRef">DUMP_LAST_MODIFIED Packet</a>
             </h5>
 <p id="section-4.3.1.12-1">DUMP_LAST_MODIFIED packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.12-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.12-2">
@@ -2639,8 +2661,8 @@ li > p:last-of-type {
 </div>
 <div id="total_frames">
 <section id="section-4.3.1.13">
-            <h5 id="name-total_frames-packet-2">
-<a href="#section-4.3.1.13" class="section-number selfRef">4.3.1.13. </a><a href="#name-total_frames-packet-2" class="section-name selfRef">TOTAL_FRAMES Packet</a>
+            <h5 id="name-total_frames-packet">
+<a href="#section-4.3.1.13" class="section-number selfRef">4.3.1.13. </a><a href="#name-total_frames-packet" class="section-name selfRef">TOTAL_FRAMES Packet</a>
             </h5>
 <p id="section-4.3.1.13-1">TOTAL_FRAMES packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.13-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.13-2">
@@ -2663,8 +2685,8 @@ li > p:last-of-type {
 </div>
 <div id="rerecords">
 <section id="section-4.3.1.14">
-            <h5 id="name-rerecords-packet-2">
-<a href="#section-4.3.1.14" class="section-number selfRef">4.3.1.14. </a><a href="#name-rerecords-packet-2" class="section-name selfRef">RERECORDS Packet</a>
+            <h5 id="name-rerecords-packet">
+<a href="#section-4.3.1.14" class="section-number selfRef">4.3.1.14. </a><a href="#name-rerecords-packet" class="section-name selfRef">RERECORDS Packet</a>
             </h5>
 <p id="section-4.3.1.14-1">RERECORDS packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.14-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.14-2">
@@ -2687,8 +2709,8 @@ li > p:last-of-type {
 </div>
 <div id="source_link">
 <section id="section-4.3.1.15">
-            <h5 id="name-source_link-packet-2">
-<a href="#section-4.3.1.15" class="section-number selfRef">4.3.1.15. </a><a href="#name-source_link-packet-2" class="section-name selfRef">SOURCE_LINK Packet</a>
+            <h5 id="name-source_link-packet">
+<a href="#section-4.3.1.15" class="section-number selfRef">4.3.1.15. </a><a href="#name-source_link-packet" class="section-name selfRef">SOURCE_LINK Packet</a>
             </h5>
 <p id="section-4.3.1.15-1">SOURCE_LINK packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.15-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.15-2">
@@ -2715,8 +2737,8 @@ li > p:last-of-type {
 </div>
 <div id="blank_frames">
 <section id="section-4.3.1.16">
-            <h5 id="name-blank_frames-packet-2">
-<a href="#section-4.3.1.16" class="section-number selfRef">4.3.1.16. </a><a href="#name-blank_frames-packet-2" class="section-name selfRef">BLANK_FRAMES Packet</a>
+            <h5 id="name-blank_frames-packet">
+<a href="#section-4.3.1.16" class="section-number selfRef">4.3.1.16. </a><a href="#name-blank_frames-packet" class="section-name selfRef">BLANK_FRAMES Packet</a>
             </h5>
 <p id="section-4.3.1.16-1">BLANK_FRAMES packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.16-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.16-2">
@@ -2739,8 +2761,8 @@ li > p:last-of-type {
 </div>
 <div id="verified">
 <section id="section-4.3.1.17">
-            <h5 id="name-verified-packet-2">
-<a href="#section-4.3.1.17" class="section-number selfRef">4.3.1.17. </a><a href="#name-verified-packet-2" class="section-name selfRef">VERIFIED Packet</a>
+            <h5 id="name-verified-packet">
+<a href="#section-4.3.1.17" class="section-number selfRef">4.3.1.17. </a><a href="#name-verified-packet" class="section-name selfRef">VERIFIED Packet</a>
             </h5>
 <p id="section-4.3.1.17-1">VERIFIED packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.17-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.17-2">
@@ -2763,8 +2785,8 @@ li > p:last-of-type {
 </div>
 <div id="memory_init">
 <section id="section-4.3.1.18">
-            <h5 id="name-memory_init-packet-2">
-<a href="#section-4.3.1.18" class="section-number selfRef">4.3.1.18. </a><a href="#name-memory_init-packet-2" class="section-name selfRef">MEMORY_INIT Packet</a>
+            <h5 id="name-memory_init-packet">
+<a href="#section-4.3.1.18" class="section-number selfRef">4.3.1.18. </a><a href="#name-memory_init-packet" class="section-name selfRef">MEMORY_INIT Packet</a>
             </h5>
 <p id="section-4.3.1.18-1">MEMORY_INIT packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.18-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.18-2">
@@ -2842,8 +2864,8 @@ li > p:last-of-type {
 </div>
 <div id="game_identifier">
 <section id="section-4.3.1.19">
-            <h5 id="name-game_identifier-packet-2">
-<a href="#section-4.3.1.19" class="section-number selfRef">4.3.1.19. </a><a href="#name-game_identifier-packet-2" class="section-name selfRef">GAME_IDENTIFIER Packet</a>
+            <h5 id="name-game_identifier-packet">
+<a href="#section-4.3.1.19" class="section-number selfRef">4.3.1.19. </a><a href="#name-game_identifier-packet" class="section-name selfRef">GAME_IDENTIFIER Packet</a>
             </h5>
 <p id="section-4.3.1.19-1">GAME_IDENTIFIER packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.19-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.19-2">
@@ -2903,8 +2925,8 @@ li > p:last-of-type {
 </div>
 <div id="movie_license">
 <section id="section-4.3.1.20">
-            <h5 id="name-movie_license-packet-2">
-<a href="#section-4.3.1.20" class="section-number selfRef">4.3.1.20. </a><a href="#name-movie_license-packet-2" class="section-name selfRef">MOVIE_LICENSE Packet</a>
+            <h5 id="name-movie_license-packet">
+<a href="#section-4.3.1.20" class="section-number selfRef">4.3.1.20. </a><a href="#name-movie_license-packet" class="section-name selfRef">MOVIE_LICENSE Packet</a>
             </h5>
 <p id="section-4.3.1.20-1">MOVIE_LICENSE packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.20-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.20-2">
@@ -2931,8 +2953,8 @@ li > p:last-of-type {
 </div>
 <div id="movie_file">
 <section id="section-4.3.1.21">
-            <h5 id="name-movie_file-packet-2">
-<a href="#section-4.3.1.21" class="section-number selfRef">4.3.1.21. </a><a href="#name-movie_file-packet-2" class="section-name selfRef">MOVIE_FILE Packet</a>
+            <h5 id="name-movie_file-packet">
+<a href="#section-4.3.1.21" class="section-number selfRef">4.3.1.21. </a><a href="#name-movie_file-packet" class="section-name selfRef">MOVIE_FILE Packet</a>
             </h5>
 <p id="section-4.3.1.21-1">MOVIE_FILE packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.21-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.21-2">
@@ -2970,8 +2992,8 @@ li > p:last-of-type {
 </div>
 <div id="port_controller">
 <section id="section-4.3.1.22">
-            <h5 id="name-port_controller-packet-2">
-<a href="#section-4.3.1.22" class="section-number selfRef">4.3.1.22. </a><a href="#name-port_controller-packet-2" class="section-name selfRef">PORT_CONTROLLER Packet</a>
+            <h5 id="name-port_controller-packet">
+<a href="#section-4.3.1.22" class="section-number selfRef">4.3.1.22. </a><a href="#name-port_controller-packet" class="section-name selfRef">PORT_CONTROLLER Packet</a>
             </h5>
 <p id="section-4.3.1.22-1">PORT_CONTROLLER packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.22-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.22-2">
@@ -3019,7 +3041,7 @@ li > p:last-of-type {
 </dd>
               <dd class="break"></dd>
 <dt id="section-4.3.1.22-3.3"><strong>Type</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.1.22-3.4">Specifies the controller type connected to the <strong>Port</strong>.  <strong>(RESERVED)</strong> specifies that the controller type is not described in this document, but the byte values are reserved for a later version of the <strong>TASD</strong> file format protocol.  Input formats for specific controller types are described in (<a href="#controller_inputs" class="xref">Section 5</a>).<a href="#section-4.3.1.22-3.4" class="pilcrow">¶</a>
+              <dd style="margin-left: 1.5em" id="section-4.3.1.22-3.4">Specifies the controller type connected to the <strong>Port</strong>.  <strong>(RESERVED)</strong> specifies that the controller type is not described in this document, but the byte values are reserved for a later version of the <strong>TASD</strong> file format protocol.  Input formats for specific controller types are described in (<a href="#controller_inputs" class="auto internal xref">Section 5</a>).<a href="#section-4.3.1.22-3.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -3027,13 +3049,13 @@ li > p:last-of-type {
 </div>
 </section>
 <section id="section-4.3.2">
-          <h4 id="name-nes-specific-key-payload-for">
-<a href="#section-4.3.2" class="section-number selfRef">4.3.2. </a><a href="#name-nes-specific-key-payload-for" class="section-name selfRef">NES Specific Key Payload Formats</a>
+          <h4 id="name-nes-specific-key-payload-fo">
+<a href="#section-4.3.2" class="section-number selfRef">4.3.2. </a><a href="#name-nes-specific-key-payload-fo" class="section-name selfRef">NES Specific Key Payload Formats</a>
           </h4>
 <div id="nes_latch_filter">
 <section id="section-4.3.2.1">
-            <h5 id="name-nes_latch_filter-packet-2">
-<a href="#section-4.3.2.1" class="section-number selfRef">4.3.2.1. </a><a href="#name-nes_latch_filter-packet-2" class="section-name selfRef">NES_LATCH_FILTER Packet</a>
+            <h5 id="name-nes_latch_filter-packet">
+<a href="#section-4.3.2.1" class="section-number selfRef">4.3.2.1. </a><a href="#name-nes_latch_filter-packet" class="section-name selfRef">NES_LATCH_FILTER Packet</a>
             </h5>
 <p id="section-4.3.2.1-1">NES_LATCH_FILTER packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.2.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.2.1-2">
@@ -3056,8 +3078,8 @@ li > p:last-of-type {
 </div>
 <div id="nes_clock_filter">
 <section id="section-4.3.2.2">
-            <h5 id="name-nes_clock_filter-packet-2">
-<a href="#section-4.3.2.2" class="section-number selfRef">4.3.2.2. </a><a href="#name-nes_clock_filter-packet-2" class="section-name selfRef">NES_CLOCK_FILTER Packet</a>
+            <h5 id="name-nes_clock_filter-packet">
+<a href="#section-4.3.2.2" class="section-number selfRef">4.3.2.2. </a><a href="#name-nes_clock_filter-packet" class="section-name selfRef">NES_CLOCK_FILTER Packet</a>
             </h5>
 <p id="section-4.3.2.2-1">NES_CLOCK_FILTER packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.2.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.2.2-2">
@@ -3080,8 +3102,8 @@ li > p:last-of-type {
 </div>
 <div id="nes_overread">
 <section id="section-4.3.2.3">
-            <h5 id="name-nes_overread-packet-2">
-<a href="#section-4.3.2.3" class="section-number selfRef">4.3.2.3. </a><a href="#name-nes_overread-packet-2" class="section-name selfRef">NES_OVERREAD Packet</a>
+            <h5 id="name-nes_overread-packet">
+<a href="#section-4.3.2.3" class="section-number selfRef">4.3.2.3. </a><a href="#name-nes_overread-packet" class="section-name selfRef">NES_OVERREAD Packet</a>
             </h5>
 <p id="section-4.3.2.3-1">NES_OVERREAD packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.2.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.2.3-2">
@@ -3104,8 +3126,8 @@ li > p:last-of-type {
 </div>
 <div id="nes_game_genie_code">
 <section id="section-4.3.2.4">
-            <h5 id="name-nes_game_genie_code-packet-2">
-<a href="#section-4.3.2.4" class="section-number selfRef">4.3.2.4. </a><a href="#name-nes_game_genie_code-packet-2" class="section-name selfRef">NES_GAME_GENIE_CODE Packet</a>
+            <h5 id="name-nes_game_genie_code-packet">
+<a href="#section-4.3.2.4" class="section-number selfRef">4.3.2.4. </a><a href="#name-nes_game_genie_code-packet" class="section-name selfRef">NES_GAME_GENIE_CODE Packet</a>
             </h5>
 <p id="section-4.3.2.4-1">NES_GAME_GENIE_CODE packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.2.4-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.2.4-2">
@@ -3132,13 +3154,13 @@ li > p:last-of-type {
 </div>
 </section>
 <section id="section-4.3.3">
-          <h4 id="name-snes-specific-key-payload-fo">
-<a href="#section-4.3.3" class="section-number selfRef">4.3.3. </a><a href="#name-snes-specific-key-payload-fo" class="section-name selfRef">SNES Specific Key Payload Formats</a>
+          <h4 id="name-snes-specific-key-payload-f">
+<a href="#section-4.3.3" class="section-number selfRef">4.3.3. </a><a href="#name-snes-specific-key-payload-f" class="section-name selfRef">SNES Specific Key Payload Formats</a>
           </h4>
 <div id="snes_clock_filter">
 <section id="section-4.3.3.1">
-            <h5 id="name-snes_clock_filter-packet-2">
-<a href="#section-4.3.3.1" class="section-number selfRef">4.3.3.1. </a><a href="#name-snes_clock_filter-packet-2" class="section-name selfRef">SNES_CLOCK_FILTER Packet</a>
+            <h5 id="name-snes_clock_filter-packet">
+<a href="#section-4.3.3.1" class="section-number selfRef">4.3.3.1. </a><a href="#name-snes_clock_filter-packet" class="section-name selfRef">SNES_CLOCK_FILTER Packet</a>
             </h5>
 <p id="section-4.3.3.1-1">SNES_CLOCK_FILTER packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.3.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.3.1-2">
@@ -3161,8 +3183,8 @@ li > p:last-of-type {
 </div>
 <div id="snes_overread">
 <section id="section-4.3.3.2">
-            <h5 id="name-snes_overread-packet-2">
-<a href="#section-4.3.3.2" class="section-number selfRef">4.3.3.2. </a><a href="#name-snes_overread-packet-2" class="section-name selfRef">SNES_OVERREAD Packet</a>
+            <h5 id="name-snes_overread-packet">
+<a href="#section-4.3.3.2" class="section-number selfRef">4.3.3.2. </a><a href="#name-snes_overread-packet" class="section-name selfRef">SNES_OVERREAD Packet</a>
             </h5>
 <p id="section-4.3.3.2-1">SNES_OVERREAD packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.3.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.3.2-2">
@@ -3185,8 +3207,8 @@ li > p:last-of-type {
 </div>
 <div id="snes_game_genie_code">
 <section id="section-4.3.3.3">
-            <h5 id="name-snes_game_genie_code-packet-2">
-<a href="#section-4.3.3.3" class="section-number selfRef">4.3.3.3. </a><a href="#name-snes_game_genie_code-packet-2" class="section-name selfRef">SNES_GAME_GENIE_CODE Packet</a>
+            <h5 id="name-snes_game_genie_code-packet">
+<a href="#section-4.3.3.3" class="section-number selfRef">4.3.3.3. </a><a href="#name-snes_game_genie_code-packet" class="section-name selfRef">SNES_GAME_GENIE_CODE Packet</a>
             </h5>
 <p id="section-4.3.3.3-1">SNES_GAME_GENIE_CODE packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.3.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.3.3-2">
@@ -3213,8 +3235,8 @@ li > p:last-of-type {
 </div>
 <div id="snes_latch_train">
 <section id="section-4.3.3.4">
-            <h5 id="name-snes_latch_train-packet-2">
-<a href="#section-4.3.3.4" class="section-number selfRef">4.3.3.4. </a><a href="#name-snes_latch_train-packet-2" class="section-name selfRef">SNES_LATCH_TRAIN Packet</a>
+            <h5 id="name-snes_latch_train-packet">
+<a href="#section-4.3.3.4" class="section-number selfRef">4.3.3.4. </a><a href="#name-snes_latch_train-packet" class="section-name selfRef">SNES_LATCH_TRAIN Packet</a>
             </h5>
 <p id="section-4.3.3.4-1">SNES_LATCH_TRAIN packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.3.4-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.3.4-2">
@@ -3242,13 +3264,13 @@ li > p:last-of-type {
 </div>
 </section>
 <section id="section-4.3.4">
-          <h4 id="name-genesis-specific-key-payload">
-<a href="#section-4.3.4" class="section-number selfRef">4.3.4. </a><a href="#name-genesis-specific-key-payload" class="section-name selfRef">Genesis Specific Key Payload Formats</a>
+          <h4 id="name-genesis-specific-key-payloa">
+<a href="#section-4.3.4" class="section-number selfRef">4.3.4. </a><a href="#name-genesis-specific-key-payloa" class="section-name selfRef">Genesis Specific Key Payload Formats</a>
           </h4>
 <div id="genesis_game_genie_code">
 <section id="section-4.3.4.1">
-            <h5 id="name-genesis_game_genie_code-pack">
-<a href="#section-4.3.4.1" class="section-number selfRef">4.3.4.1. </a><a href="#name-genesis_game_genie_code-pack" class="section-name selfRef">GENESIS_GAME_GENIE_CODE Packet</a>
+            <h5 id="name-genesis_game_genie_code-pac">
+<a href="#section-4.3.4.1" class="section-number selfRef">4.3.4.1. </a><a href="#name-genesis_game_genie_code-pac" class="section-name selfRef">GENESIS_GAME_GENIE_CODE Packet</a>
             </h5>
 <p id="section-4.3.4.1-1">GENESIS_GAME_GENIE_CODE packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.4.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.4.1-2">
@@ -3275,13 +3297,13 @@ li > p:last-of-type {
 </div>
 </section>
 <section id="section-4.3.5">
-          <h4 id="name-input-frame-timing-key-paylo">
-<a href="#section-4.3.5" class="section-number selfRef">4.3.5. </a><a href="#name-input-frame-timing-key-paylo" class="section-name selfRef">Input Frame/Timing Key Payload Formats</a>
+          <h4 id="name-input-frame-timing-key-payl">
+<a href="#section-4.3.5" class="section-number selfRef">4.3.5. </a><a href="#name-input-frame-timing-key-payl" class="section-name selfRef">Input Frame/Timing Key Payload Formats</a>
           </h4>
 <div id="input_chunk">
 <section id="section-4.3.5.1">
-            <h5 id="name-input_chunk-packet-2">
-<a href="#section-4.3.5.1" class="section-number selfRef">4.3.5.1. </a><a href="#name-input_chunk-packet-2" class="section-name selfRef">INPUT_CHUNK Packet</a>
+            <h5 id="name-input_chunk-packet">
+<a href="#section-4.3.5.1" class="section-number selfRef">4.3.5.1. </a><a href="#name-input_chunk-packet" class="section-name selfRef">INPUT_CHUNK Packet</a>
             </h5>
 <p id="section-4.3.5.1-1">INPUT_CHUNK packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.5.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.5.1-2">
@@ -3301,7 +3323,7 @@ li > p:last-of-type {
 </dd>
               <dd class="break"></dd>
 <dt id="section-4.3.5.1-3.3"><strong>Inputs</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.5.1-3.4">Controller input data for controller on <strong>Port</strong>. Input values are usually in native format (usually active-low).  Input formats for specific controller types are described in (<a href="#controller_inputs" class="xref">Section 5</a>).<a href="#section-4.3.5.1-3.4" class="pilcrow">¶</a>
+              <dd style="margin-left: 1.5em" id="section-4.3.5.1-3.4">Controller input data for controller on <strong>Port</strong>. Input values are usually in native format (usually active-low).  Input formats for specific controller types are described in (<a href="#controller_inputs" class="auto internal xref">Section 5</a>).<a href="#section-4.3.5.1-3.4" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
 <dt id="section-4.3.5.1-3.5"><strong>PLEN</strong></dt>
@@ -3314,8 +3336,8 @@ li > p:last-of-type {
 </div>
 <div id="input_moment">
 <section id="section-4.3.5.2">
-            <h5 id="name-input_moment-packet-2">
-<a href="#section-4.3.5.2" class="section-number selfRef">4.3.5.2. </a><a href="#name-input_moment-packet-2" class="section-name selfRef">INPUT_MOMENT Packet</a>
+            <h5 id="name-input_moment-packet">
+<a href="#section-4.3.5.2" class="section-number selfRef">4.3.5.2. </a><a href="#name-input_moment-packet" class="section-name selfRef">INPUT_MOMENT Packet</a>
             </h5>
 <p id="section-4.3.5.2-1">INPUT_MOMENT packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.5.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.5.2-2">
@@ -3354,7 +3376,7 @@ li > p:last-of-type {
 </dd>
               <dd class="break"></dd>
 <dt id="section-4.3.5.2-3.7"><strong>Inputs</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.5.2-3.8">Controller input data for controller on <strong>Port</strong>. Input values are usually in native format (usually active-low).  Input formats for specific controller types are described in (<a href="#controller_inputs" class="xref">Section 5</a>).<a href="#section-4.3.5.2-3.8" class="pilcrow">¶</a>
+              <dd style="margin-left: 1.5em" id="section-4.3.5.2-3.8">Controller input data for controller on <strong>Port</strong>. Input values are usually in native format (usually active-low).  Input formats for specific controller types are described in (<a href="#controller_inputs" class="auto internal xref">Section 5</a>).<a href="#section-4.3.5.2-3.8" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
 <dt id="section-4.3.5.2-3.9"><strong>PLEN</strong></dt>
@@ -3366,8 +3388,8 @@ li > p:last-of-type {
 </div>
 <div id="transition">
 <section id="section-4.3.5.3">
-            <h5 id="name-transition-packet-2">
-<a href="#section-4.3.5.3" class="section-number selfRef">4.3.5.3. </a><a href="#name-transition-packet-2" class="section-name selfRef">TRANSITION Packet</a>
+            <h5 id="name-transition-packet">
+<a href="#section-4.3.5.3" class="section-number selfRef">4.3.5.3. </a><a href="#name-transition-packet" class="section-name selfRef">TRANSITION Packet</a>
             </h5>
 <p id="section-4.3.5.3-1">TRANSITION packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.5.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.5.3-2">
@@ -3422,8 +3444,8 @@ li > p:last-of-type {
 </div>
 <div id="lag_frame_chunk">
 <section id="section-4.3.5.4">
-            <h5 id="name-lag_frame_chunk-packet-2">
-<a href="#section-4.3.5.4" class="section-number selfRef">4.3.5.4. </a><a href="#name-lag_frame_chunk-packet-2" class="section-name selfRef">LAG_FRAME_CHUNK Packet</a>
+            <h5 id="name-lag_frame_chunk-packet">
+<a href="#section-4.3.5.4" class="section-number selfRef">4.3.5.4. </a><a href="#name-lag_frame_chunk-packet" class="section-name selfRef">LAG_FRAME_CHUNK Packet</a>
             </h5>
 <p id="section-4.3.5.4-1">LAG_FRAME_CHUNK packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.5.4-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.5.4-2">
@@ -3451,8 +3473,8 @@ li > p:last-of-type {
 </div>
 <div id="movie_transition">
 <section id="section-4.3.5.5">
-            <h5 id="name-movie_transition-2">
-<a href="#section-4.3.5.5" class="section-number selfRef">4.3.5.5. </a><a href="#name-movie_transition-2" class="section-name selfRef">MOVIE_TRANSITION</a>
+            <h5 id="name-movie_transition">
+<a href="#section-4.3.5.5" class="section-number selfRef">4.3.5.5. </a><a href="#name-movie_transition" class="section-name selfRef">MOVIE_TRANSITION</a>
             </h5>
 <p id="section-4.3.5.5-1">MOVIE_TRANSITION packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.5.5-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.5.5-2">
@@ -3493,13 +3515,13 @@ li > p:last-of-type {
 </div>
 </section>
 <section id="section-4.3.6">
-          <h4 id="name-extraneous-key-payload-forma">
-<a href="#section-4.3.6" class="section-number selfRef">4.3.6. </a><a href="#name-extraneous-key-payload-forma" class="section-name selfRef">Extraneous Key Payload Formats</a>
+          <h4 id="name-extraneous-key-payload-form">
+<a href="#section-4.3.6" class="section-number selfRef">4.3.6. </a><a href="#name-extraneous-key-payload-form" class="section-name selfRef">Extraneous Key Payload Formats</a>
           </h4>
 <div id="comment">
 <section id="section-4.3.6.1">
-            <h5 id="name-comment-packet-2">
-<a href="#section-4.3.6.1" class="section-number selfRef">4.3.6.1. </a><a href="#name-comment-packet-2" class="section-name selfRef">COMMENT Packet</a>
+            <h5 id="name-comment-packet">
+<a href="#section-4.3.6.1" class="section-number selfRef">4.3.6.1. </a><a href="#name-comment-packet" class="section-name selfRef">COMMENT Packet</a>
             </h5>
 <p id="section-4.3.6.1-1">COMMENT packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.6.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.6.1-2">
@@ -3526,8 +3548,8 @@ li > p:last-of-type {
 </div>
 <div id="experimental">
 <section id="section-4.3.6.2">
-            <h5 id="name-experimental-packet-2">
-<a href="#section-4.3.6.2" class="section-number selfRef">4.3.6.2. </a><a href="#name-experimental-packet-2" class="section-name selfRef">EXPERIMENTAL Packet</a>
+            <h5 id="name-experimental-packet">
+<a href="#section-4.3.6.2" class="section-number selfRef">4.3.6.2. </a><a href="#name-experimental-packet" class="section-name selfRef">EXPERIMENTAL Packet</a>
             </h5>
 <p id="section-4.3.6.2-1">EXPERIMENTAL packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.6.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.6.2-2">
@@ -3554,8 +3576,8 @@ li > p:last-of-type {
 </div>
 <div id="unspecified">
 <section id="section-4.3.6.3">
-            <h5 id="name-unspecified-packet-2">
-<a href="#section-4.3.6.3" class="section-number selfRef">4.3.6.3. </a><a href="#name-unspecified-packet-2" class="section-name selfRef">UNSPECIFIED Packet</a>
+            <h5 id="name-unspecified-packet">
+<a href="#section-4.3.6.3" class="section-number selfRef">4.3.6.3. </a><a href="#name-unspecified-packet" class="section-name selfRef">UNSPECIFIED Packet</a>
             </h5>
 <p id="section-4.3.6.3-1">UNSPECIFIED packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.6.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.6.3-2">
@@ -3586,19 +3608,19 @@ li > p:last-of-type {
 </div>
 <div id="controller_inputs">
 <section id="section-5">
-      <h2 id="name-controller-input-formats-2">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-controller-input-formats-2" class="section-name selfRef">Controller Input Formats</a>
+      <h2 id="name-controller-input-formats">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-controller-input-formats" class="section-name selfRef">Controller Input Formats</a>
       </h2>
 <p id="section-5-1">A forward slash (<strong>/</strong>) is used to signify <strong>active low</strong>.  As an example, if a bit is labeled as <strong>/A</strong>, the bit <span class="bcp14">MUST</span> be 0 if the A button is pressed and <span class="bcp14">MUST</span> be 1 if the A button is not pressed.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <p id="section-5-2">Multi-octet controller inputs are in little-endian order<a href="#section-5-2" class="pilcrow">¶</a></p>
 <p id="section-5-3">Bit order for octets in controller inputs are high-order (MSB) (Most significant bit to least significant bit), so bit 7 <span class="bcp14">MUST</span> be the left-most bit of the octet and bit 0 <span class="bcp14">MUST</span> be the right-most bit of the octet.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <section id="section-5.1">
-        <h3 id="name-nes-famicom-controller-types">
-<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-nes-famicom-controller-types" class="section-name selfRef">NES/Famicom Controller Types</a>
+        <h3 id="name-nes-famicom-controller-type">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-nes-famicom-controller-type" class="section-name selfRef">NES/Famicom Controller Types</a>
         </h3>
 <section id="section-5.1.1">
-          <h4 id="name-nes-standard-controller-2">
-<a href="#section-5.1.1" class="section-number selfRef">5.1.1. </a><a href="#name-nes-standard-controller-2" class="section-name selfRef">NES Standard Controller</a>
+          <h4 id="name-nes-standard-controller">
+<a href="#section-5.1.1" class="section-number selfRef">5.1.1. </a><a href="#name-nes-standard-controller" class="section-name selfRef">NES Standard Controller</a>
           </h4>
 <p id="section-5.1.1-1">Single Input Length: 1 Octet<a href="#section-5.1.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.1.1-2"><strong>Octet 0</strong><a href="#section-5.1.1-2" class="pilcrow">¶</a></p>
@@ -3638,8 +3660,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-5.1.2">
-          <h4 id="name-nes-four-score-2">
-<a href="#section-5.1.2" class="section-number selfRef">5.1.2. </a><a href="#name-nes-four-score-2" class="section-name selfRef">NES Four Score</a>
+          <h4 id="name-nes-four-score">
+<a href="#section-5.1.2" class="section-number selfRef">5.1.2. </a><a href="#name-nes-four-score" class="section-name selfRef">NES Four Score</a>
           </h4>
 <p id="section-5.1.2-1">Single Input Length: 3 Octets<a href="#section-5.1.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.1.2-2"><strong>Octet 0</strong><a href="#section-5.1.2-2" class="pilcrow">¶</a></p>
@@ -3751,12 +3773,12 @@ li > p:last-of-type {
 </section>
 </section>
 <section id="section-5.2">
-        <h3 id="name-snes-controller-types-2">
-<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-snes-controller-types-2" class="section-name selfRef">SNES Controller Types</a>
+        <h3 id="name-snes-controller-types">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-snes-controller-types" class="section-name selfRef">SNES Controller Types</a>
         </h3>
 <section id="section-5.2.1">
-          <h4 id="name-snes-standard-controller-2">
-<a href="#section-5.2.1" class="section-number selfRef">5.2.1. </a><a href="#name-snes-standard-controller-2" class="section-name selfRef">SNES Standard Controller</a>
+          <h4 id="name-snes-standard-controller">
+<a href="#section-5.2.1" class="section-number selfRef">5.2.1. </a><a href="#name-snes-standard-controller" class="section-name selfRef">SNES Standard Controller</a>
           </h4>
 <p id="section-5.2.1-1">Single Input Length: 2 Octets<a href="#section-5.2.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.1-2"><strong>Octet 0</strong><a href="#section-5.2.1-2" class="pilcrow">¶</a></p>
@@ -3831,8 +3853,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-5.2.2">
-          <h4 id="name-snes-mouse-2">
-<a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-snes-mouse-2" class="section-name selfRef">SNES Mouse</a>
+          <h4 id="name-snes-mouse">
+<a href="#section-5.2.2" class="section-number selfRef">5.2.2. </a><a href="#name-snes-mouse" class="section-name selfRef">SNES Mouse</a>
           </h4>
 <p id="section-5.2.2-1">Single Input Length: 4 Octets<a href="#section-5.2.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.2-2"><strong>Octet 0</strong><a href="#section-5.2.2-2" class="pilcrow">¶</a></p>
@@ -3929,8 +3951,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-5.2.3">
-          <h4 id="name-snes-super-multitap-2">
-<a href="#section-5.2.3" class="section-number selfRef">5.2.3. </a><a href="#name-snes-super-multitap-2" class="section-name selfRef">SNES Super Multitap</a>
+          <h4 id="name-snes-super-multitap">
+<a href="#section-5.2.3" class="section-number selfRef">5.2.3. </a><a href="#name-snes-super-multitap" class="section-name selfRef">SNES Super Multitap</a>
           </h4>
 <p id="section-5.2.3-1">Single Input Length: 5 Octets<a href="#section-5.2.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.2.3-2"><strong>Octet 0</strong> :<a href="#section-5.2.3-2" class="pilcrow">¶</a></p>
@@ -4112,12 +4134,12 @@ li > p:last-of-type {
 </section>
 </section>
 <section id="section-5.3">
-        <h3 id="name-n64-controller-types-2">
-<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-n64-controller-types-2" class="section-name selfRef">N64 Controller Types</a>
+        <h3 id="name-n64-controller-types">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-n64-controller-types" class="section-name selfRef">N64 Controller Types</a>
         </h3>
 <section id="section-5.3.1">
-          <h4 id="name-n64-standard-controller-2">
-<a href="#section-5.3.1" class="section-number selfRef">5.3.1. </a><a href="#name-n64-standard-controller-2" class="section-name selfRef">N64 Standard Controller</a>
+          <h4 id="name-n64-standard-controller">
+<a href="#section-5.3.1" class="section-number selfRef">5.3.1. </a><a href="#name-n64-standard-controller" class="section-name selfRef">N64 Standard Controller</a>
           </h4>
 <p id="section-5.3.1-1">Single Input Length: 4 Octets<a href="#section-5.3.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.3.1-2"><strong>Octet 0</strong><a href="#section-5.3.1-2" class="pilcrow">¶</a></p>
@@ -4206,8 +4228,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-5.3.2">
-          <h4 id="name-n64-standard-controller-with-r">
-<a href="#section-5.3.2" class="section-number selfRef">5.3.2. </a><a href="#name-n64-standard-controller-with-r" class="section-name selfRef">N64 Standard Controller with Rumble</a>
+          <h4 id="name-n64-standard-controller-wit">
+<a href="#section-5.3.2" class="section-number selfRef">5.3.2. </a><a href="#name-n64-standard-controller-wit" class="section-name selfRef">N64 Standard Controller with Rumble</a>
           </h4>
 <p id="section-5.3.2-1">Single Input Length: 4 Octets<a href="#section-5.3.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.3.2-2"><strong>Octet 0</strong><a href="#section-5.3.2-2" class="pilcrow">¶</a></p>
@@ -4296,8 +4318,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-5.3.3">
-          <h4 id="name-n64-standard-controller-with-c">
-<a href="#section-5.3.3" class="section-number selfRef">5.3.3. </a><a href="#name-n64-standard-controller-with-c" class="section-name selfRef">N64 Standard Controller with Controller Pak</a>
+          <h4 id="name-n64-standard-controller-with">
+<a href="#section-5.3.3" class="section-number selfRef">5.3.3. </a><a href="#name-n64-standard-controller-with" class="section-name selfRef">N64 Standard Controller with Controller Pak</a>
           </h4>
 <p id="section-5.3.3-1">Single Input Length: 4 Octets<a href="#section-5.3.3-1" class="pilcrow">¶</a></p>
 <p id="section-5.3.3-2"><strong>Octet 0</strong><a href="#section-5.3.3-2" class="pilcrow">¶</a></p>
@@ -4386,8 +4408,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-5.3.4">
-          <h4 id="name-n64-standard-controller-with-t">
-<a href="#section-5.3.4" class="section-number selfRef">5.3.4. </a><a href="#name-n64-standard-controller-with-t" class="section-name selfRef">N64 Standard Controller with Transfer Pak</a>
+          <h4 id="name-n64-standard-controller-with-">
+<a href="#section-5.3.4" class="section-number selfRef">5.3.4. </a><a href="#name-n64-standard-controller-with-" class="section-name selfRef">N64 Standard Controller with Transfer Pak</a>
           </h4>
 <p id="section-5.3.4-1">Single Input Length: 4 Octets<a href="#section-5.3.4-1" class="pilcrow">¶</a></p>
 <p id="section-5.3.4-2"><strong>Octet 0</strong><a href="#section-5.3.4-2" class="pilcrow">¶</a></p>
@@ -4476,8 +4498,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-5.3.5">
-          <h4 id="name-n64-mouse-2">
-<a href="#section-5.3.5" class="section-number selfRef">5.3.5. </a><a href="#name-n64-mouse-2" class="section-name selfRef">N64 Mouse</a>
+          <h4 id="name-n64-mouse">
+<a href="#section-5.3.5" class="section-number selfRef">5.3.5. </a><a href="#name-n64-mouse" class="section-name selfRef">N64 Mouse</a>
           </h4>
 <p id="section-5.3.5-1">Single Input Length: 4 Octets<a href="#section-5.3.5-1" class="pilcrow">¶</a></p>
 <p id="section-5.3.5-2"><strong>Octet 0</strong><a href="#section-5.3.5-2" class="pilcrow">¶</a></p>
@@ -4566,8 +4588,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-5.3.6">
-          <h4 id="name-n64-densha-de-go-2">
-<a href="#section-5.3.6" class="section-number selfRef">5.3.6. </a><a href="#name-n64-densha-de-go-2" class="section-name selfRef">N64 Densha de Go</a>
+          <h4 id="name-n64-densha-de-go">
+<a href="#section-5.3.6" class="section-number selfRef">5.3.6. </a><a href="#name-n64-densha-de-go" class="section-name selfRef">N64 Densha de Go</a>
           </h4>
 <p id="section-5.3.6-1">Single Input Length: 4 Octets<a href="#section-5.3.6-1" class="pilcrow">¶</a></p>
 <p id="section-5.3.6-2"><strong>Octet 0</strong><a href="#section-5.3.6-2" class="pilcrow">¶</a></p>
@@ -4701,12 +4723,12 @@ li > p:last-of-type {
 </section>
 </section>
 <section id="section-5.4">
-        <h3 id="name-gamecube-controller-types-2">
-<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-gamecube-controller-types-2" class="section-name selfRef">GameCube Controller Types</a>
+        <h3 id="name-gamecube-controller-types">
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-gamecube-controller-types" class="section-name selfRef">GameCube Controller Types</a>
         </h3>
 <section id="section-5.4.1">
-          <h4 id="name-gamecube-standard-controller">
-<a href="#section-5.4.1" class="section-number selfRef">5.4.1. </a><a href="#name-gamecube-standard-controller" class="section-name selfRef">GameCube Standard Controller</a>
+          <h4 id="name-gamecube-standard-controlle">
+<a href="#section-5.4.1" class="section-number selfRef">5.4.1. </a><a href="#name-gamecube-standard-controlle" class="section-name selfRef">GameCube Standard Controller</a>
           </h4>
 <p id="section-5.4.1-1">Single Input Length: 8 Octets<a href="#section-5.4.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.4.1-2"><strong>Octet 0</strong><a href="#section-5.4.1-2" class="pilcrow">¶</a></p>
@@ -4824,12 +4846,12 @@ li > p:last-of-type {
 </section>
 </section>
 <section id="section-5.5">
-        <h3 id="name-game-boy-controller-types-2">
-<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-game-boy-controller-types-2" class="section-name selfRef">Game Boy Controller Types</a>
+        <h3 id="name-game-boy-controller-types">
+<a href="#section-5.5" class="section-number selfRef">5.5. </a><a href="#name-game-boy-controller-types" class="section-name selfRef">Game Boy Controller Types</a>
         </h3>
 <section id="section-5.5.1">
-          <h4 id="name-gb-standard-controller-2">
-<a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-gb-standard-controller-2" class="section-name selfRef">GB Standard Controller</a>
+          <h4 id="name-gb-standard-controller">
+<a href="#section-5.5.1" class="section-number selfRef">5.5.1. </a><a href="#name-gb-standard-controller" class="section-name selfRef">GB Standard Controller</a>
           </h4>
 <p id="section-5.5.1-1">Single Input Length: 1 Octet<a href="#section-5.5.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.5.1-2"><strong>Octet 0</strong><a href="#section-5.5.1-2" class="pilcrow">¶</a></p>
@@ -4870,12 +4892,12 @@ li > p:last-of-type {
 </section>
 </section>
 <section id="section-5.6">
-        <h3 id="name-game-boy-color-controller-ty">
-<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-game-boy-color-controller-ty" class="section-name selfRef">Game Boy Color Controller Types</a>
+        <h3 id="name-game-boy-color-controller-t">
+<a href="#section-5.6" class="section-number selfRef">5.6. </a><a href="#name-game-boy-color-controller-t" class="section-name selfRef">Game Boy Color Controller Types</a>
         </h3>
 <section id="section-5.6.1">
-          <h4 id="name-gbc-standard-controller-2">
-<a href="#section-5.6.1" class="section-number selfRef">5.6.1. </a><a href="#name-gbc-standard-controller-2" class="section-name selfRef">GBC Standard Controller</a>
+          <h4 id="name-gbc-standard-controller">
+<a href="#section-5.6.1" class="section-number selfRef">5.6.1. </a><a href="#name-gbc-standard-controller" class="section-name selfRef">GBC Standard Controller</a>
           </h4>
 <p id="section-5.6.1-1">Single Input Length: 1 Octet<a href="#section-5.6.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.6.1-2"><strong>Octet 0</strong><a href="#section-5.6.1-2" class="pilcrow">¶</a></p>
@@ -4916,12 +4938,12 @@ li > p:last-of-type {
 </section>
 </section>
 <section id="section-5.7">
-        <h3 id="name-game-boy-advance-controller-">
-<a href="#section-5.7" class="section-number selfRef">5.7. </a><a href="#name-game-boy-advance-controller-" class="section-name selfRef">Game Boy Advance Controller Types</a>
+        <h3 id="name-game-boy-advance-controller">
+<a href="#section-5.7" class="section-number selfRef">5.7. </a><a href="#name-game-boy-advance-controller" class="section-name selfRef">Game Boy Advance Controller Types</a>
         </h3>
 <section id="section-5.7.1">
-          <h4 id="name-gba-standard-controller-2">
-<a href="#section-5.7.1" class="section-number selfRef">5.7.1. </a><a href="#name-gba-standard-controller-2" class="section-name selfRef">GBA Standard Controller</a>
+          <h4 id="name-gba-standard-controller">
+<a href="#section-5.7.1" class="section-number selfRef">5.7.1. </a><a href="#name-gba-standard-controller" class="section-name selfRef">GBA Standard Controller</a>
           </h4>
 <p id="section-5.7.1-1">Single Input Length: 2 Octets<a href="#section-5.7.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.7.1-2"><strong>Octet 0</strong><a href="#section-5.7.1-2" class="pilcrow">¶</a></p>
@@ -4997,12 +5019,12 @@ li > p:last-of-type {
 </section>
 </section>
 <section id="section-5.8">
-        <h3 id="name-genesis-controller-types-2">
-<a href="#section-5.8" class="section-number selfRef">5.8. </a><a href="#name-genesis-controller-types-2" class="section-name selfRef">Genesis Controller Types</a>
+        <h3 id="name-genesis-controller-types">
+<a href="#section-5.8" class="section-number selfRef">5.8. </a><a href="#name-genesis-controller-types" class="section-name selfRef">Genesis Controller Types</a>
         </h3>
 <section id="section-5.8.1">
-          <h4 id="name-genesis-mega-drive-3-button-2">
-<a href="#section-5.8.1" class="section-number selfRef">5.8.1. </a><a href="#name-genesis-mega-drive-3-button-2" class="section-name selfRef">Genesis (Mega Drive) 3-Button</a>
+          <h4 id="name-genesis-mega-drive-3-button">
+<a href="#section-5.8.1" class="section-number selfRef">5.8.1. </a><a href="#name-genesis-mega-drive-3-button" class="section-name selfRef">Genesis (Mega Drive) 3-Button</a>
           </h4>
 <p id="section-5.8.1-1">Single Input Length: 1 Octet<a href="#section-5.8.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.8.1-2"><strong>Octet 0</strong><a href="#section-5.8.1-2" class="pilcrow">¶</a></p>
@@ -5042,8 +5064,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-5.8.2">
-          <h4 id="name-genesis-mega-drive-6-button-2">
-<a href="#section-5.8.2" class="section-number selfRef">5.8.2. </a><a href="#name-genesis-mega-drive-6-button-2" class="section-name selfRef">Genesis (Mega Drive) 6-Button</a>
+          <h4 id="name-genesis-mega-drive-6-button">
+<a href="#section-5.8.2" class="section-number selfRef">5.8.2. </a><a href="#name-genesis-mega-drive-6-button" class="section-name selfRef">Genesis (Mega Drive) 6-Button</a>
           </h4>
 <p id="section-5.8.2-1">Single Input Length: 2 Octets<a href="#section-5.8.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.8.2-2"><strong>Octet 0</strong><a href="#section-5.8.2-2" class="pilcrow">¶</a></p>
@@ -5119,12 +5141,12 @@ li > p:last-of-type {
 </section>
 </section>
 <section id="section-5.9">
-        <h3 id="name-atari-2600-controller-types-2">
-<a href="#section-5.9" class="section-number selfRef">5.9. </a><a href="#name-atari-2600-controller-types-2" class="section-name selfRef">Atari 2600 Controller Types</a>
+        <h3 id="name-atari-2600-controller-types">
+<a href="#section-5.9" class="section-number selfRef">5.9. </a><a href="#name-atari-2600-controller-types" class="section-name selfRef">Atari 2600 Controller Types</a>
         </h3>
 <section id="section-5.9.1">
-          <h4 id="name-a2600-joystick-2">
-<a href="#section-5.9.1" class="section-number selfRef">5.9.1. </a><a href="#name-a2600-joystick-2" class="section-name selfRef">A2600 Joystick</a>
+          <h4 id="name-a2600-joystick">
+<a href="#section-5.9.1" class="section-number selfRef">5.9.1. </a><a href="#name-a2600-joystick" class="section-name selfRef">A2600 Joystick</a>
           </h4>
 <p id="section-5.9.1-1">Single Input Length: 1 Octet<a href="#section-5.9.1-1" class="pilcrow">¶</a></p>
 <p id="section-5.9.1-2"><strong>Octet 0</strong><a href="#section-5.9.1-2" class="pilcrow">¶</a></p>
@@ -5164,8 +5186,8 @@ li > p:last-of-type {
 </dl>
 </section>
 <section id="section-5.9.2">
-          <h4 id="name-a2600-keyboard-controller-2">
-<a href="#section-5.9.2" class="section-number selfRef">5.9.2. </a><a href="#name-a2600-keyboard-controller-2" class="section-name selfRef">A2600 Keyboard Controller</a>
+          <h4 id="name-a2600-keyboard-controller">
+<a href="#section-5.9.2" class="section-number selfRef">5.9.2. </a><a href="#name-a2600-keyboard-controller" class="section-name selfRef">A2600 Keyboard Controller</a>
           </h4>
 <p id="section-5.9.2-1">Single Input Length: 1 Octet<a href="#section-5.9.2-1" class="pilcrow">¶</a></p>
 <p id="section-5.9.2-2"><strong>Octet 0</strong><a href="#section-5.9.2-2" class="pilcrow">¶</a></p>
@@ -5208,12 +5230,12 @@ li > p:last-of-type {
 </section>
 </div>
 <section id="section-6">
-      <h2 id="name-references-2">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references-2" class="section-name selfRef">References</a>
+      <h2 id="name-references">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
 <section id="section-6.1">
-        <h3 id="name-normative-references-2">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references-2" class="section-name selfRef">Normative References</a>
+        <h3 id="name-normative-references">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
@@ -5228,8 +5250,8 @@ li > p:last-of-type {
 </section>
 </section>
 <section id="appendix-A">
-      <h2 id="name-copyright-notice-2">
-<a href="#name-copyright-notice-2" class="section-name selfRef">Copyright Notice</a>
+      <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
       </h2>
 <p id="appendix-A-1">Copyright (c) 2021-2023, Vi Grey, Bigbass, and rasteri<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <p id="appendix-A-2">All rights reserved.<a href="#appendix-A-2" class="pilcrow">¶</a></p>
@@ -5244,8 +5266,8 @@ li > p:last-of-type {
 </section>
 <div id="authors-addresses">
 <section id="appendix-B">
-      <h2 id="name-authors-addresses-2">
-<a href="#name-authors-addresses-2" class="section-name selfRef">Authors' Addresses</a>
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
 <address class="vcard">
         <div dir="auto" class="left"><span class="fn nameRole">Vi Grey</span></div>

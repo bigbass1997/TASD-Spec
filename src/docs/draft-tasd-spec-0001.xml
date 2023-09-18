@@ -212,7 +212,7 @@
         <dt><strong>Key</strong></dt>
         <dd>Packet type (Packet key).</dd>
         <dt><strong>PEXP</strong></dt>
-        <dd>Length of <strong>PLEN</strong>.</dd>
+				<dd>Length of <strong>PLEN</strong>.  <strong>PEXP</strong> <bcp14>MUST</bcp14> be a value greater than 0.</dd>
         <dt><strong>PLEN</strong></dt>
         <dd>Length of <strong>Payload</strong>.</dd>
         <dt><strong>Payload</strong></dt>
@@ -1914,6 +1914,8 @@
     </section>
     <!-- Change Log
     
+draft 10 - 2023-09-18   VG   Specify that PEXP MUST be greater than 0
+
 draft 09 - 2023-09-17   Bigbass Added "Structure" section to better define the overall structure of a TASD file
     
 draft 08 - 2023-09-14   Bigbass Fixed key numbering for packets SNES_OVERREAD, SNES_GAME_GENIE_CODE, and SNES_LATCH_TRAIN in section 3.2.3

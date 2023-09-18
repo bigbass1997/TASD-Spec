@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), although currently without version numbers added.
 
 
+## 2023-09-18
+### Changed
+- Specify that PEXP MUST be greater than 0
+
+
 ## 2023-09-17
 ### Added
 - "Structure" section in spec to better define the overall structure of a TASD file

@@ -7,7 +7,7 @@ Independent TAS Console Replay Research Group                    V. Grey
                                                                  Bigbass
                                                                         
                                                                  rasteri
-                                                       17 September 2023
+                                                       18 September 2023
 
 
                 TASD File Format Specification Version 1
@@ -366,7 +366,7 @@ Table of Contents
       Packet type (Packet key).
 
    *PEXP*
-      Length of *PLEN*.
+      Length of *PLEN*.  *PEXP* MUST be a value greater than 0.
 
    *PLEN*
       Length of *Payload*.
