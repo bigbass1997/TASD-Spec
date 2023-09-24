@@ -1207,7 +1207,7 @@ li > p:last-of-type:only-child {
 <dd class="workgroup">Independent TAS Console Replay Research Group</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-09-18" class="published">18 September 2023</time>
+<time datetime="2023-09-24" class="published">24 September 2023</time>
     </dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
@@ -1383,6 +1383,9 @@ li > p:last-of-type:only-child {
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.22">
                         <p id="section-toc.1-1.4.2.3.2.1.2.22.1"><a href="#section-4.3.1.22" class="auto internal xref">4.3.1.22</a>. <a href="#name-port_controller-packet" class="internal xref">PORT_CONTROLLER Packet</a></p>
 </li>
+                      <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.1.2.23">
+                        <p id="section-toc.1-1.4.2.3.2.1.2.23.1"><a href="#section-4.3.1.23" class="auto internal xref">4.3.1.23</a>. <a href="#name-port_overread-packet" class="internal xref">PORT_OVERREAD Packet</a></p>
+</li>
                     </ul>
 </li>
                   <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2">
@@ -1395,10 +1398,7 @@ li > p:last-of-type:only-child {
                         <p id="section-toc.1-1.4.2.3.2.2.2.2.1"><a href="#section-4.3.2.2" class="auto internal xref">4.3.2.2</a>.  <a href="#name-nes_clock_filter-packet" class="internal xref">NES_CLOCK_FILTER Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2.2.3">
-                        <p id="section-toc.1-1.4.2.3.2.2.2.3.1"><a href="#section-4.3.2.3" class="auto internal xref">4.3.2.3</a>.  <a href="#name-nes_overread-packet" class="internal xref">NES_OVERREAD Packet</a></p>
-</li>
-                      <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.2.2.4">
-                        <p id="section-toc.1-1.4.2.3.2.2.2.4.1"><a href="#section-4.3.2.4" class="auto internal xref">4.3.2.4</a>.  <a href="#name-nes_game_genie_code-packet" class="internal xref">NES_GAME_GENIE_CODE Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.2.2.3.1"><a href="#section-4.3.2.3" class="auto internal xref">4.3.2.3</a>.  <a href="#name-nes_game_genie_code-packet" class="internal xref">NES_GAME_GENIE_CODE Packet</a></p>
 </li>
                     </ul>
 </li>
@@ -1406,10 +1406,10 @@ li > p:last-of-type:only-child {
                     <p id="section-toc.1-1.4.2.3.2.3.1"><a href="#section-4.3.3" class="auto internal xref">4.3.3</a>.  <a href="#name-snes-specific-key-payload-f" class="internal xref">SNES Specific Key Payload Formats</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3.2.1">
-                        <p id="section-toc.1-1.4.2.3.2.3.2.1.1"><a href="#section-4.3.3.1" class="auto internal xref">4.3.3.1</a>.  <a href="#name-snes_clock_filter-packet" class="internal xref">SNES_CLOCK_FILTER Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.3.2.1.1"><a href="#section-4.3.3.1" class="auto internal xref">4.3.3.1</a>.  <a href="#name-snes_latch_filter-packet" class="internal xref">SNES_LATCH_FILTER Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3.2.2">
-                        <p id="section-toc.1-1.4.2.3.2.3.2.2.1"><a href="#section-4.3.3.2" class="auto internal xref">4.3.3.2</a>.  <a href="#name-snes_overread-packet" class="internal xref">SNES_OVERREAD Packet</a></p>
+                        <p id="section-toc.1-1.4.2.3.2.3.2.2.1"><a href="#section-4.3.3.2" class="auto internal xref">4.3.3.2</a>.  <a href="#name-snes_clock_filter-packet" class="internal xref">SNES_CLOCK_FILTER Packet</a></p>
 </li>
                       <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3.2.3.2.3">
                         <p id="section-toc.1-1.4.2.3.2.3.2.3.1"><a href="#section-4.3.3.3" class="auto internal xref">4.3.3.3</a>.  <a href="#name-snes_game_genie_code-packet" class="internal xref">SNES_GAME_GENIE_CODE Packet</a></p>
@@ -1952,6 +1952,10 @@ li > p:last-of-type:only-child {
 <dt id="section-4.1.1-1.43"><code>[00 F0]</code></dt>
             <dd style="margin-left: 1.5em" id="section-4.1.1-1.44">PORT_CONTROLLER<a href="#section-4.1.1-1.44" class="pilcrow">¶</a>
 </dd>
+            <dd class="break"></dd>
+<dt id="section-4.1.1-1.45"><code>[00 F1]</code></dt>
+            <dd style="margin-left: 1.5em" id="section-4.1.1-1.46">PORT_OVERREAD<a href="#section-4.1.1-1.46" class="pilcrow">¶</a>
+</dd>
           <dd class="break"></dd>
 </dl>
 </section>
@@ -1968,12 +1972,8 @@ li > p:last-of-type:only-child {
             <dd style="margin-left: 1.5em" id="section-4.1.2-1.4">NES_CLOCK_FILTER<a href="#section-4.1.2-1.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-4.1.2-1.5"><code>[01 03]</code></dt>
-            <dd style="margin-left: 1.5em" id="section-4.1.2-1.6">NES_OVERREAD<a href="#section-4.1.2-1.6" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-4.1.2-1.7"><code>[01 04]</code></dt>
-            <dd style="margin-left: 1.5em" id="section-4.1.2-1.8">NES_GAME_GENIE_CODE<a href="#section-4.1.2-1.8" class="pilcrow">¶</a>
+<dt id="section-4.1.2-1.5"><code>[01 04]</code></dt>
+            <dd style="margin-left: 1.5em" id="section-4.1.2-1.6">NES_GAME_GENIE_CODE<a href="#section-4.1.2-1.6" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -1987,16 +1987,12 @@ li > p:last-of-type:only-child {
             <dd style="margin-left: 1.5em" id="section-4.1.3-1.2">SNES_CLOCK_FILTER<a href="#section-4.1.3-1.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-4.1.3-1.3"><code>[02 03]</code></dt>
-            <dd style="margin-left: 1.5em" id="section-4.1.3-1.4">SNES_OVERREAD<a href="#section-4.1.3-1.4" class="pilcrow">¶</a>
+<dt id="section-4.1.3-1.3"><code>[02 04]</code></dt>
+            <dd style="margin-left: 1.5em" id="section-4.1.3-1.4">SNES_GAME_GENIE_CODE<a href="#section-4.1.3-1.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-4.1.3-1.5"><code>[02 04]</code></dt>
-            <dd style="margin-left: 1.5em" id="section-4.1.3-1.6">SNES_GAME_GENIE_CODE<a href="#section-4.1.3-1.6" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-4.1.3-1.7"><code>[02 05]</code></dt>
-            <dd style="margin-left: 1.5em" id="section-4.1.3-1.8">SNES_LATCH_TRAIN<a href="#section-4.1.3-1.8" class="pilcrow">¶</a>
+<dt id="section-4.1.3-1.5"><code>[02 05]</code></dt>
+            <dd style="margin-left: 1.5em" id="section-4.1.3-1.6">SNES_LATCH_TRAIN<a href="#section-4.1.3-1.6" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -2178,6 +2174,11 @@ li > p:last-of-type:only-child {
 <code>[00 F0]</code> - PORT_CONTROLLER</dt>
             <dd style="margin-left: 1.5em" id="section-4.2.1-1.44">Specifies the controller type in specific console controller ports for the TAS when played on hardware.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#port_controller" class="auto internal xref">Section 4.3.1.22</a>).<a href="#section-4.2.1-1.44" class="pilcrow">¶</a>
 </dd>
+            <dd class="break"></dd>
+<dt id="section-4.2.1-1.45">
+<code>[00 F1]</code> - PORT_OVERREAD</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.1-1.46">Specifies whether a high or low signal <span class="bcp14">SHOULD</span> be sent through a specified controller port of the console if the console requests more input data from the replay device through that controller port than expected.  This packet type is <span class="bcp14">OPTIONAL</span>. Discussed in (<a href="#port_overread" class="auto internal xref">Section 4.3.1.23</a>).<a href="#section-4.2.1-1.46" class="pilcrow">¶</a>
+</dd>
           <dd class="break"></dd>
 </dl>
 </section>
@@ -2197,13 +2198,8 @@ li > p:last-of-type:only-child {
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.2-1.5">
-<code>[01 03]</code> - NES_OVERREAD</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.2-1.6">Specifies whether a high or low signal <span class="bcp14">SHOULD</span> be sent to the NES console if the console clocks the replay device for more input buttons than are expected for the latch.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#nes_overread" class="auto internal xref">Section 4.3.2.3</a>).<a href="#section-4.2.2-1.6" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-<dt id="section-4.2.2-1.7">
 <code>[01 04]</code> - NES_GAME_GENIE_CODE</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.2-1.8">Specifies a Game Genie code for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#nes_game_genie_code" class="auto internal xref">Section 4.3.2.4</a>).<a href="#section-4.2.2-1.8" class="pilcrow">¶</a>
+            <dd style="margin-left: 1.5em" id="section-4.2.2-1.6">Specifies a Game Genie code for the TAS. This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">MAY</span> contain more than 1 of this packet type.  Discussed in (<a href="#nes_game_genie_code" class="auto internal xref">Section 4.3.2.3</a>).<a href="#section-4.2.2-1.6" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -2214,13 +2210,13 @@ li > p:last-of-type:only-child {
           </h4>
 <span class="break"></span><dl class="dlNewline" id="section-4.2.3-1">
             <dt id="section-4.2.3-1.1">
-<code>[02 02]</code> - SNES_CLOCK_FILTER</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.3-1.2">Specifies a clock filter time in tenths of a microsecond (0.1 microseconds or 100 nanoseconds) for how long to wait after a clock pulse until new clock pulses <span class="bcp14">SHOULD</span> be accepted by the replay device.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#snes_clock_filter" class="auto internal xref">Section 4.3.3.1</a>).<a href="#section-4.2.3-1.2" class="pilcrow">¶</a>
+<code>[01 01]</code> - SNES_LATCH_FILTER</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-1.2">Specifies a latch filter time in microseconds for how long how long to wait after a latch signal until new latch signals <span class="bcp14">SHOULD</span> be accepted by the replay device.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#snes_latch_filter" class="auto internal xref">Section 4.3.3.1</a>).<a href="#section-4.2.3-1.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.3-1.3">
-<code>[02 03]</code> - SNES_OVERREAD</dt>
-            <dd style="margin-left: 1.5em" id="section-4.2.3-1.4">Specifies whether a high or low signal <span class="bcp14">SHOULD</span> be sent to the SNES console if the console clocks the replay device for more input buttons than are expected for the latch.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form. Discussed in (<a href="#snes_overread" class="auto internal xref">Section 4.3.3.2</a>).<a href="#section-4.2.3-1.4" class="pilcrow">¶</a>
+<code>[02 02]</code> - SNES_CLOCK_FILTER</dt>
+            <dd style="margin-left: 1.5em" id="section-4.2.3-1.4">Specifies a clock filter time in tenths of a microsecond (0.1 microseconds or 100 nanoseconds) for how long to wait after a clock pulse until new clock pulses <span class="bcp14">SHOULD</span> be accepted by the replay device.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#snes_clock_filter" class="auto internal xref">Section 4.3.3.2</a>).<a href="#section-4.2.3-1.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 <dt id="section-4.2.3-1.5">
@@ -2875,7 +2871,7 @@ li > p:last-of-type:only-child {
       | Type (A) | Base (A) | Identifier (A) |
       +----------+----------+================+
 
-      Type (Binary Data):               [1 octet]
+      Type (Binary Data):                     [1 octet]
          [01] - CRC-8 Checksum
          [02] - CRC-16 Checksum
          [03] - CRC-32 Checksum
@@ -3047,6 +3043,35 @@ li > p:last-of-type:only-child {
 </dl>
 </section>
 </div>
+<div id="port_overread">
+<section id="section-4.3.1.23">
+            <h5 id="name-port_overread-packet">
+<a href="#section-4.3.1.23" class="section-number selfRef">4.3.1.23. </a><a href="#name-port_overread-packet" class="section-name selfRef">PORT_OVERREAD Packet</a>
+            </h5>
+<p id="section-4.3.1.23-1">PORT_OVERREAD packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.23-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3.1.23-2">
+<pre>
+          0          1
+      +----------+----------+
+      | Port (N) | High (B) |
+      +----------+----------+
+
+      Port (N)                                [1 octet]
+      High (Boolean)                          [1 octet]
+</pre><a href="#section-4.3.1.23-2" class="pilcrow">¶</a>
+</div>
+<span class="break"></span><dl class="dlNewline" id="section-4.3.1.23-3">
+              <dt id="section-4.3.1.23-3.1"><strong>Port</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.1.23-3.2">Controller port number (<strong>Port</strong> number <span class="bcp14">MUST</span> be <strong>1-indexed</strong>).<a href="#section-4.3.1.23-3.2" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-4.3.1.23-3.3"><strong>High</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.1.23-3.4">Boolean value that is <strong>TRUE</strong> if overread bits are set to high and <strong>FALSE</strong> if overread bits are set to low.<a href="#section-4.3.1.23-3.4" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</section>
+</div>
 </section>
 <section id="section-4.3.2">
           <h4 id="name-nes-specific-key-payload-fo">
@@ -3100,37 +3125,13 @@ li > p:last-of-type:only-child {
 </dl>
 </section>
 </div>
-<div id="nes_overread">
-<section id="section-4.3.2.3">
-            <h5 id="name-nes_overread-packet">
-<a href="#section-4.3.2.3" class="section-number selfRef">4.3.2.3. </a><a href="#name-nes_overread-packet" class="section-name selfRef">NES_OVERREAD Packet</a>
-            </h5>
-<p id="section-4.3.2.3-1">NES_OVERREAD packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.2.3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3.2.3-2">
-<pre>
-           0
-      +----------+
-      | High (B) |
-      +----------+
-
-      High (Boolean)                          [1 octet]
-</pre><a href="#section-4.3.2.3-2" class="pilcrow">¶</a>
-</div>
-<span class="break"></span><dl class="dlNewline" id="section-4.3.2.3-3">
-              <dt id="section-4.3.2.3-3.1"><strong>High</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.2.3-3.2">Boolean value that is <strong>TRUE</strong> if overread bits are set to high and <strong>FALSE</strong> if overread bits are set to low.<a href="#section-4.3.2.3-3.2" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-</dl>
-</section>
-</div>
 <div id="nes_game_genie_code">
-<section id="section-4.3.2.4">
+<section id="section-4.3.2.3">
             <h5 id="name-nes_game_genie_code-packet">
-<a href="#section-4.3.2.4" class="section-number selfRef">4.3.2.4. </a><a href="#name-nes_game_genie_code-packet" class="section-name selfRef">NES_GAME_GENIE_CODE Packet</a>
+<a href="#section-4.3.2.3" class="section-number selfRef">4.3.2.3. </a><a href="#name-nes_game_genie_code-packet" class="section-name selfRef">NES_GAME_GENIE_CODE Packet</a>
             </h5>
-<p id="section-4.3.2.4-1">NES_GAME_GENIE_CODE packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.2.4-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3.2.4-2">
+<p id="section-4.3.2.3-1">NES_GAME_GENIE_CODE packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.2.3-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3.2.3-2">
 <pre>
           0...
       +==========+
@@ -3138,15 +3139,15 @@ li > p:last-of-type:only-child {
       +==========+
 
       Code (String)                           [PLEN octets]
-</pre><a href="#section-4.3.2.4-2" class="pilcrow">¶</a>
+</pre><a href="#section-4.3.2.3-2" class="pilcrow">¶</a>
 </div>
-<span class="break"></span><dl class="dlNewline" id="section-4.3.2.4-3">
-              <dt id="section-4.3.2.4-3.1"><strong>Code</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.2.4-3.2">Game Genie code (example: "AATOZA").<a href="#section-4.3.2.4-3.2" class="pilcrow">¶</a>
+<span class="break"></span><dl class="dlNewline" id="section-4.3.2.3-3">
+              <dt id="section-4.3.2.3-3.1"><strong>Code</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.2.3-3.2">Game Genie code (example: "AATOZA").<a href="#section-4.3.2.3-3.2" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-4.3.2.4-3.3"><strong>PLEN</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.2.4-3.4">Length of the packet payload.<a href="#section-4.3.2.4-3.4" class="pilcrow">¶</a>
+<dt id="section-4.3.2.3-3.3"><strong>PLEN</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.2.3-3.4">Length of the packet payload.<a href="#section-4.3.2.3-3.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -3157,13 +3158,37 @@ li > p:last-of-type:only-child {
           <h4 id="name-snes-specific-key-payload-f">
 <a href="#section-4.3.3" class="section-number selfRef">4.3.3. </a><a href="#name-snes-specific-key-payload-f" class="section-name selfRef">SNES Specific Key Payload Formats</a>
           </h4>
-<div id="snes_clock_filter">
+<div id="snes_latch_filter">
 <section id="section-4.3.3.1">
-            <h5 id="name-snes_clock_filter-packet">
-<a href="#section-4.3.3.1" class="section-number selfRef">4.3.3.1. </a><a href="#name-snes_clock_filter-packet" class="section-name selfRef">SNES_CLOCK_FILTER Packet</a>
+            <h5 id="name-snes_latch_filter-packet">
+<a href="#section-4.3.3.1" class="section-number selfRef">4.3.3.1. </a><a href="#name-snes_latch_filter-packet" class="section-name selfRef">SNES_LATCH_FILTER Packet</a>
             </h5>
-<p id="section-4.3.3.1-1">SNES_CLOCK_FILTER packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.3.3.1-1">SNES_LATCH_FILTER packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.3.1-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.3.1-2">
+<pre>
+         0     1
+      +-----+-----+
+      | Time (N)  |
+      +-----+-----+
+
+      Time (Unsigned Integer)                 [2 octets]
+</pre><a href="#section-4.3.3.1-2" class="pilcrow">¶</a>
+</div>
+<span class="break"></span><dl class="dlNewline" id="section-4.3.3.1-3">
+              <dt id="section-4.3.3.1-3.1"><strong>Time</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.3.1-3.2">Latch filter length of time in microseconds.<a href="#section-4.3.3.1-3.2" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+</dl>
+</section>
+</div>
+<div id="snes_clock_filter">
+<section id="section-4.3.3.2">
+            <h5 id="name-snes_clock_filter-packet">
+<a href="#section-4.3.3.2" class="section-number selfRef">4.3.3.2. </a><a href="#name-snes_clock_filter-packet" class="section-name selfRef">SNES_CLOCK_FILTER Packet</a>
+            </h5>
+<p id="section-4.3.3.2-1">SNES_CLOCK_FILTER packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.3.2-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3.3.2-2">
 <pre>
            0
       +----------+
@@ -3171,35 +3196,11 @@ li > p:last-of-type:only-child {
       +----------+
 
       Time (Unsigned Integer)                 [1 octet]
-</pre><a href="#section-4.3.3.1-2" class="pilcrow">¶</a>
-</div>
-<span class="break"></span><dl class="dlNewline" id="section-4.3.3.1-3">
-              <dt id="section-4.3.3.1-3.1"><strong>Time</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.3.1-3.2">Clock filter length of time in tenths of a microsecond (units of 0.1 microseconds or 100 nanoseconds).<a href="#section-4.3.3.1-3.2" class="pilcrow">¶</a>
-</dd>
-            <dd class="break"></dd>
-</dl>
-</section>
-</div>
-<div id="snes_overread">
-<section id="section-4.3.3.2">
-            <h5 id="name-snes_overread-packet">
-<a href="#section-4.3.3.2" class="section-number selfRef">4.3.3.2. </a><a href="#name-snes_overread-packet" class="section-name selfRef">SNES_OVERREAD Packet</a>
-            </h5>
-<p id="section-4.3.3.2-1">SNES_OVERREAD packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.3.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3.3.2-2">
-<pre>
-           0
-      +----------+
-      | High (B) |
-      +----------+
-
-      High (Boolean)                          [1 octet]
 </pre><a href="#section-4.3.3.2-2" class="pilcrow">¶</a>
 </div>
 <span class="break"></span><dl class="dlNewline" id="section-4.3.3.2-3">
-              <dt id="section-4.3.3.2-3.1"><strong>High</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.3.2-3.2">Boolean value that is <strong>TRUE</strong> if overread bits are set to high and <strong>FALSE</strong> if overread bits are set to low.<a href="#section-4.3.3.2-3.2" class="pilcrow">¶</a>
+              <dt id="section-4.3.3.2-3.1"><strong>Time</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.3.2-3.2">Clock filter length of time in tenths of a microsecond (units of 0.1 microseconds or 100 nanoseconds).<a href="#section-4.3.3.2-3.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -3394,14 +3395,14 @@ li > p:last-of-type:only-child {
 <p id="section-4.3.5.3-1">TRANSITION packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.5.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.5.3-2">
 <pre>
-               0        1  2  3  4  5  6  7  8       9
-      +----------------+--+--+--+--+--+--+--+--+----------+
-      | Index Type (A) |       Index (N)       | Type (A) | ...
-      +----------------+--+--+--+--+--+--+--+--+----------+
-          10...
-      +============+
-      | Packet (A) |
-      +============+
+               0            1      2  3  4  5  6  7  8  9
+      +----------------+----------+--+--+--+--+--+--+--+--+
+      | Index Type (A) | Port (N) |       Index (N)       | ...
+      +----------------+----------+--+--+--+--+--+--+--+--+
+           10         11...
+      +----------+============+
+      | Type (A) | Packet (A) |
+      +----------+============+
 
       Index Type (Binary Data):               [1 octet]
          [01] - Frame
@@ -3409,13 +3410,14 @@ li > p:last-of-type:only-child {
          [03] - Milliseconds
          [04] - Microseconds * 10
          [05] - INPUT_CHUNK Index
+      Port (Unsigned Integer)                 [1 octet]
       Index (Unsigned Integer)                [8 octets]
       Type (Binary Data):                     [1 octet]
          [01] - Soft Reset
          [02] - Power Reset
          [03] - Restart TASD File
          [FF] - Packet Derived
-      Inner Packet (Binary Data)              [PLEN - 10 octets]
+      Inner Packet (Binary Data)              [PLEN - 11 octets]
 </pre><a href="#section-4.3.5.3-2" class="pilcrow">¶</a>
 </div>
 <span class="break"></span><dl class="dlNewline" id="section-4.3.5.3-3">
@@ -3423,20 +3425,24 @@ li > p:last-of-type:only-child {
               <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.2">Determines specific timing type for start of transition.<a href="#section-4.3.5.3-3.2" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-4.3.5.3-3.3"><strong>Index</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.4">Time or offset value to start transition.<a href="#section-4.3.5.3-3.4" class="pilcrow">¶</a>
+<dt id="section-4.3.5.3-3.3"><strong>Port</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.4">Controller port number of input index.  If <strong>Index Type</strong> is <code>[05]</code>, <strong>Port</strong> <span class="bcp14">MUST</span> be <strong>1-indexed</strong> Port number, otherwise <strong>Port</strong> <span class="bcp14">MAY</span> be any value.<a href="#section-4.3.5.3-3.4" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-4.3.5.3-3.5"><strong>Type</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.6">Type of transition.  If <strong>Type</strong> is <code>[FF]</code>, the transition action will be interpreting a <strong>TASD</strong> packet.<a href="#section-4.3.5.3-3.6" class="pilcrow">¶</a>
+<dt id="section-4.3.5.3-3.5"><strong>Index</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.6">Time or offset value to start transition.  If <strong>Index Type</strong> is <code>[05]</code>, <strong>Index</strong> <span class="bcp14">MUST</span> be the byte offset of <strong>INPUT_CHUNK</strong> data from <strong>INPUT_CHUNK</strong> packets for the controller port specified by <strong>Port</strong>.<a href="#section-4.3.5.3-3.6" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-4.3.5.3-3.7"><strong>Inner Packet</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.8">If <strong>Type</strong> is <code>[FF]</code>, <strong>Inner Packet</strong> <span class="bcp14">SHOULD</span> be a <strong>TASD</strong> packet.  <strong>Inner Packet</strong> <span class="bcp14">MUST NOT</span> be a <strong>INPUT_CHUNK</strong>, <strong>INPUT_MOMENT</strong>, <strong>TRANSITION</strong>, <strong>LAG_FRAME_CHUNK</strong>, or <strong>MOVIE_TRANSITION</strong> packet.<a href="#section-4.3.5.3-3.8" class="pilcrow">¶</a>
+<dt id="section-4.3.5.3-3.7"><strong>Type</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.8">Type of transition.  If <strong>Type</strong> is <code>[FF]</code>, the transition action will be interpreting a <strong>TASD</strong> packet.<a href="#section-4.3.5.3-3.8" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-4.3.5.3-3.9"><strong>PLEN</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.10">Length of the packet payload (Not <strong>Inner Packet</strong> length).<a href="#section-4.3.5.3-3.10" class="pilcrow">¶</a>
+<dt id="section-4.3.5.3-3.9"><strong>Inner Packet</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.10">If <strong>Type</strong> is <code>[FF]</code>, <strong>Inner Packet</strong> <span class="bcp14">SHOULD</span> be a <strong>TASD</strong> packet.  <strong>Inner Packet</strong> <span class="bcp14">MUST NOT</span> be a <strong>INPUT_CHUNK</strong>, <strong>INPUT_MOMENT</strong>, <strong>TRANSITION</strong>, <strong>LAG_FRAME_CHUNK</strong>, or <strong>MOVIE_TRANSITION</strong> packet.<a href="#section-4.3.5.3-3.10" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-4.3.5.3-3.11"><strong>PLEN</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.12">Length of the packet payload (Not <strong>Inner Packet</strong> length).<a href="#section-4.3.5.3-3.12" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -3554,12 +3560,12 @@ li > p:last-of-type:only-child {
 <p id="section-4.3.6.2-1">EXPERIMENTAL packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.6.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.6.2-2">
 <pre>
-              0...
-      +==================+
+               0
+      +------------------+
       | Experimental (B) |
-      +==================+
+      +------------------+
 
-      Experimental (Boolean)                  [PLEN octet]
+      Experimental (Boolean)                  [1 octet]
 </pre><a href="#section-4.3.6.2-2" class="pilcrow">¶</a>
 </div>
 <span class="break"></span><dl class="dlNewline" id="section-4.3.6.2-3">

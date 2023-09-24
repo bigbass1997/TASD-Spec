@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), although currently without version numbers added.
 
 
+## 2023-09-24
+
+### Changed
+- Specify INPUT_CHUNK offset for Index Value of TRANSITION packet
+
+### Fixed
+- EXPERIMENTAL packet drawing error and packet value length
+
+### Added
+- SNES_LATCH_FILTER
+- Port value to TRANSITION packet
+
+### Removed
+- SNES_OVERREAD and NES_OVERREAD
+
+
 ## 2023-09-18
 ### Changed
 - Specify that PEXP MUST be greater than 0
@@ -50,15 +66,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## 2023-07-03
 ### Added
-- SNES\_LATCH\_TRAIN to spec
+- SNES_LATCH_TRAIN to spec
 
 ### Removed
 - PDF files from `docs/`
 - PDF file generation via Makefile
 
 ### Fixed
-- Correct length for Data of MEMORY\_INIT in spec
-- Correct length of Name of MOVIE\_FILE packet in spec
+- Correct length for Data of MEMORY_INIT in spec
+- Correct length of Name of MOVIE_FILE packet in spec
 
 
 ## 2022-09-26

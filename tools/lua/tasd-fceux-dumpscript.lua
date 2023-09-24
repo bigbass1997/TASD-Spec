@@ -38,10 +38,10 @@ local RERECORDS = 0x000e -- Done
 local MEMORY_INIT = 0x0012 -- Done
 local GAME_IDENTIFIER = 0x0013 -- Done
 local PORT_CONTROLLER = 0x00f0 -- Done (More to handle later)
+local PORT_OVERREAD = 0x00f1 -- Done
 
 local NES_LATCH_FILTER = 0x0101 -- Done
 local NES_CLOCK_FILTER = 0x0102 -- Done
-local NES_OVERREAD = 0x0103 -- Done
 
 local INPUT_CHUNK = 0xfe01 -- Done (More to handle later)
 local TRANSITION = 0xfe03 -- Done
@@ -60,6 +60,7 @@ local cpuCyclesLastFrame = 0
 local region = ""
 
 local tasdFile
+local lastController
 
 local nesControls = {"right", "left", "down", "up", "start", "select", "B", "A"}
 
@@ -172,6 +173,17 @@ function getPortControllerPacket(playerCount, controllerType)
   return finishedPackets
 end
 
+function getPortOverreadPacket(playerCount, controllerType)
+  local finishedPackets = ""
+  for x = 1, playerCount, 1 do
+    local packetPayload = intToBytes(x, 1)
+  	packetPayload = packetPayload .. intToBytes(0x00, 1)
+    finishedPackets = finishedPackets .. makePacket(PORT_OVERREAD, packetPayload)
+  end
+  return finishedPackets
+end
+
+
 function getNESLatchFilterPacket()
   local packetPayload = intToBytes(8000, 2)
   return makePacket(NES_LATCH_FILTER, packetPayload)
@@ -180,11 +192,6 @@ end
 function getNESClockFilterPacket()
   local packetPayload = intToBytes(10, 1)
   return makePacket(NES_CLOCK_FILTER, packetPayload)
-end
-
-function getNESOverreadPacket()
-  local packetPayload = intToBytes(0, 1)
-  return makePacket(NES_OVERREAD, packetPayload)
 end
 
 function getInputChunkPacket(player, inputs, controllerType)
@@ -205,6 +212,7 @@ end
 
 function getTransitionPacket()
   local packetPayload = intToBytes(0x01, 1)
+  packetPayload = packetPayload .. intToBytes(0x00, 1)
   packetPayload = packetPayload .. intToBytes(movie.framecount(), 8)
   packetPayload = packetPayload .. intToBytes(0x01, 1)
   return makePacket(TRANSITION, packetPayload)
@@ -237,9 +245,9 @@ function startDump()
   tasdFile:write(getTotalFramesPacket())
   tasdFile:write(getRerecordsPacket())
   tasdFile:write(getPortControllerPacket(2, NES_STANDARD_CONTROLLER))
+  tasdFile:write(getPortOverreadPacket(2))
   tasdFile:write(getNESLatchFilterPacket())
   tasdFile:write(getNESClockFilterPacket())
-  tasdFile:write(getNESOverreadPacket())
   -- Rest CPU cycle count to 0
   debugger.resetcyclescount()
   movie.playbeginning()

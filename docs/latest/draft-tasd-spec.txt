@@ -7,7 +7,7 @@ Independent TAS Console Replay Research Group                    V. Grey
                                                                  Bigbass
                                                                         
                                                                  rasteri
-                                                       18 September 2023
+                                                       24 September 2023
 
 
                 TASD File Format Specification Version 1
@@ -74,14 +74,14 @@ Table of Contents
          4.3.1.20. MOVIE_LICENSE Packet
          4.3.1.21. MOVIE_FILE Packet
          4.3.1.22. PORT_CONTROLLER Packet
+         4.3.1.23. PORT_OVERREAD Packet
        4.3.2.  NES Specific Key Payload Formats
          4.3.2.1.  NES_LATCH_FILTER Packet
          4.3.2.2.  NES_CLOCK_FILTER Packet
-         4.3.2.3.  NES_OVERREAD Packet
-         4.3.2.4.  NES_GAME_GENIE_CODE Packet
+         4.3.2.3.  NES_GAME_GENIE_CODE Packet
        4.3.3.  SNES Specific Key Payload Formats
-         4.3.3.1.  SNES_CLOCK_FILTER Packet
-         4.3.3.2.  SNES_OVERREAD Packet
+         4.3.3.1.  SNES_LATCH_FILTER Packet
+         4.3.3.2.  SNES_CLOCK_FILTER Packet
          4.3.3.3.  SNES_GAME_GENIE_CODE Packet
          4.3.3.4.  SNES_LATCH_TRAIN Packet
        4.3.4.  Genesis Specific Key Payload Formats
@@ -406,18 +406,17 @@ Table of Contents
    [00 14]  MOVIE_LICENSE
    [00 15]  MOVIE_FILE
    [00 F0]  PORT_CONTROLLER
+   [00 F1]  PORT_OVERREAD
 
 4.1.2.  NES Specific Keys
 
    [01 01]  NES_LATCH_FILTER
    [01 02]  NES_CLOCK_FILTER
-   [01 03]  NES_OVERREAD
    [01 04]  NES_GAME_GENIE_CODE
 
 4.1.3.  SNES Specific Keys
 
    [02 02]  SNES_CLOCK_FILTER
-   [02 03]  SNES_OVERREAD
    [02 04]  SNES_GAME_GENIE_CODE
    [02 05]  SNES_LATCH_TRAIN
 
@@ -570,6 +569,13 @@ Table of Contents
       and a *TASD* file SHOULD NOT contain more than 1 of this packet
       type in direct form.  Discussed in (Section 4.3.1.22).
 
+   [00 F1] - PORT_OVERREAD
+      Specifies whether a high or low signal SHOULD be sent through a
+      specified controller port of the console if the console requests
+      more input data from the replay device through that controller
+      port than expected.  This packet type is OPTIONAL.  Discussed in
+      (Section 4.3.1.23).
+
 4.2.2.  NES Specific Key Descriptions
 
    [01 01] - NES_LATCH_FILTER
@@ -587,19 +593,19 @@ Table of Contents
       SHOULD NOT contain more than 1 of this packet type in direct form.
       Discussed in (Section 4.3.2.2).
 
-   [01 03] - NES_OVERREAD
-      Specifies whether a high or low signal SHOULD be sent to the NES
-      console if the console clocks the replay device for more input
-      buttons than are expected for the latch.  This packet type is
-      OPTIONAL and a *TASD* file SHOULD NOT contain more than 1 of this
-      packet type in direct form.  Discussed in (Section 4.3.2.3).
-
    [01 04] - NES_GAME_GENIE_CODE
       Specifies a Game Genie code for the TAS.  This packet type is
       OPTIONAL and a *TASD* file MAY contain more than 1 of this packet
-      type.  Discussed in (Section 4.3.2.4).
+      type.  Discussed in (Section 4.3.2.3).
 
 4.2.3.  SNES Specific Key Descriptions
+
+   [01 01] - SNES_LATCH_FILTER
+      Specifies a latch filter time in microseconds for how long how
+      long to wait after a latch signal until new latch signals SHOULD
+      be accepted by the replay device.  This packet type is OPTIONAL
+      and a *TASD* file SHOULD NOT contain more than 1 of this packet
+      type in direct form.  Discussed in (Section 4.3.3.1).
 
    [02 02] - SNES_CLOCK_FILTER
       Specifies a clock filter time in tenths of a microsecond (0.1
@@ -607,14 +613,7 @@ Table of Contents
       clock pulse until new clock pulses SHOULD be accepted by the
       replay device.  This packet type is OPTIONAL and a *TASD* file
       SHOULD NOT contain more than 1 of this packet type in direct form.
-      Discussed in (Section 4.3.3.1).
-
-   [02 03] - SNES_OVERREAD
-      Specifies whether a high or low signal SHOULD be sent to the SNES
-      console if the console clocks the replay device for more input
-      buttons than are expected for the latch.  This packet type is
-      OPTIONAL and a *TASD* file SHOULD NOT contain more than 1 of this
-      packet type in direct form.  Discussed in (Section 4.3.3.2).
+      Discussed in (Section 4.3.3.2).
 
    [02 04] - SNES_GAME_GENIE_CODE
       Specifies a Game Genie code for the TAS.  This packet type is
@@ -1084,7 +1083,7 @@ Table of Contents
          | Type (A) | Base (A) | Identifier (A) |
          +----------+----------+================+
 
-         Type (Binary Data):               [1 octet]
+         Type (Binary Data):                     [1 octet]
             [01] - CRC-8 Checksum
             [02] - CRC-16 Checksum
             [03] - CRC-32 Checksum
@@ -1218,6 +1217,25 @@ Table of Contents
       version of the *TASD* file format protocol.  Input formats for
       specific controller types are described in (Section 5).
 
+4.3.1.23.  PORT_OVERREAD Packet
+
+   PORT_OVERREAD packets MUST be in the following format:
+
+             0          1
+         +----------+----------+
+         | Port (N) | High (B) |
+         +----------+----------+
+
+         Port (N)                                [1 octet]
+         High (Boolean)                          [1 octet]
+
+   *Port*
+      Controller port number (*Port* number MUST be *1-indexed*).
+
+   *High*
+      Boolean value that is *TRUE* if overread bits are set to high and
+      *FALSE* if overread bits are set to low.
+
 4.3.2.  NES Specific Key Payload Formats
 
 4.3.2.1.  NES_LATCH_FILTER Packet
@@ -1249,22 +1267,7 @@ Table of Contents
       Clock filter length of time in tenths of a microsecond (units of
       0.1 microseconds or 100 nanoseconds).
 
-4.3.2.3.  NES_OVERREAD Packet
-
-   NES_OVERREAD packets MUST be in the following format:
-
-              0
-         +----------+
-         | High (B) |
-         +----------+
-
-         High (Boolean)                          [1 octet]
-
-   *High*
-      Boolean value that is *TRUE* if overread bits are set to high and
-      *FALSE* if overread bits are set to low.
-
-4.3.2.4.  NES_GAME_GENIE_CODE Packet
+4.3.2.3.  NES_GAME_GENIE_CODE Packet
 
    NES_GAME_GENIE_CODE packets MUST be in the following format:
 
@@ -1283,7 +1286,21 @@ Table of Contents
 
 4.3.3.  SNES Specific Key Payload Formats
 
-4.3.3.1.  SNES_CLOCK_FILTER Packet
+4.3.3.1.  SNES_LATCH_FILTER Packet
+
+   SNES_LATCH_FILTER packets MUST be in the following format:
+
+            0     1
+         +-----+-----+
+         | Time (N)  |
+         +-----+-----+
+
+         Time (Unsigned Integer)                 [2 octets]
+
+   *Time*
+      Latch filter length of time in microseconds.
+
+4.3.3.2.  SNES_CLOCK_FILTER Packet
 
    SNES_CLOCK_FILTER packets MUST be in the following format:
 
@@ -1297,21 +1314,6 @@ Table of Contents
    *Time*
       Clock filter length of time in tenths of a microsecond (units of
       0.1 microseconds or 100 nanoseconds).
-
-4.3.3.2.  SNES_OVERREAD Packet
-
-   SNES_OVERREAD packets MUST be in the following format:
-
-              0
-         +----------+
-         | High (B) |
-         +----------+
-
-         High (Boolean)                          [1 octet]
-
-   *High*
-      Boolean value that is *TRUE* if overread bits are set to high and
-      *FALSE* if overread bits are set to low.
 
 4.3.3.3.  SNES_GAME_GENIE_CODE Packet
 
@@ -1449,14 +1451,14 @@ Table of Contents
 
    TRANSITION packets MUST be in the following format:
 
-                  0        1  2  3  4  5  6  7  8       9
-         +----------------+--+--+--+--+--+--+--+--+----------+
-         | Index Type (A) |       Index (N)       | Type (A) | ...
-         +----------------+--+--+--+--+--+--+--+--+----------+
-             10...
-         +============+
-         | Packet (A) |
-         +============+
+                  0            1      2  3  4  5  6  7  8  9
+         +----------------+----------+--+--+--+--+--+--+--+--+
+         | Index Type (A) | Port (N) |       Index (N)       | ...
+         +----------------+----------+--+--+--+--+--+--+--+--+
+              10         11...
+         +----------+============+
+         | Type (A) | Packet (A) |
+         +----------+============+
 
          Index Type (Binary Data):               [1 octet]
             [01] - Frame
@@ -1464,19 +1466,27 @@ Table of Contents
             [03] - Milliseconds
             [04] - Microseconds * 10
             [05] - INPUT_CHUNK Index
+         Port (Unsigned Integer)                 [1 octet]
          Index (Unsigned Integer)                [8 octets]
          Type (Binary Data):                     [1 octet]
             [01] - Soft Reset
             [02] - Power Reset
             [03] - Restart TASD File
             [FF] - Packet Derived
-         Inner Packet (Binary Data)              [PLEN - 10 octets]
+         Inner Packet (Binary Data)              [PLEN - 11 octets]
 
    *Input Type*
       Determines specific timing type for start of transition.
 
+   *Port*
+      Controller port number of input index.  If *Index Type* is [05],
+      *Port* MUST be *1-indexed* Port number, otherwise *Port* MAY be
+      any value.
+
    *Index*
-      Time or offset value to start transition.
+      Time or offset value to start transition.  If *Index Type* is
+      [05], *Index* MUST be the byte offset of *INPUT_CHUNK* data from
+      *INPUT_CHUNK* packets for the controller port specified by *Port*.
 
    *Type*
       Type of transition.  If *Type* is [FF], the transition action will
@@ -1564,12 +1574,12 @@ Table of Contents
 
    EXPERIMENTAL packets MUST be in the following format:
 
-                 0...
-         +==================+
+                  0
+         +------------------+
          | Experimental (B) |
-         +==================+
+         +------------------+
 
-         Experimental (Boolean)                  [PLEN octet]
+         Experimental (Boolean)                  [1 octet]
 
    *Experimental*
       Boolean data that is *TRUE* if the TASD file is using draft/
