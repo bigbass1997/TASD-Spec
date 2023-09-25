@@ -212,7 +212,7 @@
         <dt><strong>Key</strong></dt>
         <dd>Packet type (Packet key).</dd>
         <dt><strong>PEXP</strong></dt>
-				<dd>Length of <strong>PLEN</strong>.  <strong>PEXP</strong> <bcp14>MUST</bcp14> be a value greater than 0.</dd>
+        <dd>Length of <strong>PLEN</strong>.  <strong>PEXP</strong> <bcp14>MUST</bcp14> be a value greater than 0.</dd>
         <dt><strong>PLEN</strong></dt>
         <dd>Length of <strong>Payload</strong>.</dd>
         <dt><strong>Payload</strong></dt>
@@ -262,6 +262,7 @@
         <section numbered="true" toc="default">
           <name>SNES Specific Keys</name>
           <dl spacing="compact">
+            <dt><tt>[02 01]</tt></dt> <dd>SNES_LATCH_FILTER</dd>
             <dt><tt>[02 02]</tt></dt> <dd>SNES_CLOCK_FILTER</dd>
             <dt><tt>[02 04]</tt></dt> <dd>SNES_GAME_GENIE_CODE</dd>
             <dt><tt>[02 05]</tt></dt> <dd>SNES_LATCH_TRAIN</dd>
@@ -359,7 +360,7 @@
         <section numbered="true" toc="default">
           <name>SNES Specific Key Descriptions</name>
           <dl newline="true">
-            <dt><tt>[01 01]</tt> - SNES_LATCH_FILTER</dt>
+            <dt><tt>[02 01]</tt> - SNES_LATCH_FILTER</dt>
             <dd>Specifies a latch filter time in microseconds for how long how long to wait after a latch signal until new latch signals <bcp14>SHOULD</bcp14> be accepted by the replay device.  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>SHOULD NOT</bcp14> contain more than 1 of this packet type in direct form.  Discussed in (<xref target="snes_latch_filter"/>).</dd>
             <dt><tt>[02 02]</tt> - SNES_CLOCK_FILTER</dt>
             <dd>Specifies a clock filter time in tenths of a microsecond (0.1 microseconds or 100 nanoseconds) for how long to wait after a clock pulse until new clock pulses <bcp14>SHOULD</bcp14> be accepted by the replay device.  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>SHOULD NOT</bcp14> contain more than 1 of this packet type in direct form.  Discussed in (<xref target="snes_clock_filter"/>).</dd>
@@ -917,10 +918,10 @@
               <dd>Specifies the controller type connected to the <strong>Port</strong>.  <strong>(RESERVED)</strong> specifies that the controller type is not described in this document, but the byte values are reserved for a later version of the <strong>TASD</strong> file format protocol.  Input formats for specific controller types are described in (<xref target="controller_inputs"/>).</dd>
             </dl>
           </section>
-        	<section numbered="true" toc="default" anchor="port_overread">
-          	<name>PORT_OVERREAD Packet</name>
-          	<t>PORT_OVERREAD packets <bcp14>MUST</bcp14> be in the following format:</t>
-          	<artwork><![CDATA[
+          <section numbered="true" toc="default" anchor="port_overread">
+            <name>PORT_OVERREAD Packet</name>
+            <t>PORT_OVERREAD packets <bcp14>MUST</bcp14> be in the following format:</t>
+            <artwork><![CDATA[
           0          1
       +----------+----------+
       | Port (N) | High (B) |
@@ -928,14 +929,14 @@
 
       Port (N)                                [1 octet]
       High (Boolean)                          [1 octet]]]>
-        	  </artwork>
-        	  <dl newline="true">
-        	    <dt><strong>Port</strong></dt>
-        	    <dd>Controller port number (<strong>Port</strong> number <bcp14>MUST</bcp14> be <strong>1-indexed</strong>).</dd>
-        	    <dt><strong>High</strong></dt>
-        	    <dd>Boolean value that is <strong>TRUE</strong> if overread bits are set to high and <strong>FALSE</strong> if overread bits are set to low.</dd>
-        	  </dl>
-        	</section>
+            </artwork>
+            <dl newline="true">
+              <dt><strong>Port</strong></dt>
+              <dd>Controller port number (<strong>Port</strong> number <bcp14>MUST</bcp14> be <strong>1-indexed</strong>).</dd>
+              <dt><strong>High</strong></dt>
+              <dd>Boolean value that is <strong>TRUE</strong> if overread bits are set to high and <strong>FALSE</strong> if overread bits are set to low.</dd>
+            </dl>
+          </section>
         </section>
         <section numbered="true" toc="default">
           <name>NES Specific Key Payload Formats</name>
@@ -1175,9 +1176,9 @@
               <dt><strong>Input Type</strong></dt>
               <dd>Determines specific timing type for start of transition.</dd>
               <dt><strong>Port</strong></dt>
-							<dd>Controller port number of input index.  If <strong>Index Type</strong> is <tt>[05]</tt>, <strong>Port</strong> <bcp14>MUST</bcp14> be <strong>1-indexed</strong> Port number, otherwise <strong>Port</strong> <bcp14>MAY</bcp14> be any value.</dd>
+              <dd>Controller port number of input index.  If <strong>Index Type</strong> is <tt>[05]</tt>, <strong>Port</strong> <bcp14>MUST</bcp14> be <strong>1-indexed</strong> Port number, otherwise <strong>Port</strong> <bcp14>MAY</bcp14> be any value.</dd>
               <dt><strong>Index</strong></dt>
-							<dd>Time or offset value to start transition.  If <strong>Index Type</strong> is <tt>[05]</tt>, <strong>Index</strong> <bcp14>MUST</bcp14> be the byte offset of <strong>INPUT_CHUNK</strong> data from <strong>INPUT_CHUNK</strong> packets for the controller port specified by <strong>Port</strong>.</dd>
+              <dd>Time or offset value to start transition.  If <strong>Index Type</strong> is <tt>[05]</tt>, <strong>Index</strong> <bcp14>MUST</bcp14> be the byte offset of <strong>INPUT_CHUNK</strong> data from <strong>INPUT_CHUNK</strong> packets for the controller port specified by <strong>Port</strong>.</dd>
               <dt><strong>Type</strong></dt>
               <dd>Type of transition.  If <strong>Type</strong> is <tt>[FF]</tt>, the transition action will be interpreting a <strong>TASD</strong> packet.</dd>
               <dt><strong>Inner Packet</strong></dt>
@@ -1419,7 +1420,7 @@
             <dt>Bit 0:</dt><dd>Direction (0: up; 1: down)</dd>
           </dl>
         </section>
-		        <section numbered="true" toc="default">
+            <section numbered="true" toc="default">
           <name>SNES Super Multitap</name>
           <t>Single Input Length: 5 Octets</t>
           <t><strong>Octet 0</strong> : </t>

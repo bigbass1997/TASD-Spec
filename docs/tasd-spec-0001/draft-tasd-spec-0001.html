@@ -1207,7 +1207,7 @@ li > p:last-of-type:only-child {
 <dd class="workgroup">Independent TAS Console Replay Research Group</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-09-24" class="published">24 September 2023</time>
+<time datetime="2023-09-25" class="published">25 September 2023</time>
     </dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
@@ -1983,16 +1983,20 @@ li > p:last-of-type:only-child {
 <a href="#section-4.1.3" class="section-number selfRef">4.1.3. </a><a href="#name-snes-specific-keys" class="section-name selfRef">SNES Specific Keys</a>
           </h4>
 <span class="break"></span><dl class="dlCompact dlParallel" id="section-4.1.3-1">
-            <dt id="section-4.1.3-1.1"><code>[02 02]</code></dt>
-            <dd style="margin-left: 1.5em" id="section-4.1.3-1.2">SNES_CLOCK_FILTER<a href="#section-4.1.3-1.2" class="pilcrow">¶</a>
+            <dt id="section-4.1.3-1.1"><code>[02 01]</code></dt>
+            <dd style="margin-left: 1.5em" id="section-4.1.3-1.2">SNES_LATCH_FILTER<a href="#section-4.1.3-1.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-4.1.3-1.3"><code>[02 04]</code></dt>
-            <dd style="margin-left: 1.5em" id="section-4.1.3-1.4">SNES_GAME_GENIE_CODE<a href="#section-4.1.3-1.4" class="pilcrow">¶</a>
+<dt id="section-4.1.3-1.3"><code>[02 02]</code></dt>
+            <dd style="margin-left: 1.5em" id="section-4.1.3-1.4">SNES_CLOCK_FILTER<a href="#section-4.1.3-1.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-4.1.3-1.5"><code>[02 05]</code></dt>
-            <dd style="margin-left: 1.5em" id="section-4.1.3-1.6">SNES_LATCH_TRAIN<a href="#section-4.1.3-1.6" class="pilcrow">¶</a>
+<dt id="section-4.1.3-1.5"><code>[02 04]</code></dt>
+            <dd style="margin-left: 1.5em" id="section-4.1.3-1.6">SNES_GAME_GENIE_CODE<a href="#section-4.1.3-1.6" class="pilcrow">¶</a>
+</dd>
+            <dd class="break"></dd>
+<dt id="section-4.1.3-1.7"><code>[02 05]</code></dt>
+            <dd style="margin-left: 1.5em" id="section-4.1.3-1.8">SNES_LATCH_TRAIN<a href="#section-4.1.3-1.8" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
@@ -2210,7 +2214,7 @@ li > p:last-of-type:only-child {
           </h4>
 <span class="break"></span><dl class="dlNewline" id="section-4.2.3-1">
             <dt id="section-4.2.3-1.1">
-<code>[01 01]</code> - SNES_LATCH_FILTER</dt>
+<code>[02 01]</code> - SNES_LATCH_FILTER</dt>
             <dd style="margin-left: 1.5em" id="section-4.2.3-1.2">Specifies a latch filter time in microseconds for how long how long to wait after a latch signal until new latch signals <span class="bcp14">SHOULD</span> be accepted by the replay device.  This packet type is <span class="bcp14">OPTIONAL</span> and a <strong>TASD</strong> file <span class="bcp14">SHOULD NOT</span> contain more than 1 of this packet type in direct form.  Discussed in (<a href="#snes_latch_filter" class="auto internal xref">Section 4.3.3.1</a>).<a href="#section-4.2.3-1.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>

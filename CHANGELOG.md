@@ -4,6 +4,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), although currently without version numbers added.
 
 
+## 2023-09-25
+
+### Changed
+- Replaced all tabs in xml file with 2 spaces to prevent diagrams from aligning incorrectly
+
+### Fixed
+- 2023-09-24 CHANGELOG data
+- SNES_LATCH_FILTER packet description now has correct key
+- SNES_LATCH_FILTER packet without description is now in the spec
+
+
 ## 2023-09-24
 
 ### Changed
@@ -13,11 +24,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - EXPERIMENTAL packet drawing error and packet value length
 
 ### Added
-- SNES_LATCH_FILTER
+- PORT_OVERREAD packet
+- SNES_LATCH_FILTER packet
 - Port value to TRANSITION packet
 
 ### Removed
-- SNES_OVERREAD and NES_OVERREAD
+- SNES_OVERREAD and NES_OVERREAD packets
 
 
 ## 2023-09-18

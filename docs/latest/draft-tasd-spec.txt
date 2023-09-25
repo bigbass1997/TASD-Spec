@@ -7,7 +7,7 @@ Independent TAS Console Replay Research Group                    V. Grey
                                                                  Bigbass
                                                                         
                                                                  rasteri
-                                                       24 September 2023
+                                                       25 September 2023
 
 
                 TASD File Format Specification Version 1
@@ -416,6 +416,7 @@ Table of Contents
 
 4.1.3.  SNES Specific Keys
 
+   [02 01]  SNES_LATCH_FILTER
    [02 02]  SNES_CLOCK_FILTER
    [02 04]  SNES_GAME_GENIE_CODE
    [02 05]  SNES_LATCH_TRAIN
@@ -600,7 +601,7 @@ Table of Contents
 
 4.2.3.  SNES Specific Key Descriptions
 
-   [01 01] - SNES_LATCH_FILTER
+   [02 01] - SNES_LATCH_FILTER
       Specifies a latch filter time in microseconds for how long how
       long to wait after a latch signal until new latch signals SHOULD
       be accepted by the replay device.  This packet type is OPTIONAL
