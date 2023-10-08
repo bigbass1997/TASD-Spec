@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ## 2023-10-08
 
 ### Changed
+- Base to Encoding in GAME_IDENTIFIER packet
+
+
+## 2023-10-08
+
+### Changed
 - GAME_IDENTIFIER packet
 - Mention seconds since Unix Epoch for Unix timestamps
 

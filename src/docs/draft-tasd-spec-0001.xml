@@ -786,9 +786,9 @@
             <t>GAME_IDENTIFIER packets <bcp14>MUST</bcp14> be in the following format:</t>
             <artwork><![CDATA[
            0          1          2         3...       3+NLEN...
-      +----------+----------+----------+==========+================+
-      | Type (A) | Base (A) | NLEN (N) | Name (S) | Identifier (A) |
-      +----------+----------+----------+==========+================+
+      +----------+--------------+----------+==========+================+
+      | Type (A) | Encoding (A) | NLEN (N) | Name (S) | Identifier (A) |
+      +----------+--------------+----------+==========+================+
 
       Type (Binary Data):                     [1 octet]
          [01] - MD5 Hash
@@ -806,7 +806,7 @@
          [0D] - SHAKE-128 Hash
          [0E] - SHAKE-256 Hash
          [FF] - Other
-      Base (Binary Data):                     [1 octet]
+      Encoding (Binary Data):                 [1 octet]
          [01] - Raw Binary
          [02] - Case Insensitive Base 16 (Hex) - RFC 4648
          [03] - Case Insensitive Base 32 - RFC 4648
@@ -819,12 +819,12 @@
             <dl newline="true">
               <dt><strong>Type</strong></dt>
               <dd>Hash, checksum, or identifier algorithm <strong>Identifier</strong> is using.</dd>
-              <dt><strong>Base</strong></dt>
+              <dt><strong>Encoding</strong></dt>
               <dd>Describes the data encoding of <strong>Identifier</strong>.</dd>
               <dt><strong>NLEN</strong></dt>
               <dd>Length of <strong>Name</strong></dd>
               <dt><strong>Name</strong></dt>
-							<dd>Name of <strong>Type</strong> meant if the hash, checksum, or identifier algorithm <strong>Identifier</strong> is using is not included in <strong>Type</strong>.  If <strong>Type</strong> is <tt>[FF]</tt>, <strong>Name</strong> <bcp14>SHOULD NOT</bcp14> be empty (0 octet length string).</dd>
+              <dd>Name of <strong>Type</strong> meant if the hash, checksum, or identifier algorithm <strong>Identifier</strong> is using is not included in <strong>Type</strong>.  If <strong>Type</strong> is <tt>[FF]</tt>, <strong>Name</strong> <bcp14>SHOULD NOT</bcp14> be empty (0 octet length string).</dd>
               <dt><strong>Identifier</strong></dt>
               <dd>Game hash, checksum, or identifier data.</dd>
               <dt><strong>PLEN</strong></dt>
@@ -1922,6 +1922,8 @@
     </section>
     <!-- Change Log
     
+draft 13 - 2023-10-08   VG   Change Base to Encoding in GAME_IDENTIFIER packet
+
 draft 12 - 2023-10-08   VG   Modify GAME_IDENTIFIER packet, removing CRC-32 and CRC-16 from Type and adding NLEN and Name.  Mention seconds since Unix Epoch for Unix timestamps.
 
 draft 11 - 2023-09-24   VG   Made OVERREAD packets generic and added Port to it, now is PORT_OVERREAD.  Fixed packet drawing error in EXPERIMENTAL.  Added SNES_LATCH_FILTER.  Added Port to TRANSITION packet.  Specify meaning of INPUT_CHUNK offset for Index value of TRANSITION packet.

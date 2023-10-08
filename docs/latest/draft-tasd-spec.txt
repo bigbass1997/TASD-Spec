@@ -1082,41 +1082,41 @@ Table of Contents
 
    GAME_IDENTIFIER packets MUST be in the following format:
 
-              0          1          2         3...       3+NLEN...
-         +----------+----------+----------+==========+================+
-         | Type (A) | Base (A) | NLEN (N) | Name (S) | Identifier (A) |
-         +----------+----------+----------+==========+================+
+           0          1          2         3...       3+NLEN...
+      +----------+--------------+----------+==========+================+
+      | Type (A) | Encoding (A) | NLEN (N) | Name (S) | Identifier (A) |
+      +----------+--------------+----------+==========+================+
 
-         Type (Binary Data):                     [1 octet]
-            [01] - MD5 Hash
-            [02] - SHA1 Hash
-            [03] - SHA224 Hash
-            [04] - SHA256 Hash
-            [05] - SHA384 Hash
-            [06] - SHA512 Hash
-            [07] - SHA512/224 Hash
-            [08] - SHA512/256 Hash
-            [09] - SHA3-224 Hash
-            [0A] - SHA3-256 Hash
-            [0B] - SHA3-384 Hash
-            [0C] - SHA3-512 Hash
-            [0D] - SHAKE-128 Hash
-            [0E] - SHAKE-256 Hash
-            [FF] - Other
-         Base (Binary Data):                     [1 octet]
-            [01] - Raw Binary
-            [02] - Case Insensitive Base 16 (Hex) - RFC 4648
-            [03] - Case Insensitive Base 32 - RFC 4648
-            [04] - Base 64 - RFC 4648
-            [FF] - Other
-         NLEN (Unsigned Integer)                 [1 octet]
-         Name (String)                           [NLEN octets]
-         Identifier (Binary Data)                [PLEN - 2 octets]
+      Type (Binary Data):                     [1 octet]
+         [01] - MD5 Hash
+         [02] - SHA1 Hash
+         [03] - SHA224 Hash
+         [04] - SHA256 Hash
+         [05] - SHA384 Hash
+         [06] - SHA512 Hash
+         [07] - SHA512/224 Hash
+         [08] - SHA512/256 Hash
+         [09] - SHA3-224 Hash
+         [0A] - SHA3-256 Hash
+         [0B] - SHA3-384 Hash
+         [0C] - SHA3-512 Hash
+         [0D] - SHAKE-128 Hash
+         [0E] - SHAKE-256 Hash
+         [FF] - Other
+      Encoding (Binary Data):                 [1 octet]
+         [01] - Raw Binary
+         [02] - Case Insensitive Base 16 (Hex) - RFC 4648
+         [03] - Case Insensitive Base 32 - RFC 4648
+         [04] - Base 64 - RFC 4648
+         [FF] - Other
+      NLEN (Unsigned Integer)                 [1 octet]
+      Name (String)                           [NLEN octets]
+      Identifier (Binary Data)                [PLEN - 2 octets]
 
    *Type*
       Hash, checksum, or identifier algorithm *Identifier* is using.
 
-   *Base*
+   *Encoding*
       Describes the data encoding of *Identifier*.
 
    *NLEN*

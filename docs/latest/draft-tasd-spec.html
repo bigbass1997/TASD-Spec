@@ -2883,9 +2883,9 @@ li > p:last-of-type:only-child {
 <div class="alignLeft art-text artwork" id="section-4.3.1.19-2">
 <pre>
            0          1          2         3...       3+NLEN...
-      +----------+----------+----------+==========+================+
-      | Type (A) | Base (A) | NLEN (N) | Name (S) | Identifier (A) |
-      +----------+----------+----------+==========+================+
+      +----------+--------------+----------+==========+================+
+      | Type (A) | Encoding (A) | NLEN (N) | Name (S) | Identifier (A) |
+      +----------+--------------+----------+==========+================+
 
       Type (Binary Data):                     [1 octet]
          [01] - MD5 Hash
@@ -2903,7 +2903,7 @@ li > p:last-of-type:only-child {
          [0D] - SHAKE-128 Hash
          [0E] - SHAKE-256 Hash
          [FF] - Other
-      Base (Binary Data):                     [1 octet]
+      Encoding (Binary Data):                 [1 octet]
          [01] - Raw Binary
          [02] - Case Insensitive Base 16 (Hex) - RFC 4648
          [03] - Case Insensitive Base 32 - RFC 4648
@@ -2919,7 +2919,7 @@ li > p:last-of-type:only-child {
               <dd style="margin-left: 1.5em" id="section-4.3.1.19-3.2">Hash, checksum, or identifier algorithm <strong>Identifier</strong> is using.<a href="#section-4.3.1.19-3.2" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-4.3.1.19-3.3"><strong>Base</strong></dt>
+<dt id="section-4.3.1.19-3.3"><strong>Encoding</strong></dt>
               <dd style="margin-left: 1.5em" id="section-4.3.1.19-3.4">Describes the data encoding of <strong>Identifier</strong>.<a href="#section-4.3.1.19-3.4" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
