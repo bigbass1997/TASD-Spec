@@ -7,7 +7,7 @@ Independent TAS Console Replay Research Group                    V. Grey
                                                                  Bigbass
                                                                         
                                                                  rasteri
-                                                       25 September 2023
+                                                          8 October 2023
 
 
                 TASD File Format Specification Version 1
@@ -896,7 +896,8 @@ Table of Contents
          Unix Timestamp (Signed Integer)         [8 octets]
 
    *Unix Timestamp*
-      64-bit Unix timestamp of when the TAS movie was last modified.
+      64-bit Unix timestamp (seconds since Unix Epoch) of when the TAS
+      movie was last modified.
 
 4.3.1.11.  DUMP_CREATED Packet
 
@@ -910,7 +911,8 @@ Table of Contents
          Unix Timestamp (Signed Integer)         [8 octets]
 
    *Unix Timestamp*
-      64-bit Unix timestamp of when the *TASD* file was created.
+      64-bit Unix timestamp (seconds since Unix Epoch) of when the
+      *TASD* file was created.
 
 4.3.1.12.  DUMP_LAST_MODIFIED Packet
 
@@ -924,7 +926,8 @@ Table of Contents
          Unix Timestamp (Signed Integer)         [8 octets]
 
    *Unix Timestamp*
-      64-bit Unix timestamp of when the *TASD* file was last modified.
+      64-bit Unix timestamp (seconds since Unix Epoch) of when the
+      *TASD* file was last modified.
 
 4.3.1.13.  TOTAL_FRAMES Packet
 
@@ -1079,29 +1082,26 @@ Table of Contents
 
    GAME_IDENTIFIER packets MUST be in the following format:
 
-              0          1            2...
-         +----------+----------+================+
-         | Type (A) | Base (A) | Identifier (A) |
-         +----------+----------+================+
+              0          1          2         3...       3+NLEN...
+         +----------+----------+----------+==========+================+
+         | Type (A) | Base (A) | NLEN (N) | Name (S) | Identifier (A) |
+         +----------+----------+----------+==========+================+
 
          Type (Binary Data):                     [1 octet]
-            [01] - CRC-8 Checksum
-            [02] - CRC-16 Checksum
-            [03] - CRC-32 Checksum
-            [04] - MD5 Hash
-            [05] - SHA1 Hash
-            [06] - SHA224 Hash
-            [07] - SHA256 Hash
-            [08] - SHA384 Hash
-            [09] - SHA512 Hash
-            [0A] - SHA512/224 Hash
-            [0B] - SHA512/256 Hash
-            [0C] - SHA3-224 Hash
-            [0D] - SHA3-256 Hash
-            [0E] - SHA3-384 Hash
-            [0F] - SHA3-512 Hash
-            [10] - SHAKE-128 Hash
-            [11] - SHAKE-256 Hash
+            [01] - MD5 Hash
+            [02] - SHA1 Hash
+            [03] - SHA224 Hash
+            [04] - SHA256 Hash
+            [05] - SHA384 Hash
+            [06] - SHA512 Hash
+            [07] - SHA512/224 Hash
+            [08] - SHA512/256 Hash
+            [09] - SHA3-224 Hash
+            [0A] - SHA3-256 Hash
+            [0B] - SHA3-384 Hash
+            [0C] - SHA3-512 Hash
+            [0D] - SHAKE-128 Hash
+            [0E] - SHAKE-256 Hash
             [FF] - Other
          Base (Binary Data):                     [1 octet]
             [01] - Raw Binary
@@ -1109,6 +1109,8 @@ Table of Contents
             [03] - Case Insensitive Base 32 - RFC 4648
             [04] - Base 64 - RFC 4648
             [FF] - Other
+         NLEN (Unsigned Integer)                 [1 octet]
+         Name (String)                           [NLEN octets]
          Identifier (Binary Data)                [PLEN - 2 octets]
 
    *Type*
@@ -1116,6 +1118,15 @@ Table of Contents
 
    *Base*
       Describes the data encoding of *Identifier*.
+
+   *NLEN*
+      Length of *Name*
+
+   *Name*
+      Name of *Type* meant if the hash, checksum, or identifier
+      algorithm *Identifier* is using is not included in *Type*.  If
+      *Type* is [FF], *Name* SHOULD NOT be empty (0 octet length
+      string).
 
    *Identifier*
       Game hash, checksum, or identifier data.

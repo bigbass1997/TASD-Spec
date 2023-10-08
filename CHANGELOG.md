@@ -3,6 +3,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), although currently without version numbers added.
 
+## 2023-10-08
+
+### Changed
+- GAME_IDENTIFIER packet
+- Mention seconds since Unix Epoch for Unix timestamps
+
+### Added
+- NLEN and Name in GAME_IDENTIFIER packet
+
+### Removed
+- CRC-32 and CRC-16 from Type in GAME_IDENTIFIER packet
+
 
 ## 2023-09-25
 

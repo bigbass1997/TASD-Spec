@@ -605,7 +605,7 @@
             </artwork>
             <dl newline="true">
               <dt><strong>Unix Timestamp</strong></dt>
-              <dd>64-bit Unix timestamp of when the TAS movie was last modified.</dd>
+              <dd>64-bit Unix timestamp (seconds since Unix Epoch) of when the TAS movie was last modified.</dd>
             </dl>
           </section>
           <section numbered="true" toc="default" anchor="dump_created">
@@ -621,7 +621,7 @@
             </artwork>
             <dl newline="true">
               <dt><strong>Unix Timestamp</strong></dt>
-              <dd>64-bit Unix timestamp of when the <strong>TASD</strong> file was created.</dd>
+              <dd>64-bit Unix timestamp (seconds since Unix Epoch) of when the <strong>TASD</strong> file was created.</dd>
             </dl>
           </section>
           <section numbered="true" toc="default" anchor="dump_last_modified">
@@ -637,7 +637,7 @@
             </artwork>
             <dl newline="true">
               <dt><strong>Unix Timestamp</strong></dt>
-              <dd>64-bit Unix timestamp of when the <strong>TASD</strong> file was last modified.</dd>
+              <dd>64-bit Unix timestamp (seconds since Unix Epoch) of when the <strong>TASD</strong> file was last modified.</dd>
             </dl>
           </section>
           <section numbered="true" toc="default" anchor="total_frames">
@@ -785,29 +785,26 @@
             <name>GAME_IDENTIFIER Packet</name>
             <t>GAME_IDENTIFIER packets <bcp14>MUST</bcp14> be in the following format:</t>
             <artwork><![CDATA[
-           0          1            2...
-      +----------+----------+================+
-      | Type (A) | Base (A) | Identifier (A) |
-      +----------+----------+================+
+           0          1          2         3...       3+NLEN...
+      +----------+----------+----------+==========+================+
+      | Type (A) | Base (A) | NLEN (N) | Name (S) | Identifier (A) |
+      +----------+----------+----------+==========+================+
 
       Type (Binary Data):                     [1 octet]
-         [01] - CRC-8 Checksum
-         [02] - CRC-16 Checksum
-         [03] - CRC-32 Checksum
-         [04] - MD5 Hash
-         [05] - SHA1 Hash
-         [06] - SHA224 Hash
-         [07] - SHA256 Hash
-         [08] - SHA384 Hash
-         [09] - SHA512 Hash
-         [0A] - SHA512/224 Hash
-         [0B] - SHA512/256 Hash
-         [0C] - SHA3-224 Hash
-         [0D] - SHA3-256 Hash
-         [0E] - SHA3-384 Hash
-         [0F] - SHA3-512 Hash
-         [10] - SHAKE-128 Hash
-         [11] - SHAKE-256 Hash
+         [01] - MD5 Hash
+         [02] - SHA1 Hash
+         [03] - SHA224 Hash
+         [04] - SHA256 Hash
+         [05] - SHA384 Hash
+         [06] - SHA512 Hash
+         [07] - SHA512/224 Hash
+         [08] - SHA512/256 Hash
+         [09] - SHA3-224 Hash
+         [0A] - SHA3-256 Hash
+         [0B] - SHA3-384 Hash
+         [0C] - SHA3-512 Hash
+         [0D] - SHAKE-128 Hash
+         [0E] - SHAKE-256 Hash
          [FF] - Other
       Base (Binary Data):                     [1 octet]
          [01] - Raw Binary
@@ -815,6 +812,8 @@
          [03] - Case Insensitive Base 32 - RFC 4648
          [04] - Base 64 - RFC 4648
          [FF] - Other
+      NLEN (Unsigned Integer)                 [1 octet]
+      Name (String)                           [NLEN octets]
       Identifier (Binary Data)                [PLEN - 2 octets]]]>
             </artwork>
             <dl newline="true">
@@ -822,6 +821,10 @@
               <dd>Hash, checksum, or identifier algorithm <strong>Identifier</strong> is using.</dd>
               <dt><strong>Base</strong></dt>
               <dd>Describes the data encoding of <strong>Identifier</strong>.</dd>
+              <dt><strong>NLEN</strong></dt>
+              <dd>Length of <strong>Name</strong></dd>
+              <dt><strong>Name</strong></dt>
+							<dd>Name of <strong>Type</strong> meant if the hash, checksum, or identifier algorithm <strong>Identifier</strong> is using is not included in <strong>Type</strong>.  If <strong>Type</strong> is <tt>[FF]</tt>, <strong>Name</strong> <bcp14>SHOULD NOT</bcp14> be empty (0 octet length string).</dd>
               <dt><strong>Identifier</strong></dt>
               <dd>Game hash, checksum, or identifier data.</dd>
               <dt><strong>PLEN</strong></dt>
@@ -1919,6 +1922,8 @@
     </section>
     <!-- Change Log
     
+draft 12 - 2023-10-08   VG   Modify GAME_IDENTIFIER packet, removing CRC-32 and CRC-16 from Type and adding NLEN and Name.  Mention seconds since Unix Epoch for Unix timestamps.
+
 draft 11 - 2023-09-24   VG   Made OVERREAD packets generic and added Port to it, now is PORT_OVERREAD.  Fixed packet drawing error in EXPERIMENTAL.  Added SNES_LATCH_FILTER.  Added Port to TRANSITION packet.  Specify meaning of INPUT_CHUNK offset for Index value of TRANSITION packet.
 
 draft 10 - 2023-09-18   VG   Specify that PEXP MUST be greater than 0

@@ -17,6 +17,18 @@
 <!-- Generator version information:
   xml2rfc 3.18.0
     Python 3.11.5
+    ConfigArgParse 1.4.1
+    google-i18n-address 3.1.0
+    intervaltree 3.1.0
+    Jinja2 3.1.2
+    lxml 4.9.3
+    platformdirs 3.10.0
+    pycountry 22.3.5
+    PyYAML 6.0
+    requests 2.31.0
+    setuptools 68.2.2
+    six 1.16.0
+    wcwidth 0.2.6
 -->
 <link href="/home/vi/code/git/TASD-Spec/src/docs/draft-tasd-spec-0001.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -1192,7 +1204,7 @@ li > p:last-of-type:only-child {
 <thead><tr>
 <td class="left"></td>
 <td class="center">TASD File Format Specification</td>
-<td class="right">September 2023</td>
+<td class="right">October 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Grey, et al.</td>
@@ -1207,7 +1219,7 @@ li > p:last-of-type:only-child {
 <dd class="workgroup">Independent TAS Console Replay Research Group</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-09-25" class="published">25 September 2023</time>
+<time datetime="2023-10-08" class="published">8 October 2023</time>
     </dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
@@ -2605,7 +2617,7 @@ li > p:last-of-type:only-child {
 </div>
 <span class="break"></span><dl class="dlNewline" id="section-4.3.1.10-3">
               <dt id="section-4.3.1.10-3.1"><strong>Unix Timestamp</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.1.10-3.2">64-bit Unix timestamp of when the TAS movie was last modified.<a href="#section-4.3.1.10-3.2" class="pilcrow">¶</a>
+              <dd style="margin-left: 1.5em" id="section-4.3.1.10-3.2">64-bit Unix timestamp (seconds since Unix Epoch) of when the TAS movie was last modified.<a href="#section-4.3.1.10-3.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -2629,7 +2641,7 @@ li > p:last-of-type:only-child {
 </div>
 <span class="break"></span><dl class="dlNewline" id="section-4.3.1.11-3">
               <dt id="section-4.3.1.11-3.1"><strong>Unix Timestamp</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.1.11-3.2">64-bit Unix timestamp of when the <strong>TASD</strong> file was created.<a href="#section-4.3.1.11-3.2" class="pilcrow">¶</a>
+              <dd style="margin-left: 1.5em" id="section-4.3.1.11-3.2">64-bit Unix timestamp (seconds since Unix Epoch) of when the <strong>TASD</strong> file was created.<a href="#section-4.3.1.11-3.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -2653,7 +2665,7 @@ li > p:last-of-type:only-child {
 </div>
 <span class="break"></span><dl class="dlNewline" id="section-4.3.1.12-3">
               <dt id="section-4.3.1.12-3.1"><strong>Unix Timestamp</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.1.12-3.2">64-bit Unix timestamp of when the <strong>TASD</strong> file was last modified.<a href="#section-4.3.1.12-3.2" class="pilcrow">¶</a>
+              <dd style="margin-left: 1.5em" id="section-4.3.1.12-3.2">64-bit Unix timestamp (seconds since Unix Epoch) of when the <strong>TASD</strong> file was last modified.<a href="#section-4.3.1.12-3.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
@@ -2870,29 +2882,26 @@ li > p:last-of-type:only-child {
 <p id="section-4.3.1.19-1">GAME_IDENTIFIER packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.1.19-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.1.19-2">
 <pre>
-           0          1            2...
-      +----------+----------+================+
-      | Type (A) | Base (A) | Identifier (A) |
-      +----------+----------+================+
+           0          1          2         3...       3+NLEN...
+      +----------+----------+----------+==========+================+
+      | Type (A) | Base (A) | NLEN (N) | Name (S) | Identifier (A) |
+      +----------+----------+----------+==========+================+
 
       Type (Binary Data):                     [1 octet]
-         [01] - CRC-8 Checksum
-         [02] - CRC-16 Checksum
-         [03] - CRC-32 Checksum
-         [04] - MD5 Hash
-         [05] - SHA1 Hash
-         [06] - SHA224 Hash
-         [07] - SHA256 Hash
-         [08] - SHA384 Hash
-         [09] - SHA512 Hash
-         [0A] - SHA512/224 Hash
-         [0B] - SHA512/256 Hash
-         [0C] - SHA3-224 Hash
-         [0D] - SHA3-256 Hash
-         [0E] - SHA3-384 Hash
-         [0F] - SHA3-512 Hash
-         [10] - SHAKE-128 Hash
-         [11] - SHAKE-256 Hash
+         [01] - MD5 Hash
+         [02] - SHA1 Hash
+         [03] - SHA224 Hash
+         [04] - SHA256 Hash
+         [05] - SHA384 Hash
+         [06] - SHA512 Hash
+         [07] - SHA512/224 Hash
+         [08] - SHA512/256 Hash
+         [09] - SHA3-224 Hash
+         [0A] - SHA3-256 Hash
+         [0B] - SHA3-384 Hash
+         [0C] - SHA3-512 Hash
+         [0D] - SHAKE-128 Hash
+         [0E] - SHAKE-256 Hash
          [FF] - Other
       Base (Binary Data):                     [1 octet]
          [01] - Raw Binary
@@ -2900,6 +2909,8 @@ li > p:last-of-type:only-child {
          [03] - Case Insensitive Base 32 - RFC 4648
          [04] - Base 64 - RFC 4648
          [FF] - Other
+      NLEN (Unsigned Integer)                 [1 octet]
+      Name (String)                           [NLEN octets]
       Identifier (Binary Data)                [PLEN - 2 octets]
 </pre><a href="#section-4.3.1.19-2" class="pilcrow">¶</a>
 </div>
@@ -2912,12 +2923,20 @@ li > p:last-of-type:only-child {
               <dd style="margin-left: 1.5em" id="section-4.3.1.19-3.4">Describes the data encoding of <strong>Identifier</strong>.<a href="#section-4.3.1.19-3.4" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-4.3.1.19-3.5"><strong>Identifier</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.1.19-3.6">Game hash, checksum, or identifier data.<a href="#section-4.3.1.19-3.6" class="pilcrow">¶</a>
+<dt id="section-4.3.1.19-3.5"><strong>NLEN</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.1.19-3.6">Length of <strong>Name</strong><a href="#section-4.3.1.19-3.6" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-4.3.1.19-3.7"><strong>PLEN</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.1.19-3.8">Length of the packet payload<a href="#section-4.3.1.19-3.8" class="pilcrow">¶</a>
+<dt id="section-4.3.1.19-3.7"><strong>Name</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.1.19-3.8">Name of <strong>Type</strong> meant if the hash, checksum, or identifier algorithm <strong>Identifier</strong> is using is not included in <strong>Type</strong>.  If <strong>Type</strong> is <code>[FF]</code>, <strong>Name</strong> <span class="bcp14">SHOULD NOT</span> be empty (0 octet length string).<a href="#section-4.3.1.19-3.8" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-4.3.1.19-3.9"><strong>Identifier</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.1.19-3.10">Game hash, checksum, or identifier data.<a href="#section-4.3.1.19-3.10" class="pilcrow">¶</a>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-4.3.1.19-3.11"><strong>PLEN</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.1.19-3.12">Length of the packet payload<a href="#section-4.3.1.19-3.12" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
 </dl>
