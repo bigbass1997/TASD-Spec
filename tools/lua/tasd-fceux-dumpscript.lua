@@ -131,8 +131,9 @@ function getMemoryInitPacket(dataType, device, required, name, data)
 end
 
 function getGameIdentifierPacket()
-  local packetPayload = intToBytes(0x04, 1) -- Type is MD5
-  packetPayload = packetPayload .. intToBytes(0x02, 1) -- Base is hex
+  local packetPayload = intToBytes(0x01, 1) -- Type is MD5
+  packetPayload = packetPayload .. intToBytes(0x02, 1) -- Encoding is hex
+  packetPayload = packetPayload .. intToBytes(0x00, 1) -- NLEN is 0
   packetPayload = packetPayload .. rom.gethash("md5")
   return makePacket(GAME_IDENTIFIER, packetPayload)
 end
