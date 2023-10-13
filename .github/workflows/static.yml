@@ -31,12 +31,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Rename file
+        uses: mv docs/latest/draft-tasd-spec.html docs/latest/index.html
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v2
         with:
-          path: 'docs/latest/draft-tasd-spec.html'
+          path: 'docs/latest/'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v2
