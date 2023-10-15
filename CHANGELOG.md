@@ -3,6 +3,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), although currently without version numbers added.
 
+## 2023-10-15
+
+### Changed
+- Reordered the SNES controller types to match PORT_CONTROLLER ordering
+
 ## 2023-10-13
 
 ### Changed

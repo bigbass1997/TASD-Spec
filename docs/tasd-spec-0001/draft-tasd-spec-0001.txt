@@ -7,7 +7,7 @@ Independent TAS Console Replay Research Group                    V. Grey
                                                                  Bigbass
                                                                         
                                                                  rasteri
-                                                         13 October 2023
+                                                         15 October 2023
 
 
                 TASD File Format Specification Version 1
@@ -102,8 +102,8 @@ Table of Contents
        5.1.2.  NES Four Score
      5.2.  SNES Controller Types
        5.2.1.  SNES Standard Controller
-       5.2.2.  SNES Mouse
-       5.2.3.  SNES Super Multitap
+       5.2.2.  SNES Super Multitap
+       5.2.3.  SNES Mouse
      5.3.  N64 Controller Types
        5.3.1.  N64 Standard Controller
        5.3.2.  N64 Standard Controller with Rumble
@@ -1744,45 +1744,7 @@ Table of Contents
    Bit 1:  1
    Bit 0:  1
 
-5.2.2.  SNES Mouse
-
-   Single Input Length: 4 Octets
-
-   *Octet 0*
-
-   Bit 7:  1
-   Bit 6:  1
-   Bit 5:  1
-   Bit 4:  1
-   Bit 3:  1
-   Bit 2:  1
-   Bit 1:  1
-   Bit 0:  1
-
-   *Octet 1*
-
-   Bit 7:  /Right button
-   Bit 6:  /Left button
-   Bit 5:  Current sensitivity (0: high sensitivity; 1: low or medium
-      sensitivity)
-   Bit 4:  Current sensitivity (0: medium sensitivity; 1: low or high
-      sensitivity)
-   Bit 3:  1
-   Bit 2:  1
-   Bit 1:  1
-   Bit 0:  0
-
-   *Octet 2*
-
-   Bits 7-1:  /Vertical displacement since last read
-   Bit 0:  Direction (0: up; 1: down)
-
-   *Octet 3*
-
-   Bits 7-1:  /Horizontal displacement since last read
-   Bit 0:  Direction (0: up; 1: down)
-
-5.2.3.  SNES Super Multitap
+5.2.2.  SNES Super Multitap
 
    Single Input Length: 5 Octets
 
@@ -1848,6 +1810,44 @@ Table of Contents
    simultaneously by the game - either *1 and 2*, or *3 and 4*. The I/O
    Pin state in octet 0 MUST be *1* for multitap ports *1 and 2*, or *0*
    for ports *3 and 4*.
+
+5.2.3.  SNES Mouse
+
+   Single Input Length: 4 Octets
+
+   *Octet 0*
+
+   Bit 7:  1
+   Bit 6:  1
+   Bit 5:  1
+   Bit 4:  1
+   Bit 3:  1
+   Bit 2:  1
+   Bit 1:  1
+   Bit 0:  1
+
+   *Octet 1*
+
+   Bit 7:  /Right button
+   Bit 6:  /Left button
+   Bit 5:  Current sensitivity (0: high sensitivity; 1: low or medium
+      sensitivity)
+   Bit 4:  Current sensitivity (0: medium sensitivity; 1: low or high
+      sensitivity)
+   Bit 3:  1
+   Bit 2:  1
+   Bit 1:  1
+   Bit 0:  0
+
+   *Octet 2*
+
+   Bits 7-1:  /Vertical displacement since last read
+   Bit 0:  Direction (0: up; 1: down)
+
+   *Octet 3*
+
+   Bits 7-1:  /Horizontal displacement since last read
+   Bit 0:  Direction (0: up; 1: down)
 
 5.3.  N64 Controller Types
 
