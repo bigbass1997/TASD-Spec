@@ -32,7 +32,7 @@
         <uri>https://github.com/rasteri</uri>
       </address>
     </author>
-    <date year="2023"/>
+    <date year="2025"/>
     <area>General</area>
     <workgroup>Independent TAS Console Replay Research Group</workgroup>
     <abstract>
@@ -189,7 +189,7 @@
         <dt><strong>Magic Number</strong></dt>
         <dd>4 octet value that <bcp14>MUST</bcp14> be <tt>[54 41 53 44]</tt>(ASCII value <tt>TASD</tt>).</dd>
         <dt><strong>Version</strong></dt>
-        <dd>Version of the <strong>TASD</strong> file format.  Version currently <bcp14>MUST</bcp14> be a value of 1.</dd>
+        <dd>Version of the <strong>TASD</strong> file format.  Version currently <bcp14>MUST</bcp14> be a value of 1, but <bcp14>SHOULD</bcp14> be incremented in future versions.</dd>
         <dt><strong>G_KEYLEN</strong></dt>
         <dd>Global length of <strong>Key</strong> values of packets.  G_KEYLEN currently <bcp14>MUST</bcp14> be a value of 2.</dd>
       </dl>
@@ -381,9 +381,9 @@
           <name>Input Frame/Timing Key Descriptions</name>
           <dl newline="true">
             <dt><tt>[FE 01]</tt> - INPUT_CHUNK</dt>
-            <dd>Specifies a chunk of input data for the TAS when played on hardware.  All data from INPUT_CHUNK packets are concatenated together in order of appearance in the <strong>TASD</strong> file.  If the INPUT_CHUNK packet type is used, the PORT_CONTROLLER packet type <bcp14>MUST</bcp14> be used.  If the INPUT_CHUNK packet type is used, the INPUT_MOMENT packet type <bcp14>SHOULD NOT</bcp14> be used. This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>MAY</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="input_chunk"/>).</dd>
+            <dd>Specifies a chunk of input data for the TAS when played on hardware.  All data from INPUT_CHUNK packets are concatenated together in order of appearance in the <strong>TASD</strong> file.  If the INPUT_CHUNK packet type is used in a TASD file, the PORT_CONTROLLER packet type <bcp14>MUST</bcp14> also be used at least once.  If the INPUT_CHUNK packet type is used, the INPUT_MOMENT packet type <bcp14>SHOULD NOT</bcp14> be used. This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>MAY</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="input_chunk"/>).</dd>
             <dt><tt>[FE 02]</tt> - INPUT_MOMENT</dt>
-            <dd>Specifies input data that is sent from the replay device to the console with specific timing.  If the INPUT_MOMENT packet type is used, the PORT_CONTROLLER packet type <bcp14>MUST</bcp14> be used.  If the INPUT_MOMENT packet type is used, the INPUT_CHUNK packet type <bcp14>SHOULD NOT</bcp14> be used.  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>MAY</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="input_moment"/>).</dd>
+            <dd>Specifies a single instance of input data that is sent from the replay device to the console with specific timing.  If the INPUT_MOMENT packet type is used in a TASD file, the PORT_CONTROLLER packet type <bcp14>MUST</bcp14> also be used at least once.  If the INPUT_MOMENT packet type is used, the INPUT_CHUNK packet type <bcp14>SHOULD NOT</bcp14> be used.  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>MAY</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="input_moment"/>).</dd>
             <dt><tt>[FE 03]</tt> - TRANSITION</dt>
             <dd>Specifies when a transition or change occurs during a TAS replay (example: console reset or changing of controller types).  This packet type is <bcp14>OPTIONAL</bcp14> and a <strong>TASD</strong> file <bcp14>MAY</bcp14> contain more than 1 of this packet type.  Discussed in (<xref target="transition"/>).</dd>
             <dt><tt>[FE 04]</tt> - LAG_FRAME_CHUNK</dt>
@@ -1104,49 +1104,54 @@
               <dt><strong>Port</strong></dt>
               <dd>Controller port number (<strong>Port</strong> number <bcp14>MUST</bcp14> be <strong>1-indexed</strong>).</dd>
               <dt><strong>Inputs</strong></dt>
-              <dd>Controller input data for controller on <strong>Port</strong>. Input values are usually in native format (usually active-low).  Input formats for specific controller types are described in <xref target="controller_inputs"/>.</dd>
+              <dd>Controller input data for controller on <strong>Port</strong>. Input formats for each controller type is described in <xref target="controller_inputs"/>.</dd>
               <dt><strong>PLEN</strong></dt>
               <dd>Length of the packet payload.</dd>
             </dl>
-            <t>A single INPUT_CHUNK packet <bcp14>MAY</bcp14> contain up to every input of a TAS movie console replay and <bcp14>MAY</bcp14> contain fewer than every input of a TAS movie console replay.  If there are more than 1 INPUT_CHUNK packets, the INPUT_CHUNK packets <bcp14>MUST</bcp14> be in order of the TAS movie console replay inputs, where earlier inputs in the TAS movie console replay are earlier in the <strong>TASD</strong> file and later inputs in the TAS movie console replay are later in the <strong>TASD</strong> file.</t>
-            <t>The input data contained in <strong>Inputs</strong> is divided up based on the PORT_CONTROLLER type corresponding to the <strong>Port</strong> number. Refer to <xref target="controller_inputs"/> for each available type and the number of bytes used for each instance of controller input. Keep in mind that the PORT_CONTROLLER type can be changed using TRANSITION packets.</t>
+            <t>All INPUT_CHUNK packets with corresponding Port values in the <strong>TASD</strong> file <bcp14>MUST</bcp14> be in chronological order, where earlier inputs in the TAS movie console replay are earlier in the <strong>TASD</strong> file and later inputs in the TAS movie console replay are later in the <strong>TASD</strong> file.  If there are more than one INPUT_CHUNK packets for a specific Port, the input data <bcp14>MUST</bcp14> be interpreted as if all their contents were concatenated into a single INPUT_CHUNK packet.  As such, a single INPUT_CHUNK packet <bcp14>MAY</bcp14> contain up to every input of a TAS movie console replay and <bcp14>MAY</bcp14> contain fewer than every input of a TAS movie console replay.</t>
+            <t>The input data contained in <strong>Inputs</strong> is divided up based on the PORT_CONTROLLER type corresponding to the <strong>Port</strong> number. Refer to <xref target="controller_inputs"/> for each available type and the number of bytes used for each instance of controller input. The PORT_CONTROLLER type <bcp14>MAY</bcp14> be changed using TRANSITION packets, which <bcp14>MAY</bcp14> change the interpretation of the input data until either the end of the replay or until the next PORT_CONTROLLER transition.</t>
+            <t></t>
           </section>
           <section numbered="true" toc="default" anchor="input_moment">
             <name>INPUT_MOMENT Packet</name>
             <t>INPUT_MOMENT packets <bcp14>MUST</bcp14> be in the following format:</t>
             <artwork><![CDATA[
-           0             1         2  3  4  5  7  8  9  10
-      +----------+----------------+--+--+--+--+--+--+--+--+
-      | Port (N) | Index Type (A) |       Index (N)       | ...
-      +----------+----------------+--+--+--+--+--+--+--+--+
-          11...
-      +============+
-      | Inputs (B) |
-      +============+
+           0          1             2        
+      +----------+----------+----------------+
+      | Port (N) | Hold (B) | Index Type (A) | ...
+      +----------+----------+----------------+
+       3  4  5  6  7  8  9  10    11...
+      +--+--+--+--+--+--+--+--+============+
+      |       Index (N)       | Inputs (B) |
+      +--+--+--+--+--+--+--+--+============+
 
       Port (Unsigned Integer)                 [1 octet]
+      Hold (Boolean)                          [1 octet]
       Index Type (Binary Data):               [1 octet]
          [01] - Frame
          [02] - Cycle Count
          [03] - Milliseconds
          [04] - Microseconds * 10
       Index (Unsigned Integer)                [8 octets]
-      Inputs (Binary Data)                    [PLEN - 10 octets]
+      Inputs (Binary Data)                    [PLEN - 11 octets]
 ]]>
             </artwork>
             <dl newline="true">
               <dt><strong>Port</strong></dt>
               <dd>Controller port number (<strong>Port</strong> number <bcp14>MUST</bcp14> be <strong>1-indexed</strong>).</dd>
-              <dt><strong>Type</strong></dt>
-              <dd>Determines specific timing type for start of <strong>Inputs</strong>.</dd>
+              <dt><strong>Hold</strong></dt>
+              <dd>Determines whether the <strong>Input</strong> data <bcp14>MUST</bcp14> continue to be held after the controller state has been read.</dd>
+              <dt><strong>Index Type</strong></dt>
+              <dd>Specifies timing methodology of a specific moment when <strong>Input</strong> data <bcp14>MUST</bcp14> be applied.</dd>
               <dt><strong>Index</strong></dt>
-              <dd>Time value to start sending <strong>Inputs</strong> data.</dd>
-              <dt><strong>Inputs</strong></dt>
-              <dd>Controller input data for controller on <strong>Port</strong>. Input values are usually in native format (usually active-low).  Input formats for specific controller types are described in <xref target="controller_inputs"/>.</dd>
+              <dd>Time value in units based on <strong>Index Type</strong>.</dd>
+              <dt><strong>Input</strong></dt>
+              <dd>A single instance of controller input data for the controller on the specified <strong>Port</strong>. Input formats for each controller type is described in <xref target="controller_inputs"/>.</dd>
               <dt><strong>PLEN</strong></dt>
               <dd>Length of the packet payload.</dd>
             </dl>
-            <t>The input data contained in <strong>Inputs</strong> is divided up based on the PORT_CONTROLLER type corresponding to the <strong>Port</strong> number. Refer to <xref target="controller_inputs"/> for each available type and the number of bytes used for each instance of controller input. Keep in mind that the PORT_CONTROLLER type can be changed using TRANSITION packets.</t>
+            <t>Each INPUT_MOMENT packet contains a single instance of controller input data for a specific moment during a TAS replay. The input data's format depends on the PORT_CONTROLLER type corresponding to the <strong>Port</strong> number. Refer to <xref target="controller_inputs"/> for each available type. The PORT_CONTROLLER type <bcp14>MAY</bcp14> be changed using TRANSITION packets, which <bcp14>MAY</bcp14> change the interpretation of the input data.</t>
+            <t>If <strong>Hold</strong> is <strong>TRUE</strong>, the controller <bcp14>MUST</bcp14> continually hold the input state until the next INPUT_MOMENT for the same <strong>Port</strong> number. If <strong>Hold</strong> is <strong>FALSE</strong>, the controller <bcp14>MUST</bcp14> hold only until the console reads the input state, or until the next INPUT_MOMENT for the same <strong>Port</strong> number.</t>
           </section>
           <section numbered="true" toc="default" anchor="transition">
             <name>TRANSITION Packet</name>
@@ -1166,7 +1171,7 @@
          [02] - Cycle Count
          [03] - Milliseconds
          [04] - Microseconds * 10
-         [05] - INPUT_CHUNK Index
+         [05] - INPUT_CHUNK Byte Index
       Port (Unsigned Integer)                 [1 octet]
       Index (Unsigned Integer)                [8 octets]
       Type (Binary Data):                     [1 octet]
@@ -1180,9 +1185,9 @@
               <dt><strong>Input Type</strong></dt>
               <dd>Determines specific timing type for start of transition.</dd>
               <dt><strong>Port</strong></dt>
-              <dd>Controller port number of input index.  If <strong>Index Type</strong> is <tt>[05]</tt>, <strong>Port</strong> <bcp14>MUST</bcp14> be <strong>1-indexed</strong> Port number, otherwise <strong>Port</strong> <bcp14>MAY</bcp14> be any value.</dd>
+              <dd>Controller port number (<strong>Port</strong> number <bcp14>MUST</bcp14> be <strong>1-indexed</strong>).</dd>
               <dt><strong>Index</strong></dt>
-              <dd>Time or offset value to start transition.  If <strong>Index Type</strong> is <tt>[05]</tt>, <strong>Index</strong> <bcp14>MUST</bcp14> be the byte offset of <strong>INPUT_CHUNK</strong> data from <strong>INPUT_CHUNK</strong> packets for the controller port specified by <strong>Port</strong>.</dd>
+              <dd>Time or offset value to start transition.  If <strong>Index Type</strong> is <tt>[05]</tt>, <strong>Index</strong> <bcp14>MUST</bcp14> be interpreted as the <strong>byte offset</strong> (<strong>0-indexed</strong>) into the concatenated input data from all <strong>INPUT_CHUNK</strong> packets for the controller port specified by <strong>Port</strong>. If <strong>Index Type</strong> is <tt>[05]</tt>, the byte offset <bcp14>MUST</bcp14> also point to the first byte of an instance of controller input data (according to the PORT_CONTROLLER format at that moment in the TAS replay.)</dd>
               <dt><strong>Type</strong></dt>
               <dd>Type of transition.  If <strong>Type</strong> is <tt>[FF]</tt>, the transition action will be interpreting a <strong>TASD</strong> packet.</dd>
               <dt><strong>Inner Packet</strong></dt>
@@ -1923,7 +1928,7 @@
       <t>THIS DOCUMENTATION IS PROVIDED BY THE AUTHOR(S) "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</t>
     </section>
     <!-- Change Log
-draft 16 - 2025-02-01   Bigbass Clarified NUL characters in strings. Revised "Introduction" paragraphs.
+draft 16 - 2025-02-01   Bigbass Revised "Introduction" paragraphs. Clarified NUL characters in strings. Clarified header version should increase in future versions. Clarified INPUT_MOMENT packets contain only a single instance of input data. Clarified how multiple INPUT_CHUNK packets must be interpreted. Clarified INPUT_CHUNK indexes in TRANSITION packets refer to an individual byte (changed index type name.) Added a "Hold" option to INPUT_MOMENT packets to clarify how long the INPUT_MOMENT should be active for (useful for GB/C/A replays which expect the value to be held until the input changes.)
     
 draft 15 - 2023-10-15   Bigbass Reordered SNES controller types
     
