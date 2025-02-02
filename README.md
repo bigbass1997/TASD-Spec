@@ -28,15 +28,19 @@ All dependencies can be installed from the Python3 PIP package manager (`pip3 in
 Alternatively, if using linux, xml2rfc may be available in your distribution's repositories via your package manager. For instance, `sudo apt install xml2rfc` on Ubuntu/Debian, or `pacman -S xml2rfc` on Arch Linux (AUR).
 
 ### Build the Documentation
-From a terminal, go to the the main directory of this project (the directory this README.md file exists in).  You can then build the NES ROM with the following command.
-
+From a terminal, go to the the main directory of this project (the directory this README.md file exists in).  You can then build the HTML and TXT formatted documents with:
 ```sh
-make
+make documents
 ```
 
 After building the documentation, you should find `draft-tasd-0001.html`,  and `draft-tasd-0001.txt` in the `build/docs/` directory.
 
 The source code for the documentation can be found in `src/docs/draft-tasd-0001.xml`.  The xml2rfc vocabulary of the xml file is explained in [RFC 7991](https://www.rfc-editor.org/rfc/rfc7991).
+
+To copy the generated HTML and TXT files to the final `docs/` directory, run:
+```sh
+make contribution
+```
 
 
 ## Tools and Scripts
