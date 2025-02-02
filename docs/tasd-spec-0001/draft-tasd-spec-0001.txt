@@ -1439,6 +1439,15 @@ Table of Contents
    of the input data until either the end of the replay or until the
    next PORT_CONTROLLER transition.
 
+   Each instance of controller input *SHOULD* remain held until the
+   input has been used according to the current replay configuration.
+   By default, this means each instance of controller input corresponds
+   to a single input "latch" or polling sequence by the console.
+   However, some packet types *MAY* alter how inputs are used during
+   replay.  For example, the NES has the NES_LATCH_FILTER packet
+   available.  When NES_LATCH_FILTER is active, each instance of
+   controller input *MUST* remain held until the end of the filter
+   period.
 
 4.3.5.2.  INPUT_MOMENT Packet
 
@@ -2212,14 +2221,14 @@ Table of Contents
 
    *Octet 0*
 
-   Bit 7:  /Up
-   Bit 6:  /Down
-   Bit 5:  /Left
-   Bit 4:  /Right
-   Bit 3:  /B
-   Bit 2:  /C
-   Bit 1:  /A
-   Bit 0:  /Start
+   Bit 7:  /C
+   Bit 6:  /B
+   Bit 5:  /Right
+   Bit 4:  /Left
+   Bit 3:  /Down
+   Bit 2:  /Up
+   Bit 1:  /Start
+   Bit 0:  /A
 
 5.8.2.  Genesis (Mega Drive) 6-Button
 
@@ -2227,21 +2236,21 @@ Table of Contents
 
    *Octet 0*
 
-   Bit 7:  /Up
-   Bit 6:  /Down
-   Bit 5:  /Left
-   Bit 4:  /Right
-   Bit 3:  /B
-   Bit 2:  /C
-   Bit 1:  /A
-   Bit 0:  /Start
+   Bit 7:  /C
+   Bit 6:  /B
+   Bit 5:  /Right
+   Bit 4:  /Left
+   Bit 3:  /Down
+   Bit 2:  /Up
+   Bit 1:  /Start
+   Bit 0:  /A
 
    *Octet 1*
 
-   Bit 7:  /Z
-   Bit 6:  /Y
-   Bit 5:  /X
-   Bit 4:  /Mode
+   Bit 7:  /Mode
+   Bit 6:  /X
+   Bit 5:  /Y
+   Bit 4:  /Z
    Bit 3:  1
    Bit 2:  1
    Bit 1:  1

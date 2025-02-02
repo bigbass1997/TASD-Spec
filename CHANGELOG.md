@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 ### Changed
 - Intended formatting and usage of INPUT_CHUNK and INPUT_MOMENT packets
 - Clarified that INPUT_CHUNK Indexes in TRANSITION packets should be *byte* indexes
+- Genesis controller input formats to better reflect the bit ordering seen during replay
 
 ### Added
 - A new "Hold" option to INPUT_MOMENT packets
