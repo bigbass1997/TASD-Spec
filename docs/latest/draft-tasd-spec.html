@@ -3441,15 +3441,16 @@ li > p:last-of-type:only-child {
 <p id="section-4.3.5.3-1">TRANSITION packets <span class="bcp14">MUST</span> be in the following format:<a href="#section-4.3.5.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.3.5.3-2">
 <pre>
-               0            1      2  3  4  5  6  7  8  9
-      +----------------+----------+--+--+--+--+--+--+--+--+
-      | Index Type (A) | Port (N) |       Index (N)       | ...
-      +----------------+----------+--+--+--+--+--+--+--+--+
+            0            1         2  3  4  5  6  7  8  9
+      +----------+----------------+--+--+--+--+--+--+--+--+
+      | Port (N) | Index Type (A) |       Index (N)       | ...
+      +----------+----------------+--+--+--+--+--+--+--+--+
            10         11...
       +----------+============+
       | Type (A) | Packet (A) |
       +----------+============+
 
+      Port (Unsigned Integer)                 [1 octet]
       Index Type (Binary Data):               [1 octet]
          [01] - Frame
          [02] - Cycle Count
@@ -3457,7 +3458,6 @@ li > p:last-of-type:only-child {
          [04] - Microseconds
          [05] - Nanoseconds
          [06] - INPUT_CHUNK Byte Index
-      Port (Unsigned Integer)                 [1 octet]
       Index (Unsigned Integer)                [8 octets]
       Type (Binary Data):                     [1 octet]
          [01] - Soft Reset
@@ -3468,12 +3468,12 @@ li > p:last-of-type:only-child {
 </pre><a href="#section-4.3.5.3-2" class="pilcrow">¶</a>
 </div>
 <span class="break"></span><dl class="dlNewline" id="section-4.3.5.3-3">
-              <dt id="section-4.3.5.3-3.1"><strong>Input Type</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.2">Determines specific timing type for start of transition.<a href="#section-4.3.5.3-3.2" class="pilcrow">¶</a>
+              <dt id="section-4.3.5.3-3.1"><strong>Port</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.2">Controller port number (<strong>Port</strong> number <span class="bcp14">MUST</span> be <strong>1-indexed</strong>).<a href="#section-4.3.5.3-3.2" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
-<dt id="section-4.3.5.3-3.3"><strong>Port</strong></dt>
-              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.4">Controller port number (<strong>Port</strong> number <span class="bcp14">MUST</span> be <strong>1-indexed</strong>).<a href="#section-4.3.5.3-3.4" class="pilcrow">¶</a>
+<dt id="section-4.3.5.3-3.3"><strong>Input Type</strong></dt>
+              <dd style="margin-left: 1.5em" id="section-4.3.5.3-3.4">Determines specific timing type for start of transition.<a href="#section-4.3.5.3-3.4" class="pilcrow">¶</a>
 </dd>
               <dd class="break"></dd>
 <dt id="section-4.3.5.3-3.5"><strong>Index</strong></dt>

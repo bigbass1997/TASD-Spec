@@ -9,6 +9,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 - Improved wording in the Abstract, Introduction, Overview and several other sections
 - Clarified what must happen when INPUT_MOMENTs conflict with INPUT_CHUNKs, and removed wording that suggested they shouldn't both be used in the same TASD file
 - Changed the Index Type "Microseconds * 10" to "Microseconds" for INPUT_MOMENT and TRANSITION packets
+- Reordered the Port field in the TRANSITION packet for better consistency with other packets that use the same field
 
 ### Added
 - A new Index Type of "Nanoseconds" for INPUT_MOMENT and TRANSITION packets (since the index number is 64-bits wide, even when using nanoseconds the largest number is equivalent to ~584.6 years)

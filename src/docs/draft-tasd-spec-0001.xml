@@ -1165,15 +1165,16 @@
             <name>TRANSITION Packet</name>
             <t>TRANSITION packets <bcp14>MUST</bcp14> be in the following format:</t>
             <artwork><![CDATA[
-               0            1      2  3  4  5  6  7  8  9
-      +----------------+----------+--+--+--+--+--+--+--+--+
-      | Index Type (A) | Port (N) |       Index (N)       | ...
-      +----------------+----------+--+--+--+--+--+--+--+--+
+            0            1         2  3  4  5  6  7  8  9
+      +----------+----------------+--+--+--+--+--+--+--+--+
+      | Port (N) | Index Type (A) |       Index (N)       | ...
+      +----------+----------------+--+--+--+--+--+--+--+--+
            10         11...
       +----------+============+
       | Type (A) | Packet (A) |
       +----------+============+
 
+      Port (Unsigned Integer)                 [1 octet]
       Index Type (Binary Data):               [1 octet]
          [01] - Frame
          [02] - Cycle Count
@@ -1181,7 +1182,6 @@
          [04] - Microseconds
          [05] - Nanoseconds
          [06] - INPUT_CHUNK Byte Index
-      Port (Unsigned Integer)                 [1 octet]
       Index (Unsigned Integer)                [8 octets]
       Type (Binary Data):                     [1 octet]
          [01] - Soft Reset
@@ -1191,10 +1191,10 @@
       Inner Packet (Binary Data)              [PLEN - 11 octets]]]>
             </artwork>
             <dl newline="true">
-              <dt><strong>Input Type</strong></dt>
-              <dd>Determines specific timing type for start of transition.</dd>
               <dt><strong>Port</strong></dt>
               <dd>Controller port number (<strong>Port</strong> number <bcp14>MUST</bcp14> be <strong>1-indexed</strong>).</dd>
+              <dt><strong>Input Type</strong></dt>
+              <dd>Determines specific timing type for start of transition.</dd>
               <dt><strong>Index</strong></dt>
               <dd>Time or offset value to start transition.  If <strong>Index Type</strong> is <tt>[06]</tt>, <strong>Index</strong> <bcp14>MUST</bcp14> be interpreted as the <strong>byte offset</strong> (<strong>0-indexed</strong>) into the concatenated input data from all <strong>INPUT_CHUNK</strong> packets for the controller port specified by <strong>Port</strong>. If <strong>Index Type</strong> is <tt>[06]</tt>, the byte offset <bcp14>MUST</bcp14> also point to the first byte of an instance of controller input data (according to the PORT_CONTROLLER format at that moment in the TAS replay.)</dd>
               <dt><strong>Type</strong></dt>
@@ -1937,7 +1937,7 @@
       <t>THIS DOCUMENTATION IS PROVIDED BY THE AUTHOR(S) "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR(S) BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</t>
     </section>
     <!-- Change Log
-draft 17 - 2025-04-16   Bigbass Improved the wording in the Abstract and Introduction paragraphs. Reordered and expanded on the overview/preliminaries section. Revised wording in a packet diagram example and the Motivations section. Miscellaneous formatting changes. Removed exclusion requirements between INPUT_CHUNK and INPUT_MOMENT packets, as they can be used together now. Clarified what must happen if an INPUT_MOMENT conflicts with INPUT_CHUNK inputs. For INPUT_MOMENT and TRANSITION packets, the Index Type "Microseconds * 10" has been changed to "Microseconds", and a new type "Nanoseconds" has been added. (2^64 nanoseconds is ~584.6 years)
+draft 17 - 2025-04-16   Bigbass Improved the wording in the Abstract and Introduction paragraphs. Reordered and expanded on the overview/preliminaries section. Revised wording in a packet diagram example and the Motivations section. Miscellaneous formatting changes. Removed exclusion requirements between INPUT_CHUNK and INPUT_MOMENT packets, as they can be used together now. Clarified what must happen if an INPUT_MOMENT conflicts with INPUT_CHUNK inputs. For INPUT_MOMENT and TRANSITION packets, the Index Type "Microseconds * 10" has been changed to "Microseconds", and a new type "Nanoseconds" has been added. (2^64 nanoseconds is ~584.6 years). Reordered Port field in TRANSITION to match similar ordering in INPUT_MOMENT and other packets.
     
 draft 16 - 2025-02-01   Bigbass Revised "Introduction" paragraphs. Clarified NUL characters in strings. Clarified header version should increase in future versions. Clarified INPUT_MOMENT packets contain only a single instance of input data. Clarified how multiple INPUT_CHUNK packets must be interpreted. Clarified INPUT_CHUNK indexes in TRANSITION packets refer to an individual byte (changed index type name.) Added a "Hold" option to INPUT_MOMENT packets to clarify how long the INPUT_MOMENT should be active for (useful for GB/C/A replays which expect the value to be held until the input changes.) Changed Genesis controller input formats.
     

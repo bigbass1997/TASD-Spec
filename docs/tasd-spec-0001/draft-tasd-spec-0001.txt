@@ -1527,15 +1527,16 @@ Table of Contents
 
    TRANSITION packets MUST be in the following format:
 
-                  0            1      2  3  4  5  6  7  8  9
-         +----------------+----------+--+--+--+--+--+--+--+--+
-         | Index Type (A) | Port (N) |       Index (N)       | ...
-         +----------------+----------+--+--+--+--+--+--+--+--+
+               0            1         2  3  4  5  6  7  8  9
+         +----------+----------------+--+--+--+--+--+--+--+--+
+         | Port (N) | Index Type (A) |       Index (N)       | ...
+         +----------+----------------+--+--+--+--+--+--+--+--+
               10         11...
          +----------+============+
          | Type (A) | Packet (A) |
          +----------+============+
 
+         Port (Unsigned Integer)                 [1 octet]
          Index Type (Binary Data):               [1 octet]
             [01] - Frame
             [02] - Cycle Count
@@ -1543,7 +1544,6 @@ Table of Contents
             [04] - Microseconds
             [05] - Nanoseconds
             [06] - INPUT_CHUNK Byte Index
-         Port (Unsigned Integer)                 [1 octet]
          Index (Unsigned Integer)                [8 octets]
          Type (Binary Data):                     [1 octet]
             [01] - Soft Reset
@@ -1552,11 +1552,11 @@ Table of Contents
             [FF] - Packet Derived
          Inner Packet (Binary Data)              [PLEN - 11 octets]
 
-   *Input Type*
-      Determines specific timing type for start of transition.
-
    *Port*
       Controller port number (*Port* number MUST be *1-indexed*).
+
+   *Input Type*
+      Determines specific timing type for start of transition.
 
    *Index*
       Time or offset value to start transition.  If *Index Type* is
