@@ -3,10 +3,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), although currently without version numbers added.
 
+## 2025-04-16
+
+### Changed
+- Improved wording in the Abstract, Introduction, Overview and several other sections
+- Clarified what must happen when INPUT_MOMENTs conflict with INPUT_CHUNKs, and removed wording that suggested they shouldn't both be used in the same TASD file
+- Changed the Index Type "Microseconds * 10" to "Microseconds" for INPUT_MOMENT and TRANSITION packets
+
+### Added
+- A new Index Type of "Nanoseconds" for INPUT_MOMENT and TRANSITION packets (since the index number is 64-bits wide, even when using nanoseconds the largest number is equivalent to ~584.6 years)
+
+
 ## 2025-02-01
 
 ### Changed
-- Intended formatting and usage of INPUT_CHUNK and INPUT_MOMENT packets
+- Clarified the intended formatting and usage of INPUT_CHUNK and INPUT_MOMENT packets
 - Clarified that INPUT_CHUNK Indexes in TRANSITION packets should be *byte* indexes
 - Genesis controller input formats to better reflect the bit ordering seen during replay
 
