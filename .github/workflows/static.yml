@@ -32,9 +32,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Copy to index.html
-        run: cp docs/latest/draft-tasd-spec.html docs/latest/index.html
+        run: cp docs/latest/tasd-spec.html docs/latest/index.html
       - name: Copy to index.txt
-        run: cp docs/latest/draft-tasd-spec.txt docs/latest/index.txt
+        run: cp docs/latest/tasd-spec.txt docs/latest/index.txt
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Upload artifact

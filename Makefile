@@ -1,4 +1,4 @@
-# Copyright (C) 2021-2022, Vi Grey and Bigbass
+# Copyright (C) 2021-2025, Vi Grey and Bigbass
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -23,9 +23,9 @@
 # OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 # SUCH DAMAGE.
 
-DOC_NAME := draft-tasd-spec-0001
+DOC_NAME := tasd-spec-0001
 VERSION_DOC_NAME := tasd-spec-0001
-LATEST_DOC_NAME := draft-tasd-spec
+LATEST_DOC_NAME := tasd-spec
 CURRENTDIR := $(dir $(realpath $(firstword $(MAKEFILE_LIST))))
 
 documents:
