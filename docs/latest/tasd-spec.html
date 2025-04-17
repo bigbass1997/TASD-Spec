@@ -1203,7 +1203,8 @@ li > p:last-of-type:only-child {
 }
 </style>
 <link href="rfc-local.css" rel="stylesheet" type="text/css">
-<script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
+<link href="https://tasd.io/index.txt" rel="alternate">
+  <script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
 </head>
 <body class="xml2rfc">
 <script src="metadata.min.js"></script>
@@ -1258,18 +1259,21 @@ li > p:last-of-type:only-child {
             <p id="section-toc.1-1.1.1"><a href="#section-1" class="auto internal xref">1</a>.  <a href="#name-introduction" class="internal xref">Introduction</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
-                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-overview-and-preliminaries" class="internal xref">Overview and Preliminaries</a></p>
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="auto internal xref">1.1</a>.  <a href="#name-contributions" class="internal xref">Contributions</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
+                <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-overview-and-preliminaries" class="internal xref">Overview and Preliminaries</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1.2.1">
-                    <p id="section-toc.1-1.1.2.1.2.1.1" class="keepWithNext"><a href="#section-1.1.1" class="auto internal xref">1.1.1</a>.  <a href="#name-notation-and-vocabulary" class="internal xref">Notation and Vocabulary</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2.2.1">
+                    <p id="section-toc.1-1.1.2.2.2.1.1" class="keepWithNext"><a href="#section-1.2.1" class="auto internal xref">1.2.1</a>.  <a href="#name-notation-and-vocabulary" class="internal xref">Notation and Vocabulary</a></p>
 </li>
                 </ul>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
-                <p id="section-toc.1-1.1.2.2.1"><a href="#section-1.2" class="auto internal xref">1.2</a>.  <a href="#name-motivations" class="internal xref">Motivations</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.3">
+                <p id="section-toc.1-1.1.2.3.1"><a href="#section-1.3" class="auto internal xref">1.3</a>.  <a href="#name-motivations" class="internal xref">Motivations</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2.2.1">
-                    <p id="section-toc.1-1.1.2.2.2.1.1" class="keepWithNext"><a href="#section-1.2.1" class="auto internal xref">1.2.1</a>.  <a href="#name-problems-with-existing-form" class="internal xref">Problems With Existing Formats</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.3.2.1">
+                    <p id="section-toc.1-1.1.2.3.2.1.1"><a href="#section-1.3.1" class="auto internal xref">1.3.1</a>.  <a href="#name-problems-with-existing-form" class="internal xref">Problems With Existing Formats</a></p>
 </li>
                 </ul>
 </li>
@@ -1618,119 +1622,125 @@ li > p:last-of-type:only-child {
 <p id="section-1-2">Packets of a given type can be used multiple times or completely omitted as needed. This reusability eliminates the need of a predefined delimiter to separate pieces of data.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">While files generated by emulator dump scripts should provide as much information as possible, they may be unable to provide everything. Since packets are optional, the file can be expanded later with any additional data as desired. No intermediary file format is necessary.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <section id="section-1.1">
-        <h3 id="name-overview-and-preliminaries">
-<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-overview-and-preliminaries" class="section-name selfRef">Overview and Preliminaries</a>
+        <h3 id="name-contributions">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-contributions" class="section-name selfRef">Contributions</a>
         </h3>
-<p id="section-1.1-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>", "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
-<section id="section-1.1.1">
+<p id="section-1.1-1">This document's source XML can be found at <span><a href="https://github.com/tasd-org/tasd-spec">https://github.com/tasd-org/tasd-spec</a></span>. All specification issues and additions should be addressed there.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+</section>
+<section id="section-1.2">
+        <h3 id="name-overview-and-preliminaries">
+<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-overview-and-preliminaries" class="section-name selfRef">Overview and Preliminaries</a>
+        </h3>
+<p id="section-1.2-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>", "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+<section id="section-1.2.1">
           <h4 id="name-notation-and-vocabulary">
-<a href="#section-1.1.1" class="section-number selfRef">1.1.1. </a><a href="#name-notation-and-vocabulary" class="section-name selfRef">Notation and Vocabulary</a>
+<a href="#section-1.2.1" class="section-number selfRef">1.2.1. </a><a href="#name-notation-and-vocabulary" class="section-name selfRef">Notation and Vocabulary</a>
           </h4>
-<p id="section-1.1.1-1">Data Types:<a href="#section-1.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-1">Data Types:<a href="#section-1.2.1-1" class="pilcrow">¶</a></p>
 <ul class="compact ulEmpty">
-<li class="compact ulEmpty" id="section-1.1.1-2.1">(S) = String<a href="#section-1.1.1-2.1" class="pilcrow">¶</a>
+<li class="compact ulEmpty" id="section-1.2.1-2.1">(S) = String<a href="#section-1.2.1-2.1" class="pilcrow">¶</a>
 </li>
-            <li class="compact ulEmpty" id="section-1.1.1-2.2">(A) = Binary Data<a href="#section-1.1.1-2.2" class="pilcrow">¶</a>
+            <li class="compact ulEmpty" id="section-1.2.1-2.2">(A) = Binary Data<a href="#section-1.2.1-2.2" class="pilcrow">¶</a>
 </li>
-            <li class="compact ulEmpty" id="section-1.1.1-2.3">(I) = Signed Integer<a href="#section-1.1.1-2.3" class="pilcrow">¶</a>
+            <li class="compact ulEmpty" id="section-1.2.1-2.3">(I) = Signed Integer<a href="#section-1.2.1-2.3" class="pilcrow">¶</a>
 </li>
-            <li class="compact ulEmpty" id="section-1.1.1-2.4">(N) = Unsigned Integer<a href="#section-1.1.1-2.4" class="pilcrow">¶</a>
+            <li class="compact ulEmpty" id="section-1.2.1-2.4">(N) = Unsigned Integer<a href="#section-1.2.1-2.4" class="pilcrow">¶</a>
 </li>
-            <li class="compact ulEmpty" id="section-1.1.1-2.5">(B) = Boolean<a href="#section-1.1.1-2.5" class="pilcrow">¶</a>
+            <li class="compact ulEmpty" id="section-1.2.1-2.5">(B) = Boolean<a href="#section-1.2.1-2.5" class="pilcrow">¶</a>
 </li>
-            <li class="compact ulEmpty" id="section-1.1.1-2.6">([]N) = List of Unsigned Integers<a href="#section-1.1.1-2.6" class="pilcrow">¶</a>
+            <li class="compact ulEmpty" id="section-1.2.1-2.6">([]N) = List of Unsigned Integers<a href="#section-1.2.1-2.6" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-1.1.1-3">Unless specified otherwise, all multi-octet integers are big-endian.<a href="#section-1.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-1.1.1-4">We use the terms <strong>byte</strong> and <strong>octet</strong> interchangeably in this document.<a href="#section-1.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-1.1.1-5">We use the terms <strong>Tool Assisted Speedrun</strong>, <strong>Tool Assisted Superplay</strong> and <strong>TAS</strong> interchangeably in this document.<a href="#section-1.1.1-5" class="pilcrow">¶</a></p>
-<p id="section-1.1.1-6">In subsections of (<a href="#descriptions" class="auto internal xref">Section 4.2</a>), the term "in direct form" is used.  That term is defined to mean a packet in a <strong>TASD</strong> file directly (first order packet) rather than a packet inside a TRANSITION or MOVIE_TRANSITION packet (second order packet).<a href="#section-1.1.1-6" class="pilcrow">¶</a></p>
-<p id="section-1.1.1-7">String values <span class="bcp14">MUST</span> use UTF-8 encoding.  As such, string values <span class="bcp14">MAY</span> contain any number of NUL characters and do not make use of "null termination".  If an example of a string value is given, the example will be between quotation marks.  The quotation marks are not included in the string.  Not all content between quotations will be string value examples, so be aware of that when continuing through this document.<a href="#section-1.1.1-7" class="pilcrow">¶</a></p>
-<p id="section-1.1.1-8">Both unsigned and signed integers can have different bit widths.  For instance, an 8-bit integer can be used in one part of the specification and a 64-bit integer can be used in another part of the specification.<a href="#section-1.1.1-8" class="pilcrow">¶</a></p>
-<p id="section-1.1.1-9">Variable-length integer encoding (also known as VarInt or VLQ) is not used in this format. Instead, arbitrarily sized integers, like those used in <a href="#packets" class="auto internal xref">Section 4</a>, are prefixed with a single octet that specifies the number of octets used to contain the integer value. In most cases, this is less space-efficient than VarInt encoding, but it is simpler to understand and to parse.<a href="#section-1.1.1-9" class="pilcrow">¶</a></p>
-<p id="section-1.1.1-10">Boolean values <span class="bcp14">MUST</span> be a single octet with the value of <code>0</code> for <strong>FALSE</strong> or <code>1</code> for <strong>TRUE</strong>.<a href="#section-1.1.1-10" class="pilcrow">¶</a></p>
-<span class="break"></span><dl class="dlParallel" id="section-1.1.1-11">
-            <dt id="section-1.1.1-11.1"><code>[N octets]</code></dt>
-            <dd style="margin-left: 1.5em" id="section-1.1.1-11.2">A sequence of octets with a length of N<a href="#section-1.1.1-11.2" class="pilcrow">¶</a>
+<p id="section-1.2.1-3">Unless specified otherwise, all multi-octet integers are big-endian.<a href="#section-1.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-4">We use the terms <strong>byte</strong> and <strong>octet</strong> interchangeably in this document.<a href="#section-1.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-5">We use the terms <strong>Tool Assisted Speedrun</strong>, <strong>Tool Assisted Superplay</strong> and <strong>TAS</strong> interchangeably in this document.<a href="#section-1.2.1-5" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-6">In subsections of (<a href="#descriptions" class="auto internal xref">Section 4.2</a>), the term "in direct form" is used.  That term is defined to mean a packet in a <strong>TASD</strong> file directly (first order packet) rather than a packet inside a TRANSITION or MOVIE_TRANSITION packet (second order packet).<a href="#section-1.2.1-6" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-7">String values <span class="bcp14">MUST</span> use UTF-8 encoding.  As such, string values <span class="bcp14">MAY</span> contain any number of NUL characters and do not make use of "null termination".  If an example of a string value is given, the example will be between quotation marks.  The quotation marks are not included in the string.  Not all content between quotations will be string value examples, so be aware of that when continuing through this document.<a href="#section-1.2.1-7" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-8">Both unsigned and signed integers can have different bit widths.  For instance, an 8-bit integer can be used in one part of the specification and a 64-bit integer can be used in another part of the specification.<a href="#section-1.2.1-8" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-9">Variable-length integer encoding (also known as VarInt or VLQ) is not used in this format. Instead, arbitrarily sized integers, like those used in <a href="#packets" class="auto internal xref">Section 4</a>, are prefixed with a single octet that specifies the number of octets used to contain the integer value. In most cases, this is less space-efficient than VarInt encoding, but it is simpler to understand and to parse.<a href="#section-1.2.1-9" class="pilcrow">¶</a></p>
+<p id="section-1.2.1-10">Boolean values <span class="bcp14">MUST</span> be a single octet with the value of <code>0</code> for <strong>FALSE</strong> or <code>1</code> for <strong>TRUE</strong>.<a href="#section-1.2.1-10" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-1.2.1-11">
+            <dt id="section-1.2.1-11.1"><code>[N octets]</code></dt>
+            <dd style="margin-left: 1.5em" id="section-1.2.1-11.2">A sequence of octets with a length of N<a href="#section-1.2.1-11.2" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-1.1.1-11.3"><code>[00 7F FF]</code></dt>
-            <dd style="margin-left: 1.5em" id="section-1.1.1-11.4">A sequence of octets <code>00</code>, <code>7F</code>, and <code>FF</code> in that order.<a href="#section-1.1.1-11.4" class="pilcrow">¶</a>
+<dt id="section-1.2.1-11.3"><code>[00 7F FF]</code></dt>
+            <dd style="margin-left: 1.5em" id="section-1.2.1-11.4">A sequence of octets <code>00</code>, <code>7F</code>, and <code>FF</code> in that order.<a href="#section-1.2.1-11.4" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-1.1.1-11.5"><strong>0-indexed</strong></dt>
-            <dd style="margin-left: 1.5em" id="section-1.1.1-11.6">When counting sequentially, start counting at 0.<a href="#section-1.1.1-11.6" class="pilcrow">¶</a>
+<dt id="section-1.2.1-11.5"><strong>0-indexed</strong></dt>
+            <dd style="margin-left: 1.5em" id="section-1.2.1-11.6">When counting sequentially, start counting at 0.<a href="#section-1.2.1-11.6" class="pilcrow">¶</a>
 </dd>
             <dd class="break"></dd>
-<dt id="section-1.1.1-11.7"><strong>1-indexed</strong></dt>
-            <dd style="margin-left: 1.5em" id="section-1.1.1-11.8">When counting sequentially, start counting at 1.<a href="#section-1.1.1-11.8" class="pilcrow">¶</a>
+<dt id="section-1.2.1-11.7"><strong>1-indexed</strong></dt>
+            <dd style="margin-left: 1.5em" id="section-1.2.1-11.8">When counting sequentially, start counting at 1.<a href="#section-1.2.1-11.8" class="pilcrow">¶</a>
 </dd>
           <dd class="break"></dd>
 </dl>
-<p id="section-1.1.1-12">In packet diagrams, a single octet is represented with a box like this:<a href="#section-1.1.1-12" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.1.1-13">
+<p id="section-1.2.1-12">In packet diagrams, a single octet is represented with a box like this:<a href="#section-1.2.1-12" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-1.2.1-13">
 <pre>
       +-----+
       | Var | &lt;-- Vertical bars MAY be missing
       +-----+
-</pre><a href="#section-1.1.1-13" class="pilcrow">¶</a>
+</pre><a href="#section-1.2.1-13" class="pilcrow">¶</a>
 </div>
 <ul class="compact ulEmpty">
-<li class="compact ulEmpty" id="section-1.1.1-14.1">
-              <strong>Var</strong> is a variable name.<a href="#section-1.1.1-14.1" class="pilcrow">¶</a>
+<li class="compact ulEmpty" id="section-1.2.1-14.1">
+              <strong>Var</strong> is a variable name.<a href="#section-1.2.1-14.1" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-1.1.1-15">In packet diagrams, an arbitrary number of octets are represented with a box like this:<a href="#section-1.1.1-15" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.1.1-16">
+<p id="section-1.2.1-15">In packet diagrams, an arbitrary number of octets are represented with a box like this:<a href="#section-1.2.1-15" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-1.2.1-16">
 <pre>
       +=====+
       | Var |
       +=====+
-</pre><a href="#section-1.1.1-16" class="pilcrow">¶</a>
+</pre><a href="#section-1.2.1-16" class="pilcrow">¶</a>
 </div>
 <ul class="compact ulEmpty">
-<li class="compact ulEmpty" id="section-1.1.1-17.1">
-              <strong>Var</strong> is a variable name.<a href="#section-1.1.1-17.1" class="pilcrow">¶</a>
+<li class="compact ulEmpty" id="section-1.2.1-17.1">
+              <strong>Var</strong> is a variable name.<a href="#section-1.2.1-17.1" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-1.1.1-18">In packet diagrams, boxes can be connected like these examples:<a href="#section-1.1.1-18" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.1.1-19">
+<p id="section-1.2.1-18">In packet diagrams, boxes can be connected like these examples:<a href="#section-1.2.1-18" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-1.2.1-19">
 <pre>
       +-----------+-----------+
       | Var 1 (B) | Var 2 (I) |
       +-----------+-----------+
-</pre><a href="#section-1.1.1-19" class="pilcrow">¶</a>
+</pre><a href="#section-1.2.1-19" class="pilcrow">¶</a>
 </div>
 <ul class="compact ulEmpty">
-<li class="compact ulEmpty" id="section-1.1.1-20.1">In this example, <strong>Var 1</strong> is a 1 octet long boolean value and <strong>Var 2</strong> is a 1 octet long signed integer.<a href="#section-1.1.1-20.1" class="pilcrow">¶</a>
+<li class="compact ulEmpty" id="section-1.2.1-20.1">In this example, <strong>Var 1</strong> is a 1 octet long boolean value and <strong>Var 2</strong> is a 1 octet long signed integer.<a href="#section-1.2.1-20.1" class="pilcrow">¶</a>
 </li>
           </ul>
-<div class="alignLeft art-text artwork" id="section-1.1.1-21">
+<div class="alignLeft art-text artwork" id="section-1.2.1-21">
 <pre>
       +-----+-----+===========+
       | Var 1 (N) | Var 2 (S) |
       +-----+-----+===========+
-</pre><a href="#section-1.1.1-21" class="pilcrow">¶</a>
+</pre><a href="#section-1.2.1-21" class="pilcrow">¶</a>
 </div>
 <ul class="compact ulEmpty">
-<li class="compact ulEmpty" id="section-1.1.1-22.1">In this example, <strong>Var 1</strong> is a 2 octet long unsigned integer and <strong>Var 2</strong> is an arbitrary octet length string.<a href="#section-1.1.1-22.1" class="pilcrow">¶</a>
+<li class="compact ulEmpty" id="section-1.2.1-22.1">In this example, <strong>Var 1</strong> is a 2 octet long unsigned integer and <strong>Var 2</strong> is an arbitrary octet length string.<a href="#section-1.2.1-22.1" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-1.1.1-23">In packet diagrams, boxes <span class="bcp14">MAY</span> have relative offset values above them like in the following example:<a href="#section-1.1.1-23" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.1.1-24">
+<p id="section-1.2.1-23">In packet diagrams, boxes <span class="bcp14">MAY</span> have relative offset values above them like in the following example:<a href="#section-1.2.1-23" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-1.2.1-24">
 <pre>
          0     1       2...
       +-----+-----+===========+
       | Var 1 (N) | Var 2 (S) |
       +-----+-----+===========+
-</pre><a href="#section-1.1.1-24" class="pilcrow">¶</a>
+</pre><a href="#section-1.2.1-24" class="pilcrow">¶</a>
 </div>
 <ul class="compact ulEmpty">
-<li class="compact ulEmpty" id="section-1.1.1-25.1">In this example, <strong>Var 1</strong> is a 2 octet long unsigned integer and <strong>Var 2</strong> is an arbitrary octet length string.<a href="#section-1.1.1-25.1" class="pilcrow">¶</a>
+<li class="compact ulEmpty" id="section-1.2.1-25.1">In this example, <strong>Var 1</strong> is a 2 octet long unsigned integer and <strong>Var 2</strong> is an arbitrary octet length string.<a href="#section-1.2.1-25.1" class="pilcrow">¶</a>
 </li>
           </ul>
-<p id="section-1.1.1-26">Packet diagrams <span class="bcp14">MAY</span> be split into multiple lined sections like in the following example:<a href="#section-1.1.1-26" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-1.1.1-27">
+<p id="section-1.2.1-26">Packet diagrams <span class="bcp14">MAY</span> be split into multiple lined sections like in the following example:<a href="#section-1.2.1-26" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-1.2.1-27">
 <pre>
             0           1           2           3
       +-----------+-----------+-----------+-----------+
@@ -1740,36 +1750,36 @@ li > p:last-of-type:only-child {
       +-----------+===========+
       | Var 5 (N) | Var 6 (S) |
       +-----------+===========+
-</pre><a href="#section-1.1.1-27" class="pilcrow">¶</a>
+</pre><a href="#section-1.2.1-27" class="pilcrow">¶</a>
 </div>
 <ul class="compact ulEmpty">
-<li class="compact ulEmpty" id="section-1.1.1-28.1">In this example, the packet diagram contains enough variable boxes to require being split into 2 sections, in order to maintain consistent horizontal spacing in this document.  The packet diagram is separated by an ellipsis (<code>...</code>) on the same text row as the variable names to signify that the packet diagram is continuing.<a href="#section-1.1.1-28.1" class="pilcrow">¶</a>
+<li class="compact ulEmpty" id="section-1.2.1-28.1">In this example, the packet diagram contains enough variable boxes to require being split into 2 sections, in order to maintain consistent horizontal spacing in this document.  The packet diagram is separated by an ellipsis (<code>...</code>) on the same text row as the variable names to signify that the packet diagram is continuing.<a href="#section-1.2.1-28.1" class="pilcrow">¶</a>
 </li>
           </ul>
 </section>
 </section>
-<section id="section-1.2">
+<section id="section-1.3">
         <h3 id="name-motivations">
-<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-motivations" class="section-name selfRef">Motivations</a>
+<a href="#section-1.3" class="section-number selfRef">1.3. </a><a href="#name-motivations" class="section-name selfRef">Motivations</a>
         </h3>
-<p id="section-1.2-1">This file format's primary goal is to provide a comprehensive and replay device agnostic TAS input dump format that is usable for any console.  Additional goals include:<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+<p id="section-1.3-1">This file format's primary goal is to provide a comprehensive and replay device agnostic TAS input dump format that is usable for any console.  Additional goals include:<a href="#section-1.3-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-1.2-2.1">No intermediary formats<a href="#section-1.2-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-1.3-2.1">No intermediary formats<a href="#section-1.3-2.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-1.2-2.2">Forward compatibility<a href="#section-1.2-2.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-1.3-2.2">Forward compatibility<a href="#section-1.3-2.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-1.2-2.3">High extensibility<a href="#section-1.2-2.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-1.3-2.3">High extensibility<a href="#section-1.3-2.3" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-1.2-2.4">Ability to easily generate using lua scripting in emulators<a href="#section-1.2-2.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-1.3-2.4">Ability to easily generate using lua scripting in emulators<a href="#section-1.3-2.4" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-1.2-3">Consideration is also given to how usable the format would be for the software that interacts with replay devices (examples: methods of ingestion/parsing, ease of ingestion/parsing in various languages).<a href="#section-1.2-3" class="pilcrow">¶</a></p>
-<section id="section-1.2.1">
+<p id="section-1.3-3">Consideration is also given to how usable the format would be for the software that interacts with replay devices (examples: methods of ingestion/parsing, ease of ingestion/parsing in various languages).<a href="#section-1.3-3" class="pilcrow">¶</a></p>
+<section id="section-1.3.1">
           <h4 id="name-problems-with-existing-form">
-<a href="#section-1.2.1" class="section-number selfRef">1.2.1. </a><a href="#name-problems-with-existing-form" class="section-name selfRef">Problems With Existing Formats</a>
+<a href="#section-1.3.1" class="section-number selfRef">1.3.1. </a><a href="#name-problems-with-existing-form" class="section-name selfRef">Problems With Existing Formats</a>
           </h4>
-<p id="section-1.2.1-1">Existing formats are either incomplete for some verification needs or don't exist at all for some consoles.  For example, a format commonly used for NES console verifications (r08) only encodes 2 standard controllers worth of sequential data.  The format doesn't indicate whether those inputs are per latch or per frame.  It also doesn't contain <strong>RESET</strong> timing information, additional settings, or metadata.  Non-standard controllers, such as the NES Zapper, aren't supported either.<a href="#section-1.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-1.2.1-2">Until now, controller input formats were written in a way that was "good enough" for each use case, but rarely in a "standard" way.  Often, any additional data had to be supplied separately as command-line arguments.  While that process may work for a specific device, it's less than ideal when it comes time to redistribute the replay data so that others (especially those using different replay devices) can also successfully replay the same TAS.<a href="#section-1.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.3.1-1">Existing formats are either incomplete for some verification needs or don't exist at all for some consoles.  For example, a format commonly used for NES console verifications (r08) only encodes 2 standard controllers worth of sequential data.  The format doesn't indicate whether those inputs are per latch or per frame.  It also doesn't contain <strong>RESET</strong> timing information, additional settings, or metadata.  Non-standard controllers, such as the NES Zapper, aren't supported either.<a href="#section-1.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.3.1-2">Until now, controller input formats were written in a way that was "good enough" for each use case, but rarely in a "standard" way.  Often, any additional data had to be supplied separately as command-line arguments.  While that process may work for a specific device, it's less than ideal when it comes time to redistribute the replay data so that others (especially those using different replay devices) can also successfully replay the same TAS.<a href="#section-1.3.1-2" class="pilcrow">¶</a></p>
 </section>
 </section>
 </section>

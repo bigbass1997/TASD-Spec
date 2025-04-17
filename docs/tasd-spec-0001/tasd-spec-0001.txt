@@ -30,10 +30,11 @@ Abstract
 Table of Contents
 
    1.  Introduction
-     1.1.  Overview and Preliminaries
-       1.1.1.  Notation and Vocabulary
-     1.2.  Motivations
-       1.2.1.  Problems With Existing Formats
+     1.1.  Contributions
+     1.2.  Overview and Preliminaries
+       1.2.1.  Notation and Vocabulary
+     1.3.  Motivations
+       1.3.1.  Problems With Existing Formats
    2.  Structure
    3.  Header
    4.  Packets
@@ -154,7 +155,13 @@ Table of Contents
    additional data as desired.  No intermediary file format is
    necessary.
 
-1.1.  Overview and Preliminaries
+1.1.  Contributions
+
+   This document's source XML can be found at https://github.com/tasd-
+   org/tasd-spec.  All specification issues and additions should be
+   addressed there.
+
+1.2.  Overview and Preliminaries
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
@@ -162,7 +169,7 @@ Table of Contents
    14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
-1.1.1.  Notation and Vocabulary
+1.2.1.  Notation and Vocabulary
 
    Data Types:
 
@@ -280,7 +287,7 @@ Table of Contents
       the variable names to signify that the packet diagram is
       continuing.
 
-1.2.  Motivations
+1.3.  Motivations
 
    This file format's primary goal is to provide a comprehensive and
    replay device agnostic TAS input dump format that is usable for any
@@ -298,7 +305,7 @@ Table of Contents
    software that interacts with replay devices (examples: methods of
    ingestion/parsing, ease of ingestion/parsing in various languages).
 
-1.2.1.  Problems With Existing Formats
+1.3.1.  Problems With Existing Formats
 
    Existing formats are either incomplete for some verification needs or
    don't exist at all for some consoles.  For example, a format commonly
