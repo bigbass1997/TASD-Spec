@@ -1187,8 +1187,8 @@ Table of Contents
       Length of *Name*.
 
    *Name*
-      Name of the TAS movie (RECOMMENDED to use TAS movie file name, for
-      example: "100thcoinv2-smb3j-geg.bk2").
+      Name of the TAS movie.  Using the TAS movie's file name is
+      RECOMMENDED (example: "mranderson-thematrix.bk2").
 
    *Data*
       TAS movie file data/content.

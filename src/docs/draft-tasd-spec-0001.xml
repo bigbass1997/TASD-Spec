@@ -872,7 +872,7 @@
               <dt><strong>NLEN</strong></dt>
               <dd>Length of <strong>Name</strong>.</dd>
               <dt><strong>Name</strong></dt>
-              <dd>Name of the TAS movie (<bcp14>RECOMMENDED</bcp14> to use TAS movie file name, for example: "100thcoinv2-smb3j-geg.bk2").</dd>
+              <dd>Name of the TAS movie. Using the TAS movie's file name is <bcp14>RECOMMENDED</bcp14> (example: "mranderson-thematrix.bk2").</dd>
               <dt><strong>Data</strong></dt>
               <dd>TAS movie file data/content.</dd>
               <dt><strong>PLEN</strong></dt>
