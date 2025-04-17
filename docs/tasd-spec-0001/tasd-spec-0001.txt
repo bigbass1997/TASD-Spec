@@ -1665,8 +1665,8 @@ Table of Contents
 
    *Experimental*
       Boolean data that is *TRUE* if the TASD file is using draft/
-      experimental features (Currently SHOULD be *TRUE*) and *FALSE* if
-      the TASD file is using only stable features.
+      experimental features and *FALSE* if the TASD file is only using
+      stable features.
 
    *PLEN*
       Length of the packet payload.

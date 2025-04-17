@@ -1288,7 +1288,7 @@
             </artwork>
             <dl newline="true">
               <dt><strong>Experimental</strong></dt>
-              <dd>Boolean data that is <strong>TRUE</strong> if the TASD file is using draft/experimental features (Currently SHOULD be <strong>TRUE</strong>) and <strong>FALSE</strong> if the TASD file is using only stable features.</dd>
+              <dd>Boolean data that is <strong>TRUE</strong> if the TASD file is using draft/experimental features and <strong>FALSE</strong> if the TASD file is only using stable features.</dd>
               <dt><strong>PLEN</strong></dt>
               <dd>Length of the packet payload.</dd>
             </dl>
